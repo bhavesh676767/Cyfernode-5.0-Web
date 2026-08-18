@@ -1,0 +1,14 @@
+:root {
+  --color-surface: #171717;
+  --color-surface-raised: #1f1f1f;
+  --color-content: #ffffff;
+  --color-content-muted: #666666;
+  --color-content-soft: rgba(255, 255, 255, 0.5);
+  --color-accent: #ff4f4f;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --font-sans: "Geist", "Geist Placeholder", system-ui, sans-serif;
+  --space-page: clamp(1.25rem, 4vw, 4rem);
+  --radius-md: 12px;
+  --nav-height: 72px;
+  --max-width: 1120px;
+}

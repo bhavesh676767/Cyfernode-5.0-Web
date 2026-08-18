@@ -1,0 +1,32 @@
+.kicker {
+  margin: 0 0 0.75rem;
+  color: var(--color-accent);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0 0 1rem;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+}
+
+.copy {
+  max-width: 40rem;
+  color: var(--color-content-muted);
+}
+
+.list {
+  display: grid;
+  gap: 0.75rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+}
