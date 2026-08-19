@@ -1,4 +1,4 @@
-const FRAMER_SELECTORS = ['#main', '#__framer-badge-container']
+const FRAMER_SELECTORS = ['#main']
 
 export function isHomePath(pathname) {
   return pathname === '/' || pathname === ''
