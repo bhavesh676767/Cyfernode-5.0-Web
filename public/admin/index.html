@@ -1,0 +1,5007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Cyfernode 5.0 Registrations</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#f4f4f6">
+<link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700,800,900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white: #ffffff;
+  --page: #f4f4f6;
+  --surface: #ffffff;
+  --surface2: #f8f8fa;
+  --surface3: #eef0f3;
+  --border: rgba(17, 17, 20, 0.08);
+  --border-hover: rgba(17, 17, 20, 0.16);
+  --text: #111114;
+  --muted: rgba(17, 17, 20, 0.5);
+  --muted-strong: rgba(17, 17, 20, 0.68);
+  --muted2: rgba(17, 17, 20, 0.24);
+  --orange: #d24500;
+  --orange-tint: rgba(210, 69, 0, 0.06);
+  --orange-line: rgba(210, 69, 0, 0.18);
+  --accent: var(--orange);
+  --danger: #c81e1e;
+  --font-px: 'Satoshi', system-ui, sans-serif;
+  --font-sans: 'Satoshi', system-ui, sans-serif;
+  --radius: 16px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
+  --shadow-sm: 0 1px 2px rgba(17, 17, 20, 0.04);
+  --shadow-md: 0 8px 32px rgba(17, 17, 20, 0.06);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  min-height: 100vh;
+  background: var(--page);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(17, 17, 20, 0.14);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(17, 17, 20, 0.28); }
+#page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+#page.show { opacity: 1; }
+.eyebrow {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.page-h {
+  font-size: clamp(32px, 6vw, 48px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  margin-bottom: 10px;
+}
+.page-sub {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--muted-strong);
+  line-height: 1.5;
+  margin-bottom: 32px;
+  max-width: 48ch;
+}
+.screen { display: none; }
+.screen.active { display: block; }
+.field { margin-bottom: 20px; }
+.field-lbl {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted-strong);
+  margin-bottom: 8px;
+}
+.field-input {
+  width: 100%;
+  max-width: 360px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 13px 16px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.field-input:hover { border-color: var(--border-hover); }
+.field-input:focus {
+  border-color: var(--text);
+  background: var(--white);
+}
+.err {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--danger);
+  margin-top: 12px;
+  display: none;
+}
+.err.show { display: block; }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 24px; }
+.btn-p, .btn-s {
+  position: relative;
+  font-family: var(--font-px);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 16px;
+  min-height: 38px;
+  border-radius: 999px;
+  cursor: pointer;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  letter-spacing: -0.01em;
+  transition: background 0.18s, color 0.18s, border-color 0.18s, transform 0.12s;
+}
+.btn-p:active, .btn-s:active { transform: scale(0.98); }
+.btn-p {
+  background: var(--text);
+  color: var(--white);
+  border: 1px solid var(--text);
+}
+.btn-p:hover { background: var(--orange); border-color: var(--orange); }
+.btn-s {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.btn-s:hover {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border-hover);
+}
+.btn-s.btn-ghost {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  color: var(--muted-strong);
+}
+.btn-s.btn-ghost:hover {
+  background: rgba(17, 17, 20, 0.04);
+  color: var(--text);
+}
+.dash-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.dash-tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.dash-tab {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted-strong);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font: 600 13px/1 var(--font-sans);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.dash-tab:hover {
+  color: var(--text);
+  border-color: var(--border-hover);
+}
+.dash-tab.active {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--white);
+}
+.dash-tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  margin-left: 6px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  font-size: 11px;
+  font-weight: 700;
+}
+.dash-tab.active .dash-tab-count {
+  background: rgba(255, 255, 255, 0.18);
+}
+body.view-invites .toolbar-panel,
+body.view-invites #core-panel,
+body.view-invites #team-panel {
+  display: none !important;
+}
+body.view-invites #invite-panel {
+  display: block;
+}
+#invite-panel {
+  display: none;
+}
+.dash-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.dash-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.dash-brand {
+  width: min(280px, 68vw);
+  height: auto;
+  display: block;
+}
+.role-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--orange-tint);
+  color: var(--orange);
+  border: 1px solid var(--orange-line);
+}
+.role-pill.core {
+  background: var(--surface3);
+  color: var(--muted-strong);
+  border-color: var(--border);
+}
+.dash-sub {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  max-width: 42ch;
+  line-height: 1.5;
+}
+.top-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+@media (max-width: 720px) {
+  .stats { grid-template-columns: 1fr; }
+}
+.stat {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.stat:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-md);
+}
+.stat:first-child::before { display: none; }
+.stat-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.stat-val {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--text);
+}
+.stat:first-child .stat-val { color: var(--orange); }
+.toolbar-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 2px);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+.toolbar-primary {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.toolbar-primary-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+.drawer-toggle {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted-strong);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  min-height: 38px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+.drawer-toggle:hover { color: var(--text); border-color: var(--border-hover); }
+.drawer-toggle[aria-expanded="true"] {
+  background: var(--text);
+  color: var(--white);
+  border-color: var(--text);
+}
+.drawer-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  background: var(--orange);
+  color: var(--white);
+}
+.drawer-toggle[aria-expanded="true"] .drawer-badge {
+  background: rgba(255, 255, 255, 0.18);
+}
+.drawer-badge.hidden { display: none; }
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--orange-line);
+  background: var(--orange-tint);
+}
+.filter-bar.hidden { display: none; }
+.filter-bar-lbl {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-right: 4px;
+}
+.filter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 8px 5px 10px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--orange-line);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+}
+.filter-tag-clear {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+  padding: 0 2px;
+  border-radius: 999px;
+  transition: color 0.15s, background 0.15s;
+}
+.filter-tag-clear:hover { color: var(--orange); background: var(--orange-tint); }
+.filter-bar-clear {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--orange);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 5px 8px;
+  margin-left: auto;
+}
+.quick-filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  background: var(--surface);
+}
+.quick-filters-lbl {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.quick-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1;
+}
+.quick-filter-chip {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--muted-strong);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+.quick-filter-chip:hover {
+  color: var(--text);
+  border-color: var(--border-hover);
+}
+.quick-filter-chip.active {
+  background: var(--orange-tint);
+  border-color: var(--orange-line);
+  color: var(--orange);
+}
+.toolbar-tools.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px 20px;
+  align-items: start;
+}
+.toolbar-tools.filter-grid .tool-group {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+.toolbar-tools.filter-grid .chip-row { width: 100%; }
+.filter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  grid-column: 1 / -1;
+  padding-top: 4px;
+  border-top: 1px solid var(--border);
+  margin-top: 4px;
+}
+.tool-select-wide { min-width: 160px; max-width: 100%; }
+.explorer-drawer-inner {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.explorer-drawer-inner .explorer-grid {
+  padding-top: 0;
+}
+body.view-team .quick-filter-chip[data-quick="multi"],
+body.view-team .quick-filter-chip[data-quick="senior"] { display: none; }
+.toolbar-drawer {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: max-height 0.28s ease, opacity 0.22s ease;
+  background: var(--surface2);
+}
+.toolbar-drawer.open {
+  max-height: 720px;
+  opacity: 1;
+  pointer-events: auto;
+  border-bottom: 1px solid var(--border);
+}
+.view-modes-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+body.view-team .view-modes-bar { display: none; }
+.view-modes-lbl {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.toolbar-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: min(100%, 240px);
+}
+.search-wrap::before {
+  content: '';
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  background: currentColor;
+  color: var(--muted2);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='2'%3E%3Cpath stroke-linecap='round' d='M21 21l-4.35-4.35M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14z'/%3E%3C/svg%3E") center / contain no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='2'%3E%3Cpath stroke-linecap='round' d='M21 21l-4.35-4.35M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14z'/%3E%3C/svg%3E") center / contain no-repeat;
+  pointer-events: none;
+}
+.search {
+  max-width: none;
+  padding: 10px 14px 10px 40px;
+  background: var(--surface2);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 14px;
+}
+.search:hover { border-color: var(--border); }
+.search:focus {
+  background: var(--surface);
+  border-color: var(--border-hover);
+}
+.event-tabs-wrap {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+.event-tabs {
+  display: none;
+  gap: 6px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+.event-tabs::-webkit-scrollbar { display: none; }
+body.view-team .event-tabs { display: flex; }
+body:not(.view-team) .event-tabs { display: flex; }
+.event-tab {
+  appearance: none;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted-strong);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+.event-tab:hover {
+  background: var(--surface2);
+  color: var(--text);
+}
+.event-tab.active {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--white);
+}
+.event-tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  margin-left: 6px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  background: rgba(17, 17, 20, 0.06);
+}
+.event-tab.active .event-tab-count {
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--white);
+}
+.empty {
+  padding: 48px 24px;
+  text-align: center;
+  border: 1px dashed var(--border);
+  border-radius: calc(var(--radius) + 2px);
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+  background: var(--surface);
+}
+.empty-title {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+  letter-spacing: -0.02em;
+}
+#empty-hint { display: block; font-size: 13px; }
+.reg-list { display: flex; flex-direction: column; gap: 10px; }
+.reg-card {
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 2px);
+  background: var(--surface);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+.reg-card.open {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-md);
+}
+.reg-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  cursor: pointer;
+  user-select: none;
+}
+.reg-head:hover { background: var(--surface2); }
+.reg-head-main { min-width: 0; flex: 1; }
+.reg-id {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+  color: var(--orange);
+}
+.reg-meta {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.reg-head-side {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.reg-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted-strong);
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+.reg-chevron {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: none;
+  background: var(--surface2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 11px;
+  transition: transform 0.2s, background 0.2s;
+}
+.reg-card.open .reg-chevron {
+  transform: rotate(180deg);
+  background: var(--surface3);
+}
+.reg-body {
+  display: none;
+  border-top: 1px solid var(--border);
+  padding: 0 18px 18px;
+  background: var(--surface);
+}
+.reg-card.open .reg-body { display: block; }
+.ev-block {
+  padding: 18px 0 0;
+}
+.ev-block + .ev-block {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+.ev-title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+  color: var(--text);
+}
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px 20px;
+  margin-bottom: 16px;
+}
+@media (max-width: 760px) { .detail-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .detail-grid { grid-template-columns: 1fr; } }
+.detail-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 3px;
+}
+.detail-val {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.45;
+  word-break: break-word;
+}
+.p-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.p-card {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 11px 14px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.p-card:last-child { border-bottom: none; }
+.p-name {
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.p-grade {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--orange);
+  background: var(--orange-tint);
+  border: 1px solid var(--orange-line);
+  padding: 2px 7px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+.p-meta {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted-strong);
+  line-height: 1.4;
+}
+.p-section-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.loading {
+  display: none;
+  align-items: center;
+  gap: 12px;
+  padding: 28px 0;
+  color: var(--muted-strong);
+  font-size: 14px;
+  font-weight: 500;
+}
+.loading.show { display: flex; }
+.loading-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--orange);
+  animation: pulse 1s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.35; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1); }
+}
+.team-list { display: flex; flex-direction: column; gap: 10px; }
+.team-entry {
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 2px);
+  background: var(--surface);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.team-entry-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+}
+.team-school {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.team-teacher {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted-strong);
+  line-height: 1.5;
+}
+.team-meta {
+  text-align: right;
+  flex-shrink: 0;
+}
+.team-reg-id {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--orange-tint);
+  color: var(--orange);
+  border: 1px solid var(--orange-line);
+  margin-bottom: 4px;
+}
+.team-date {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+}
+.team-participants {
+  padding: 0 18px 16px;
+  border-top: 1px solid var(--border);
+}
+.team-participants-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 14px 0 8px;
+}
+.participant-grid {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.participant-chip {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  gap: 2px 12px;
+  padding: 11px 14px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.participant-chip:last-child { border-bottom: none; }
+.participant-chip-name {
+  font-size: 14px;
+  font-weight: 600;
+  grid-column: 1;
+  grid-row: 1;
+}
+.participant-chip .p-grade {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+}
+.participant-chip-meta {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted-strong);
+  line-height: 1.4;
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+
+/* Core data explorer */
+body.view-team .view-modes-bar,
+body.view-team #explorer-drawer { display: none; }
+.core-explorer { display: none; }
+.view-modes {
+  display: inline-flex;
+  gap: 0;
+  flex-wrap: wrap;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+}
+.view-mode {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--muted-strong);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+}
+.view-mode:hover { color: var(--text); }
+.view-mode.active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+}
+.explorer-panel {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  padding: 16px 18px;
+}
+.explorer-panel-head {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 14px;
+}
+.explorer-panel-hint {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.explorer-section-lbl {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--text);
+  margin-bottom: 0;
+}
+.preset-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.preset-group-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.preset-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.preset-btn {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted-strong);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s;
+  box-shadow: var(--shadow-sm);
+}
+.preset-btn:hover {
+  border-color: var(--border-hover);
+  color: var(--text);
+  background: var(--surface2);
+}
+.preset-btn.active {
+  background: var(--text);
+  color: var(--white);
+  border-color: var(--text);
+  box-shadow: none;
+}
+.field-toggles {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.field-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted-strong);
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.18s, border-color 0.18s, color 0.18s, box-shadow 0.18s;
+  box-shadow: var(--shadow-sm);
+}
+.field-toggle input {
+  accent-color: var(--orange);
+  width: 14px;
+  height: 14px;
+  margin: 0;
+}
+.field-toggle:has(input:checked) {
+  background: var(--orange-tint);
+  border-color: var(--orange-line);
+  color: var(--text);
+}
+.field-toggles.hidden { display: none; }
+.explorer-empty {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  line-height: 1.5;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--surface2);
+  border: 1px dashed var(--border);
+}
+.explorer-empty.hidden { display: none; }
+.columns-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.columns-actions.hidden { display: none; }
+.columns-action-btn {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted-strong);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+.columns-action-btn:hover {
+  color: var(--text);
+  border-color: var(--border-hover);
+}
+.explorer-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 2px);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+.explorer-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  font-weight: 500;
+  min-width: 640px;
+}
+.explorer-table th,
+.explorer-table td {
+  padding: 11px 14px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.45;
+}
+.explorer-table th {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--surface2);
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+}
+.explorer-table tr:last-child td { border-bottom: none; }
+.explorer-table tbody tr:hover td { background: var(--surface2); }
+.explorer-table .num {
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+}
+.explorer-table .code {
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--orange);
+}
+
+/* Layout toggle + Excel sheet */
+.layout-toggle {
+  display: inline-flex;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface2);
+  flex-shrink: 0;
+}
+.layout-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  color: var(--muted-strong);
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+}
+.layout-btn + .layout-btn { border-left: none; }
+.layout-btn.active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+}
+.layout-btn:hover:not(.active) { color: var(--text); }
+.excel-sheet-wrap {
+  overflow: auto;
+  max-height: min(70vh, 720px);
+  border: 1px solid #c8c8cc;
+  border-radius: 4px;
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px rgba(17, 17, 20, 0.04);
+}
+.excel-sheet {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.excel-sheet th,
+.excel-sheet td {
+  border: 1px solid #d8d8dc;
+  padding: 6px 10px;
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+  min-width: 88px;
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.excel-sheet thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #f3f3f5;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--text);
+  box-shadow: inset 0 -1px 0 #c8c8cc;
+}
+.excel-sheet tbody tr:nth-child(even) td { background: #fafafa; }
+.excel-sheet tbody tr:hover td { background: #fff4ec; }
+.excel-sheet .col-code {
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--orange);
+  background: #fffaf6;
+}
+.excel-sheet .col-num {
+  text-align: center;
+  color: var(--muted);
+  background: #f3f3f5;
+  font-size: 11px;
+  min-width: 36px;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  box-shadow: inset -1px 0 0 #d8d8dc;
+}
+.excel-sheet thead .col-num {
+  z-index: 3;
+  left: 0;
+}
+.excel-sheet .col-date { color: var(--muted-strong); }
+.excel-sheet .group-start td,
+.excel-sheet .group-start th { border-left: 2px solid #c8c8cc; }
+#team-sheet-view,
+#core-reg-sheet-view { display: none; }
+#team-sheet-view.active,
+#core-reg-sheet-view.active { display: block; }
+#team-cards-view.hidden,
+#core-reg-cards-wrap.hidden { display: none; }
+body.layout-sheet .explorer-table-wrap {
+  max-height: min(70vh, 720px);
+  border-color: #c8c8cc;
+  border-radius: 4px;
+}
+body.layout-sheet .explorer-table th,
+body.layout-sheet .explorer-table td {
+  border: 1px solid #d8d8dc;
+  padding: 6px 10px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+body.layout-sheet .explorer-table thead th {
+  background: #f3f3f5;
+  box-shadow: inset 0 -1px 0 #c8c8cc;
+}
+body.layout-sheet .explorer-table tbody tr:nth-child(even) td { background: #fafafa; }
+body.layout-sheet .explorer-table tbody tr:hover td { background: #fff4ec; }
+#core-table-view { display: none; }
+#core-table-view.active { display: block; }
+.sheet-panel { display: flex; flex-direction: column; gap: 10px; }
+.sheet-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.sheet-toolbar-lbl {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+body:not(.layout-sheet) .sheet-toolbar { display: none; }
+.sheet-expand-btn {
+  appearance: none;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--white);
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.sheet-expand-btn:hover {
+  background: var(--orange-tint);
+  border-color: var(--orange-line);
+  color: var(--orange);
+}
+.sheet-expand-btn svg { display: block; }
+.sheet-lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(17, 17, 20, 0.52);
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+}
+.sheet-lightbox.open { display: flex; }
+body.sheet-lightbox-open { overflow: hidden; }
+.sheet-lightbox-box {
+  width: min(96vw, 1480px);
+  height: min(92vh, 920px);
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 2px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(17, 17, 20, 0.18);
+}
+.sheet-lightbox-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+.sheet-lightbox-title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.sheet-lightbox-close {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--text);
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  transition: background 0.2s, border-color 0.2s;
+}
+.sheet-lightbox-close:hover {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--white);
+}
+.sheet-lightbox-wrap {
+  flex: 1;
+  max-height: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+.sheet-lightbox-wrap .excel-sheet th,
+.sheet-lightbox-wrap .excel-sheet td,
+.sheet-lightbox-wrap .explorer-table th,
+.sheet-lightbox-wrap .explorer-table td {
+  padding: 8px 12px;
+  font-size: 13px;
+}
+#core-registrations-view.hidden { display: none; }
+.event-tab-all .event-tab-count { background: rgba(17, 17, 20, 0.06); }
+
+/* Login - centered */
+#login.active {
+  min-height: calc(100vh - 96px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-shell {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  padding: 36px 28px 32px;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+}
+.login-brand {
+  width: min(240px, 68vw);
+  height: auto;
+  margin: 0 auto 32px;
+  display: block;
+}
+.login-shell .page-sub {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  max-width: none;
+  margin-bottom: 28px;
+}
+.login-shell .field {
+  text-align: left;
+}
+.login-shell .field-input {
+  max-width: none;
+}
+.login-shell .btn-row {
+  justify-content: center;
+}
+.role-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  margin-bottom: 24px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface2);
+}
+.role-opt { position: relative; }
+.role-opt input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.role-opt span {
+  display: block;
+  padding: 11px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--muted-strong);
+  cursor: pointer;
+  border-radius: 999px;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+}
+.role-opt input:checked + span {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+}
+.role-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-top: 6px;
+}
+#team-panel { display: none; }
+#core-panel { display: block; }
+body.view-team #team-panel { display: block; }
+body.view-team #core-panel { display: none; }
+
+/* Toolbar tools + filters */
+.toolbar-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+.tool-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.tool-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.tool-select {
+  appearance: none;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 28px 7px 12px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23111114' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+.chip-row {
+  display: inline-flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.filter-chip {
+  appearance: none;
+  border: 1px solid transparent;
+  background: var(--surface);
+  color: var(--muted-strong);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 11px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+.filter-chip:hover { color: var(--text); border-color: var(--border); }
+.filter-chip.active {
+  background: var(--text);
+  color: var(--white);
+  border-color: var(--text);
+}
+.tool-btn {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted-strong);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+.tool-btn:hover { color: var(--text); border-color: var(--border-hover); }
+.tool-btn.warn { color: var(--orange); border-color: var(--orange-line); background: var(--orange-tint); }
+.tool-btn.hidden { display: none; }
+body.view-team .core-only { display: none !important; }
+
+/* Insights strip */
+.insights {
+  display: none;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+body:not(.view-team) .insights.show { display: flex; }
+.insight-chip {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.18s, background 0.18s;
+}
+.insight-chip:hover { border-color: var(--orange-line); background: var(--orange-tint); }
+.insight-chip strong { color: var(--orange); font-weight: 800; }
+
+/* Export menu */
+.export-wrap { position: relative; display: inline-flex; }
+.export-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 260px;
+  max-width: 300px;
+  max-height: min(70vh, 520px);
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  padding: 6px;
+  z-index: 50;
+}
+.export-menu.open { display: block; }
+.export-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 6px 0;
+}
+.export-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px 2px;
+}
+.export-section-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.export-section-desc {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  line-height: 1.45;
+  padding: 0 12px 8px;
+}
+.export-item {
+  appearance: none;
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-family: var(--font-sans);
+  padding: 10px 12px;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 3px;
+}
+.export-item:hover { background: var(--surface2); }
+.export-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+.export-item-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+}
+.export-item-desc {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.export-info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  color: var(--muted);
+  flex-shrink: 0;
+  cursor: help;
+  transition: color 0.15s, background 0.15s;
+}
+.export-info:hover,
+.export-info:focus-visible {
+  color: var(--orange);
+  background: var(--orange-tint);
+  outline: none;
+}
+.export-info svg { display: block; }
+
+/* Copy + duplicate badges */
+.copy-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  vertical-align: middle;
+  line-height: 0;
+  transition: color 0.18s, background 0.18s;
+}
+.copy-btn:hover { color: var(--orange); background: var(--orange-tint); }
+.dup-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #9a6700;
+  background: #fff8e6;
+  border: 1px solid rgba(154, 103, 0, 0.2);
+  padding: 3px 8px;
+  border-radius: 999px;
+  margin-left: 6px;
+}
+.last-sync {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.sheet-copy-btn {
+  appearance: none;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+}
+.sheet-copy-btn:hover {
+  background: var(--orange-tint);
+  border-color: var(--orange-line);
+  color: var(--orange);
+}
+.sheet-toolbar-actions { display: inline-flex; align-items: center; gap: 8px; }
+
+/* Toast + shortcuts modal */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: var(--text);
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 999px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+  z-index: 10001;
+  box-shadow: var(--shadow-md);
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.shortcuts-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 17, 20, 0.4);
+  z-index: 10002;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.shortcuts-backdrop.open { display: flex; }
+.shortcuts-box {
+  width: min(420px, 100%);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 2px);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+.shortcuts-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 700;
+}
+.shortcuts-list { padding: 8px 0; }
+.shortcut-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  font-size: 13px;
+}
+.shortcut-row kbd {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+}
+
+@media (max-width: 640px) {
+  .team-entry-top { flex-direction: column; }
+  .team-meta { text-align: left; }
+  .dash-header { margin-bottom: 22px; }
+  #page { padding-top: 28px; }
+}
+
+/* Core admin edit/delete */
+body.view-team .core-admin-actions { display: none !important; }
+.reg-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.reg-head-actions {
+  display: inline-flex;
+  gap: 6px;
+  margin-right: 4px;
+}
+.action-btn {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+}
+.action-btn:hover {
+  border-color: var(--border-hover);
+  background: var(--surface2);
+}
+.action-btn.danger {
+  color: var(--danger);
+  border-color: rgba(200, 30, 30, 0.18);
+  background: rgba(200, 30, 30, 0.04);
+}
+.action-btn.danger:hover {
+  background: rgba(200, 30, 30, 0.08);
+  border-color: rgba(200, 30, 30, 0.28);
+}
+.edit-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10002;
+  background: rgba(17, 17, 20, 0.52);
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+}
+.edit-backdrop.open { display: flex; }
+body.edit-open { overflow: hidden; }
+.edit-box {
+  width: min(96vw, 560px);
+  max-height: min(92vh, 820px);
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 2px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(17, 17, 20, 0.18);
+}
+.edit-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+.edit-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.edit-sub {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.edit-form-wrap {
+  overflow: auto;
+  padding: 20px;
+}
+.edit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 16px;
+  margin-bottom: 18px;
+}
+@media (max-width: 560px) {
+  .edit-grid { grid-template-columns: 1fr; }
+}
+.edit-grid .field { margin-bottom: 0; }
+.edit-grid .field.span-2 { grid-column: 1 / -1; }
+.edit-section-lbl {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 8px 0 12px;
+}
+.edit-participant {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  margin-bottom: 10px;
+  background: var(--surface2);
+}
+.edit-participant-lbl {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+.edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+.edit-form-wrap .field-input { max-width: none; }
+.edit-form-wrap .err { margin-top: 12px; }
+
+@media print {
+  body { background: #fff; }
+  #page { max-width: none; padding: 0; }
+  #login, .top-actions, .toolbar-panel, .loading, .err, #toast, #shortcuts-backdrop, #sheet-lightbox, #edit-backdrop, .copy-btn, .sheet-toolbar, .core-admin-actions { display: none !important; }
+  .reg-card { break-inside: avoid; box-shadow: none; }
+  .reg-body { display: block !important; }
+  .reg-chevron { display: none; }
+  .excel-sheet-wrap, .explorer-table-wrap { max-height: none !important; overflow: visible !important; }
+}
+</style>
+</head>
+<body>
+
+<div id="page">
+  <!-- Login -->
+  <div class="screen active" id="login">
+    <div class="login-shell">
+      <img class="login-brand" src="/assets/ADMIN.svg" alt="Admin" width="305" height="170">
+      <p class="page-sub">Sign in to view event registrations.</p>
+      <form id="login-form">
+        <div class="role-toggle" role="radiogroup" aria-label="Sign in as">
+          <label class="role-opt">
+            <input type="radio" name="role" value="core" checked>
+            <span>Core</span>
+          </label>
+          <label class="role-opt">
+            <input type="radio" name="role" value="team">
+            <span>Team</span>
+          </label>
+        </div>
+        <div class="field">
+          <label class="field-lbl" for="password">Password</label>
+          <input class="field-input" type="password" id="password" autocomplete="current-password" required>
+        </div>
+        <div class="err" id="login-err" role="alert"></div>
+        <div class="btn-row">
+          <button class="btn-p" type="submit">Sign in</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="screen" id="dash">
+    <header class="dash-header">
+      <div class="dash-title-wrap">
+        <div class="eyebrow">Cyfernode 5.0</div>
+        <div class="dash-title-row">
+          <img class="dash-brand" src="/assets/Registrations.svg" alt="Registrations" width="446" height="76">
+          <span class="role-pill" id="dash-role">Core</span>
+        </div>
+        <p class="dash-sub" id="dash-sub">Overview of all submitted registrations.</p>
+        <div class="last-sync" id="last-sync"></div>
+      </div>
+      <div class="top-actions">
+        <div class="export-wrap">
+          <button class="btn-s" type="button" id="btn-export">Export</button>
+          <div class="export-menu" id="export-menu"></div>
+        </div>
+        <button class="btn-s btn-ghost" type="button" id="btn-help" title="Keyboard shortcuts">?</button>
+        <button class="btn-s btn-ghost" type="button" id="btn-refresh">Refresh</button>
+        <button class="btn-s" type="button" id="btn-logout">Sign out</button>
+      </div>
+    </header>
+
+    <div class="dash-tabs core-only" id="dash-tabs" role="tablist" aria-label="Admin sections">
+      <button type="button" class="dash-tab active" data-dash-tab="registrations" role="tab" aria-selected="true">Registrations</button>
+      <button type="button" class="dash-tab" data-dash-tab="invites" role="tab" aria-selected="false">
+        Invite requests<span class="dash-tab-count" id="invite-tab-count">0</span>
+      </button>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-lbl" id="stat-lbl-total">Total</div>
+        <div class="stat-val" id="stat-total">-</div>
+      </div>
+      <div class="stat">
+        <div class="stat-lbl" id="stat-lbl-secondary">Events</div>
+        <div class="stat-val" id="stat-events">-</div>
+      </div>
+      <div class="stat">
+        <div class="stat-lbl">Showing</div>
+        <div class="stat-val" id="stat-showing">-</div>
+      </div>
+    </div>
+
+    <div class="toolbar-panel">
+      <div class="toolbar-primary">
+        <div class="search-wrap">
+          <input class="field-input search" type="search" id="search" placeholder="Search school, event, name, email…" autocomplete="off">
+        </div>
+        <div class="toolbar-primary-actions">
+          <div class="layout-toggle" role="group" aria-label="Display layout">
+          <button type="button" class="layout-btn" data-layout="cards" id="layout-cards">Cards</button>
+          <button type="button" class="layout-btn active" data-layout="sheet" id="layout-sheet">Sheet</button>
+          </div>
+          <button type="button" class="drawer-toggle" id="toggle-filters" aria-expanded="false" aria-controls="filters-drawer">
+            Filters<span class="drawer-badge hidden" id="filter-badge">0</span>
+          </button>
+          <button type="button" class="drawer-toggle core-only" id="toggle-explorer" aria-expanded="false" aria-controls="explorer-drawer">
+            View options
+          </button>
+        </div>
+      </div>
+
+      <div class="filter-bar hidden" id="filter-bar" aria-live="polite"></div>
+
+      <div class="quick-filters">
+        <span class="quick-filters-lbl">Quick</span>
+        <div class="quick-filter-row" id="quick-filter-row">
+          <button type="button" class="quick-filter-chip" data-quick="duplicates">Duplicates</button>
+          <button type="button" class="quick-filter-chip" data-quick="today">Today</button>
+          <button type="button" class="quick-filter-chip" data-quick="week">Last 7 days</button>
+          <button type="button" class="quick-filter-chip" data-quick="multi">Multi-event</button>
+          <button type="button" class="quick-filter-chip" data-quick="senior">11th &amp; 12th</button>
+          <button type="button" class="quick-filter-chip" data-quick="online">Online</button>
+          <button type="button" class="quick-filter-chip" data-quick="hybrid">Hybrid</button>
+          <button type="button" class="quick-filter-chip" data-quick="missing-code">Missing code</button>
+          <button type="button" class="quick-filter-chip" data-quick="full-teams">Full teams (3+)</button>
+        </div>
+      </div>
+
+      <div class="toolbar-drawer" id="filters-drawer">
+        <div class="toolbar-tools filter-grid">
+          <div class="tool-group">
+            <span class="tool-lbl">Sort</span>
+            <select class="tool-select tool-select-wide" id="sort-select" aria-label="Sort results">
+              <option value="date-desc">Newest first</option>
+              <option value="date-asc">Oldest first</option>
+              <option value="school">School A-Z</option>
+              <option value="code">Code A-Z</option>
+              <option value="event">Event A-Z</option>
+              <option value="teacher">Teacher A-Z</option>
+              <option value="participants">Most participants</option>
+            </select>
+          </div>
+          <div class="tool-group">
+            <span class="tool-lbl">School code</span>
+            <select class="tool-select tool-select-wide" id="filter-school" aria-label="Filter by school code">
+              <option value="">All schools</option>
+            </select>
+          </div>
+          <div class="tool-group">
+            <span class="tool-lbl">Mode</span>
+            <div class="chip-row" id="filter-mode">
+              <button type="button" class="filter-chip active" data-mode="all">All</button>
+              <button type="button" class="filter-chip" data-mode="single">Single</button>
+              <button type="button" class="filter-chip" data-mode="multi">Multi</button>
+            </div>
+          </div>
+          <div class="tool-group">
+            <span class="tool-lbl">When</span>
+            <div class="chip-row" id="filter-date">
+              <button type="button" class="filter-chip active" data-date="all">All time</button>
+              <button type="button" class="filter-chip" data-date="today">Today</button>
+              <button type="button" class="filter-chip" data-date="week">7 days</button>
+              <button type="button" class="filter-chip" data-date="month">30 days</button>
+            </div>
+          </div>
+          <div class="tool-group">
+            <span class="tool-lbl">Team size</span>
+            <div class="chip-row" id="filter-size">
+              <button type="button" class="filter-chip active" data-size="0">Any</button>
+              <button type="button" class="filter-chip" data-size="2">2+ people</button>
+              <button type="button" class="filter-chip" data-size="3">3+ people</button>
+              <button type="button" class="filter-chip" data-size="4">4 people</button>
+            </div>
+          </div>
+          <div class="tool-group">
+            <span class="tool-lbl">Class</span>
+            <div class="chip-row" id="filter-grade">
+              <button type="button" class="filter-chip active" data-grade="all">All</button>
+              <button type="button" class="filter-chip" data-grade="9th">9th</button>
+              <button type="button" class="filter-chip" data-grade="10th">10th</button>
+              <button type="button" class="filter-chip" data-grade="11th">11th</button>
+              <button type="button" class="filter-chip" data-grade="12th">12th</button>
+              <button type="button" class="filter-chip" data-grade="senior">11th &amp; 12th</button>
+            </div>
+          </div>
+          <div class="tool-group">
+            <span class="tool-lbl">Event format</span>
+            <div class="chip-row" id="filter-format">
+              <button type="button" class="filter-chip active" data-format="all">All</button>
+              <button type="button" class="filter-chip" data-format="online">Online</button>
+              <button type="button" class="filter-chip" data-format="hybrid">Hybrid</button>
+            </div>
+          </div>
+          <div class="tool-group">
+            <span class="tool-lbl">Data quality</span>
+            <div class="chip-row" id="filter-issues">
+              <button type="button" class="filter-chip active" data-issues="all">All</button>
+              <button type="button" class="filter-chip" data-issues="missing-code">No code</button>
+              <button type="button" class="filter-chip" data-issues="missing-email">No email</button>
+              <button type="button" class="filter-chip" data-issues="missing-phone">No phone</button>
+            </div>
+          </div>
+          <div class="filter-actions">
+            <button type="button" class="tool-btn hidden" id="btn-reset-filters">Reset all</button>
+            <button type="button" class="tool-btn core-only" id="btn-expand-all">Expand all</button>
+            <button type="button" class="tool-btn core-only" id="btn-collapse-all">Collapse all</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="event-tabs-wrap">
+        <div class="event-tabs" id="event-tabs" role="tablist" aria-label="Event filter"></div>
+      </div>
+
+      <div class="view-modes-bar core-only">
+        <span class="view-modes-lbl">View as</span>
+        <div class="view-modes" id="view-modes" role="tablist" aria-label="Data view"></div>
+      </div>
+
+      <div class="toolbar-drawer core-only" id="explorer-drawer">
+        <div class="explorer-drawer-inner">
+          <div class="explorer-panel">
+            <div class="explorer-panel-head">
+              <span class="explorer-section-lbl">Quick presets</span>
+              <span class="explorer-panel-hint">One tap to switch view and columns.</span>
+            </div>
+            <div class="preset-groups" id="preset-row"></div>
+          </div>
+          <div class="explorer-panel" id="columns-panel">
+            <div class="explorer-panel-head">
+              <span class="explorer-section-lbl">Columns to show</span>
+              <span class="explorer-panel-hint" id="columns-hint">Pick which fields appear in sheet view.</span>
+            </div>
+            <div class="field-toggles" id="field-toggles"></div>
+            <div class="explorer-empty hidden" id="columns-empty">
+              Column picker is available for Schools, Teachers, Participants, and Counts views.
+            </div>
+            <div class="columns-actions hidden" id="columns-actions">
+              <button type="button" class="columns-action-btn" id="columns-all">Select all</button>
+              <button type="button" class="columns-action-btn" id="columns-none">Clear all</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="err" id="dash-err" role="alert"></div>
+    <div class="loading" id="loading"><span class="loading-dot"></span>Loading registrations…</div>
+
+    <div id="core-panel">
+      <div id="core-registrations-view">
+        <div id="core-reg-cards-wrap">
+          <div class="reg-list" id="reg-list"></div>
+        </div>
+        <div id="core-reg-sheet-view">
+          <div class="sheet-panel">
+            <div class="sheet-toolbar">
+              <span class="sheet-toolbar-lbl">Sheet view</span>
+              <div class="sheet-toolbar-actions">
+                <button type="button" class="sheet-copy-btn" data-copy-sheet>Copy</button>
+                <button type="button" class="sheet-expand-btn" aria-label="Enlarge sheet" title="Enlarge sheet">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="excel-sheet-wrap">
+              <table class="excel-sheet">
+                <thead id="core-reg-sheet-head"></thead>
+                <tbody id="core-reg-sheet-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="core-table-view">
+        <div class="sheet-panel">
+          <div class="sheet-toolbar">
+            <span class="sheet-toolbar-lbl">Sheet view</span>
+            <div class="sheet-toolbar-actions">
+              <button type="button" class="sheet-copy-btn" data-copy-sheet>Copy</button>
+              <button type="button" class="sheet-expand-btn" aria-label="Enlarge sheet" title="Enlarge sheet">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="explorer-table-wrap">
+            <table class="explorer-table">
+              <thead id="explorer-head"></thead>
+              <tbody id="explorer-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="empty" id="empty" style="display:none;">
+        <span class="empty-title" id="empty-title">No matches</span>
+        <span id="empty-hint">Try a different search, event, or column selection.</span>
+      </div>
+    </div>
+
+    <div id="team-panel">
+      <div id="team-cards-view">
+        <div class="team-list" id="team-list"></div>
+      </div>
+      <div id="team-sheet-view">
+        <div class="sheet-panel">
+          <div class="sheet-toolbar">
+            <span class="sheet-toolbar-lbl">Sheet view</span>
+            <div class="sheet-toolbar-actions">
+              <button type="button" class="sheet-copy-btn" data-copy-sheet>Copy</button>
+              <button type="button" class="sheet-expand-btn" aria-label="Enlarge sheet" title="Enlarge sheet">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="excel-sheet-wrap">
+            <table class="excel-sheet">
+              <thead id="team-sheet-head"></thead>
+              <tbody id="team-sheet-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="empty" id="team-empty" style="display:none;">
+        <span class="empty-title">No entries yet</span>
+        Registrations for this event will appear here.
+      </div>
+    </div>
+
+    <div id="invite-panel">
+      <div class="sheet-panel">
+        <div class="sheet-toolbar">
+          <span class="sheet-toolbar-lbl">School invite requests</span>
+          <div class="sheet-toolbar-actions">
+            <button type="button" class="sheet-copy-btn" id="btn-export-invites">Export CSV</button>
+          </div>
+        </div>
+        <div class="excel-sheet-wrap">
+          <table class="excel-sheet">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>School email</th>
+                <th>Submitted</th>
+              </tr>
+            </thead>
+            <tbody id="invite-list"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="empty hidden" id="invite-empty">
+        <span class="empty-title">No invite requests yet</span>
+        Requests from the landing page will appear here.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<div id="edit-backdrop" class="edit-backdrop" aria-hidden="true">
+  <div class="edit-box" role="dialog" aria-modal="true" aria-labelledby="edit-title">
+    <div class="edit-top">
+      <div>
+        <div class="edit-title" id="edit-title">Edit registration</div>
+        <div class="edit-sub" id="edit-sub"></div>
+      </div>
+      <button type="button" class="sheet-lightbox-close" id="edit-close" aria-label="Close">✕</button>
+    </div>
+    <div class="edit-form-wrap">
+      <form id="edit-form">
+        <input type="hidden" id="edit-event-reg-id">
+        <div class="edit-grid">
+          <div class="field span-2">
+            <label class="field-lbl" for="edit-school">School</label>
+            <input class="field-input" type="text" id="edit-school" required>
+          </div>
+          <div class="field">
+            <label class="field-lbl" for="edit-teacher-name">Teacher name</label>
+            <input class="field-input" type="text" id="edit-teacher-name" required>
+          </div>
+          <div class="field">
+            <label class="field-lbl" for="edit-teacher-phone">Teacher phone</label>
+            <input class="field-input" type="tel" id="edit-teacher-phone" required>
+          </div>
+          <div class="field span-2">
+            <label class="field-lbl" for="edit-teacher-email">Teacher email</label>
+            <input class="field-input" type="email" id="edit-teacher-email" required>
+          </div>
+        </div>
+        <div class="edit-section-lbl">Participants</div>
+        <div id="edit-participants"></div>
+        <div class="edit-actions">
+          <button type="button" class="btn-s" id="edit-cancel">Cancel</button>
+          <button type="submit" class="btn-p" id="edit-save">Save changes</button>
+        </div>
+        <div class="err" id="edit-err" role="alert"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="shortcuts-backdrop" class="shortcuts-backdrop" aria-hidden="true">
+  <div class="shortcuts-box" role="dialog" aria-label="Keyboard shortcuts">
+    <div class="shortcuts-top">
+      <span>Keyboard shortcuts</span>
+      <button type="button" class="sheet-lightbox-close" id="shortcuts-close" aria-label="Close">✕</button>
+    </div>
+    <div class="shortcuts-list">
+      <div class="shortcut-row"><span>Focus search</span><kbd>/</kbd></div>
+      <div class="shortcut-row"><span>Refresh data</span><kbd>R</kbd></div>
+      <div class="shortcut-row"><span>Toggle Cards / Sheet</span><kbd>S</kbd></div>
+      <div class="shortcut-row"><span>Toggle filters panel</span><kbd>F</kbd></div>
+      <div class="shortcut-row"><span>Reset filters</span><kbd>Esc</kbd></div>
+      <div class="shortcut-row"><span>Show this help</span><kbd>?</kbd></div>
+    </div>
+  </div>
+</div>
+
+<div id="sheet-lightbox" class="sheet-lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Enlarged sheet view">
+  <div class="sheet-lightbox-box">
+    <div class="sheet-lightbox-top">
+      <span class="sheet-lightbox-title">Sheet view</span>
+      <button type="button" class="sheet-lightbox-close" id="sheet-lightbox-close" aria-label="Close enlarged sheet">✕</button>
+    </div>
+    <div class="excel-sheet-wrap sheet-lightbox-wrap">
+      <table class="excel-sheet" id="sheet-lightbox-table">
+        <thead id="sheet-lightbox-head"></thead>
+        <tbody id="sheet-lightbox-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://stjjvgnewkswzwmmzyoh.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0amp2Z25ld2tzd3p3bW16eW9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NTM2NDgsImV4cCI6MjEwMzMyOTY0OH0.l_vf_ovBAbMP_iIn_easi8ztLkC13SJr-JxuWtdM9ng';
+const ADMIN_ENDPOINT = `${SUPABASE_URL}/functions/v1/admin-list`;
+const ADMIN_MUTATE_ENDPOINT = `${SUPABASE_URL}/functions/v1/admin-mutate`;
+const SESSION_KEY = 'cyfernode_admin_session';
+
+const EVENTS = [
+  { id: 'fontastic', name: 'Fontastic' },
+  { id: 'blendered', name: 'Blendered' },
+  { id: 'unscripted', name: 'Unscripted' },
+  { id: 'clue-less', name: 'Clue-Less' },
+  { id: 'runtime-terror', name: 'Runtime Terror' },
+  { id: 'buildout', name: 'Buildout' },
+  { id: 'breadboard', name: 'Breadboard' },
+  { id: 'wireframe', name: 'Wireframe' },
+  { id: 'entrepreneur-exe', name: 'Entreprenuer.exe' },
+  { id: 'unbranded', name: 'Unbranded' },
+];
+
+const EVENT_MAX = {
+  'fontastic': 2,
+  'blendered': 2,
+  'unscripted': 4,
+  'clue-less': 2,
+  'runtime-terror': 2,
+  'buildout': 4,
+  'breadboard': 2,
+  'wireframe': 2,
+  'entrepreneur-exe': 2,
+  'unbranded': 3,
+};
+
+const GRADES = ['9th', '10th', '11th', '12th'];
+
+let allRegs = [];
+let allInvites = [];
+let dashTab = 'registrations';
+let adminSession = { role: 'core', password: '' };
+let selectedEventId = EVENTS[0].id;
+let coreEventFilter = 'all';
+let coreViewMode = 'registrations';
+let displayLayout = 'sheet';
+let coreFields = {
+  schoolCode: true,
+  schoolName: true,
+  event: true,
+  entries: true,
+  participants: true,
+  teacherName: true,
+  teacherPhone: true,
+  teacherEmail: true,
+  pName: true,
+  pEmail: true,
+  pPhone: true,
+  pGrade: true,
+};
+let sortBy = 'date-desc';
+let filterMode = 'all';
+let filterDate = 'all';
+let filterMinParts = 0;
+let filterExactParts = 0;
+let filterGrade = 'all';
+let filterEventFormat = 'all';
+let filterSchoolCode = '';
+let filterIssues = 'all';
+let filterDuplicatesOnly = false;
+let lastRefreshedAt = null;
+let toastTimer = null;
+
+const FILTER_PREFS_KEY = 'cyfernode_admin_filters';
+
+const VIEW_MODES = [
+  { id: 'registrations', label: 'Registrations' },
+  { id: 'schools', label: 'Schools' },
+  { id: 'teachers', label: 'Teachers' },
+  { id: 'participants', label: 'Participants' },
+  { id: 'summary', label: 'Counts' },
+];
+
+const FIELD_LABELS = {
+  schoolCode: 'School code',
+  schoolName: 'School',
+  event: 'Event',
+  entries: 'Entries',
+  participants: 'Participants',
+  teacherName: 'Teacher',
+  teacherPhone: 'Phone',
+  teacherEmail: 'Email',
+  pName: 'Name',
+  pEmail: 'Email',
+  pPhone: 'Phone',
+  pGrade: 'Grade',
+};
+
+const FIELDS_BY_MODE = {
+  registrations: [],
+  schools: ['schoolCode', 'schoolName', 'event', 'entries', 'participants'],
+  teachers: ['schoolCode', 'schoolName', 'event', 'teacherName', 'teacherPhone', 'teacherEmail'],
+  participants: ['schoolCode', 'schoolName', 'event', 'teacherName', 'pName', 'pEmail', 'pPhone', 'pGrade'],
+  summary: ['event', 'schoolCode', 'schoolName', 'participants'],
+};
+
+const CORE_PRESETS = [
+  { id: 'full', label: 'Full cards', group: 'Overview', mode: 'registrations' },
+  { id: 'counts', label: 'Participant counts', group: 'Overview', mode: 'summary', fields: { event: true, schoolCode: true, schoolName: true, participants: true } },
+  { id: 'schools', label: 'Schools overview', group: 'Overview', mode: 'schools', fields: { schoolCode: true, schoolName: true, event: true, entries: true, participants: true } },
+  { id: 'teachers-all', label: 'Full contact', group: 'Teachers', mode: 'teachers', fields: { schoolCode: true, schoolName: true, event: true, teacherName: true, teacherPhone: true, teacherEmail: true } },
+  { id: 'teachers-phone', label: 'Phone list', group: 'Teachers', mode: 'teachers', fields: { teacherName: true, teacherPhone: true, schoolName: true, schoolCode: true } },
+  { id: 'teachers-email', label: 'Email list', group: 'Teachers', mode: 'teachers', fields: { teacherName: true, teacherEmail: true, schoolName: true } },
+  { id: 'p-names', label: 'Names and class', group: 'Participants', mode: 'participants', fields: { pName: true, pGrade: true, schoolCode: true, event: true } },
+  { id: 'p-email', label: 'Email list', group: 'Participants', mode: 'participants', fields: { pName: true, pEmail: true, schoolCode: true, schoolName: true } },
+  { id: 'p-phone', label: 'Phone list', group: 'Participants', mode: 'participants', fields: { pName: true, pPhone: true, schoolCode: true, schoolName: true } },
+  { id: 'p-full', label: 'Full details', group: 'Participants', mode: 'participants', fields: { pName: true, pEmail: true, pPhone: true, pGrade: true, schoolCode: true, schoolName: true, event: true, teacherName: true } },
+];
+
+const PRESET_GROUPS = ['Overview', 'Teachers', 'Participants'];
+
+let activePresetId = null;
+
+function defaultFieldsForMode(mode) {
+  const keys = FIELDS_BY_MODE[mode] || [];
+  const next = { ...coreFields };
+  Object.keys(FIELD_LABELS).forEach(k => { next[k] = false; });
+  keys.forEach(k => { next[k] = true; });
+  return next;
+}
+
+function initCoreExplorer() {
+  const modesEl = document.getElementById('view-modes');
+  modesEl.innerHTML = VIEW_MODES.map(m => `
+    <button type="button" class="view-mode${coreViewMode === m.id ? ' active' : ''}" data-mode="${m.id}">${m.label}</button>
+  `).join('');
+  modesEl.querySelectorAll('.view-mode').forEach(btn => {
+    btn.addEventListener('click', () => {
+      coreViewMode = btn.dataset.mode;
+      coreFields = defaultFieldsForMode(coreViewMode);
+      activePresetId = null;
+      initCoreExplorer();
+      applyFilter();
+    });
+  });
+
+  const presetsEl = document.getElementById('preset-row');
+  presetsEl.innerHTML = PRESET_GROUPS.map(group => {
+    const items = CORE_PRESETS.filter(p => p.group === group);
+    return `
+      <div class="preset-group">
+        <div class="preset-group-lbl">${esc(group)}</div>
+        <div class="preset-row">
+          ${items.map(p => `
+            <button type="button" class="preset-btn${activePresetId === p.id ? ' active' : ''}" data-preset="${p.id}">${esc(p.label)}</button>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }).join('');
+  presetsEl.querySelectorAll('.preset-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const preset = CORE_PRESETS.find(p => p.id === btn.dataset.preset);
+      if (!preset) return;
+      activePresetId = preset.id;
+      coreViewMode = preset.mode;
+      coreFields = preset.fields ? { ...defaultFieldsForMode(preset.mode), ...preset.fields } : defaultFieldsForMode(preset.mode);
+      initCoreExplorer();
+      applyFilter();
+    });
+  });
+
+  renderFieldToggles();
+}
+
+function renderFieldToggles() {
+  const wrap = document.getElementById('field-toggles');
+  const empty = document.getElementById('columns-empty');
+  const actions = document.getElementById('columns-actions');
+  const hint = document.getElementById('columns-hint');
+  const keys = FIELDS_BY_MODE[coreViewMode] || [];
+
+  if (!keys.length) {
+    wrap.classList.add('hidden');
+    wrap.innerHTML = '';
+    empty?.classList.remove('hidden');
+    actions?.classList.add('hidden');
+    if (hint) hint.textContent = 'Not used in Registrations view.';
+    return;
+  }
+
+  empty?.classList.add('hidden');
+  actions?.classList.remove('hidden');
+  wrap.classList.remove('hidden');
+  if (hint) hint.textContent = `${keys.length} columns available for ${VIEW_MODES.find(m => m.id === coreViewMode)?.label || 'this view'}.`;
+
+  wrap.innerHTML = keys.map(key => `
+    <label class="field-toggle">
+      <input type="checkbox" data-field="${key}"${coreFields[key] ? ' checked' : ''}>
+      ${FIELD_LABELS[key]}
+    </label>
+  `).join('');
+  wrap.querySelectorAll('input[data-field]').forEach(input => {
+    input.addEventListener('change', () => {
+      coreFields[input.dataset.field] = input.checked;
+      activePresetId = null;
+      renderFieldToggles();
+      applyFilter();
+    });
+  });
+}
+
+function initColumnActions() {
+  document.getElementById('columns-all')?.addEventListener('click', () => {
+    const keys = FIELDS_BY_MODE[coreViewMode] || [];
+    keys.forEach(k => { coreFields[k] = true; });
+    activePresetId = null;
+    renderFieldToggles();
+    applyFilter();
+  });
+  document.getElementById('columns-none')?.addEventListener('click', () => {
+    const keys = FIELDS_BY_MODE[coreViewMode] || [];
+    keys.forEach(k => { coreFields[k] = false; });
+    activePresetId = null;
+    renderFieldToggles();
+    applyFilter();
+  });
+}
+
+function coreFlatRows() {
+  const rows = [];
+  allRegs.forEach(reg => {
+    (reg.event_registrations || []).forEach(ev => {
+      if (coreEventFilter === 'all' || ev.event_id === coreEventFilter) {
+        rows.push({ reg, ev });
+      }
+    });
+  });
+  return rows;
+}
+
+function coreRowSearchText(row) {
+  return teamRowSearchText(row);
+}
+
+function participantSearchText(row, p) {
+  const { ev } = row;
+  return [ev.school_code, ev.school_name, ev.event_name, ev.teacher_name, p.name, p.email, p.phone, p.grade].join(' ').toLowerCase();
+}
+
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+async function copyToClipboard(text) {
+  const value = String(text ?? '').trim();
+  if (!value) return false;
+  try {
+    await navigator.clipboard.writeText(value);
+    return true;
+  } catch {
+    const ta = document.createElement('textarea');
+    ta.value = value;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    return ok;
+  }
+}
+
+function copyBtn(text, label = 'Copy') {
+  if (!text || text === '-') return '';
+  return `<button type="button" class="copy-btn" data-copy="${esc(text)}" title="${label}" aria-label="${label}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>`;
+}
+
+function duplicateKeysForRows(rows) {
+  const counts = new Map();
+  rows.forEach(({ ev }) => {
+    const key = `${ev.event_id}::${ev.school_code || ev.school_name}`;
+    counts.set(key, (counts.get(key) || 0) + 1);
+  });
+  return new Set([...counts.entries()].filter(([, n]) => n > 1).map(([k]) => k));
+}
+
+function rowDupKey(row) {
+  return `${row.ev.event_id}::${row.ev.school_code || row.ev.school_name}`;
+}
+
+function regSubmittedMs(reg) {
+  return new Date(reg.submitted_at || 0).getTime();
+}
+
+function passesDateFilter(reg) {
+  if (filterDate === 'all') return true;
+  const ms = regSubmittedMs(reg);
+  if (!ms) return false;
+  const age = Date.now() - ms;
+  const limits = { today: 86400000, week: 7 * 86400000, month: 30 * 86400000 };
+  return age <= (limits[filterDate] || Infinity);
+}
+
+function passesModeFilter(reg) {
+  if (filterMode === 'all') return true;
+  return String(reg.mode || '').toLowerCase() === filterMode;
+}
+
+function allFlatRows() {
+  const rows = [];
+  allRegs.forEach(reg => {
+    (reg.event_registrations || []).forEach(ev => rows.push({ reg, ev }));
+  });
+  return rows;
+}
+
+function globalDuplicateKeys() {
+  return duplicateKeysForRows(allFlatRows());
+}
+
+function passesGradeFilter(ev) {
+  if (filterGrade === 'all') return true;
+  const grades = (ev.participants || []).map(p => String(p.grade || '').toLowerCase());
+  if (filterGrade === 'senior') return grades.some(g => g === '11th' || g === '12th');
+  return grades.some(g => g === filterGrade);
+}
+
+function passesEventFormatFilter(ev) {
+  if (filterEventFormat === 'all') return true;
+  const mode = String(ev.event_mode || '').toLowerCase();
+  if (filterEventFormat === 'online') return mode.includes('online');
+  if (filterEventFormat === 'hybrid') return mode.includes('hybrid');
+  return true;
+}
+
+function passesSchoolCodeFilter(ev) {
+  if (!filterSchoolCode) return true;
+  return String(ev.school_code || '') === filterSchoolCode;
+}
+
+function passesIssuesFilter(ev) {
+  if (filterIssues === 'all') return true;
+  if (filterIssues === 'missing-code') {
+    return !ev.school_code || ev.school_code === '-';
+  }
+  if (filterIssues === 'missing-email') {
+    const teacherMissing = !String(ev.teacher_email || '').trim();
+    const participantMissing = (ev.participants || []).some(p => !String(p.email || '').trim());
+    return teacherMissing || participantMissing;
+  }
+  if (filterIssues === 'missing-phone') {
+    const teacherMissing = !String(ev.teacher_phone || '').trim();
+    const participantMissing = (ev.participants || []).some(p => !String(p.phone || '').trim());
+    return teacherMissing || participantMissing;
+  }
+  return true;
+}
+
+function rowPassesFilters(row, dupKeys) {
+  if (!passesModeFilter(row.reg) || !passesDateFilter(row.reg)) return false;
+  if (!passesSizeFilter(row.ev)) return false;
+  if (!passesGradeFilter(row.ev)) return false;
+  if (!passesEventFormatFilter(row.ev)) return false;
+  if (!passesSchoolCodeFilter(row.ev)) return false;
+  if (!passesIssuesFilter(row.ev)) return false;
+  if (filterDuplicatesOnly && !dupKeys.has(rowDupKey(row))) return false;
+  return true;
+}
+
+function applyRowFilters(rows) {
+  const dupKeys = globalDuplicateKeys();
+  return rows.filter(row => rowPassesFilters(row, dupKeys));
+}
+
+function passesSizeFilter(ev) {
+  const count = (ev.participants || []).length;
+  if (filterExactParts) return count === filterExactParts;
+  if (!filterMinParts) return true;
+  return count >= filterMinParts;
+}
+
+function sortFlatRows(rows) {
+  const sorted = [...rows];
+  sorted.sort((a, b) => {
+    switch (sortBy) {
+      case 'date-asc':
+        return regSubmittedMs(a.reg) - regSubmittedMs(b.reg);
+      case 'school':
+        return (a.ev.school_name || '').localeCompare(b.ev.school_name || '', undefined, { sensitivity: 'base' });
+      case 'code':
+        return (a.ev.school_code || '').localeCompare(b.ev.school_code || '', undefined, { sensitivity: 'base' });
+      case 'event':
+        return (a.ev.event_name || '').localeCompare(b.ev.event_name || '', undefined, { sensitivity: 'base' })
+          || regSubmittedMs(b.reg) - regSubmittedMs(a.reg);
+      case 'teacher':
+        return (a.ev.teacher_name || '').localeCompare(b.ev.teacher_name || '', undefined, { sensitivity: 'base' })
+          || regSubmittedMs(b.reg) - regSubmittedMs(a.reg);
+      case 'participants':
+        return (b.ev.participants?.length || 0) - (a.ev.participants?.length || 0)
+          || regSubmittedMs(b.reg) - regSubmittedMs(a.reg);
+      case 'date-desc':
+      default:
+        return regSubmittedMs(b.reg) - regSubmittedMs(a.reg);
+    }
+  });
+  return sorted;
+}
+
+function sortRegistrations(regs) {
+  const sorted = [...regs];
+  sorted.sort((a, b) => {
+    if (sortBy === 'school') {
+      const sa = (a.event_registrations?.[0]?.school_name) || '';
+      const sb = (b.event_registrations?.[0]?.school_name) || '';
+      return sa.localeCompare(sb, undefined, { sensitivity: 'base' });
+    }
+    if (sortBy === 'code') {
+      const ca = schoolCodesForReg(a);
+      const cb = schoolCodesForReg(b);
+      return ca.localeCompare(cb, undefined, { sensitivity: 'base' });
+    }
+    if (sortBy === 'participants') {
+      const pa = (a.event_registrations || []).reduce((n, ev) => n + (ev.participants?.length || 0), 0);
+      const pb = (b.event_registrations || []).reduce((n, ev) => n + (ev.participants?.length || 0), 0);
+      return pb - pa || regSubmittedMs(b) - regSubmittedMs(a);
+    }
+    if (sortBy === 'event') {
+      const ea = (a.event_registrations?.[0]?.event_name) || '';
+      const eb = (b.event_registrations?.[0]?.event_name) || '';
+      return ea.localeCompare(eb, undefined, { sensitivity: 'base' }) || regSubmittedMs(b) - regSubmittedMs(a);
+    }
+    if (sortBy === 'teacher') {
+      const ta = (a.event_registrations?.[0]?.teacher_name) || '';
+      const tb = (b.event_registrations?.[0]?.teacher_name) || '';
+      return ta.localeCompare(tb, undefined, { sensitivity: 'base' }) || regSubmittedMs(b) - regSubmittedMs(a);
+    }
+    if (sortBy === 'date-asc') return regSubmittedMs(a) - regSubmittedMs(b);
+    return regSubmittedMs(b) - regSubmittedMs(a);
+  });
+  return sorted;
+}
+
+function applyRegFilters(regs) {
+  const dupKeys = globalDuplicateKeys();
+  return regs.map(reg => {
+    const events = (reg.event_registrations || []).filter(ev => rowPassesFilters({ reg, ev }, dupKeys));
+    if (!events.length) return null;
+    return { ...reg, event_registrations: events };
+  }).filter(Boolean);
+}
+
+function getTeamDisplayRows() {
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  let rows = teamRowsForEvent(selectedEventId);
+  if (q) rows = rows.filter(r => teamRowSearchText(r).includes(q));
+  rows = applyRowFilters(rows);
+  return sortFlatRows(rows);
+}
+
+function hasActiveAdvancedFilters() {
+  return filterMode !== 'all'
+    || filterDate !== 'all'
+    || filterMinParts > 0
+    || filterExactParts > 0
+    || filterGrade !== 'all'
+    || filterEventFormat !== 'all'
+    || filterSchoolCode !== ''
+    || filterIssues !== 'all'
+    || filterDuplicatesOnly
+    || coreEventFilter !== 'all'
+    || document.getElementById('search').value.trim() !== '';
+}
+
+function countActiveFilters() {
+  let n = 0;
+  if (filterMode !== 'all') n += 1;
+  if (filterDate !== 'all') n += 1;
+  if (filterMinParts > 0 || filterExactParts > 0) n += 1;
+  if (filterGrade !== 'all') n += 1;
+  if (filterEventFormat !== 'all') n += 1;
+  if (filterSchoolCode) n += 1;
+  if (filterIssues !== 'all') n += 1;
+  if (filterDuplicatesOnly) n += 1;
+  if (coreEventFilter !== 'all' && adminSession.role === 'core') n += 1;
+  if (document.getElementById('search')?.value.trim()) n += 1;
+  return n;
+}
+
+function updateResetFiltersBtn() {
+  const active = hasActiveAdvancedFilters();
+  document.getElementById('btn-reset-filters')?.classList.toggle('hidden', !active);
+  const badge = document.getElementById('filter-badge');
+  if (badge) {
+    const count = countActiveFilters();
+    badge.textContent = String(count);
+    badge.classList.toggle('hidden', count === 0);
+  }
+  renderActiveFilterBar();
+  syncQuickFilterChips();
+}
+
+function resetAdvancedFilters() {
+  filterMode = 'all';
+  filterDate = 'all';
+  filterMinParts = 0;
+  filterExactParts = 0;
+  filterGrade = 'all';
+  filterEventFormat = 'all';
+  filterSchoolCode = '';
+  filterIssues = 'all';
+  filterDuplicatesOnly = false;
+  if (adminSession.role === 'core') coreEventFilter = 'all';
+  document.getElementById('search').value = '';
+  syncFilterChips();
+  renderEventTabs();
+  updateResetFiltersBtn();
+  applyFilter();
+}
+
+function saveFilterPrefs() {
+  try {
+    sessionStorage.setItem(FILTER_PREFS_KEY, JSON.stringify({
+      sortBy,
+      filterMode,
+      filterDate,
+      filterMinParts,
+      filterExactParts,
+      filterGrade,
+      filterEventFormat,
+      filterSchoolCode,
+      filterIssues,
+      filterDuplicatesOnly,
+    }));
+  } catch { /* ignore */ }
+}
+
+function loadFilterPrefs() {
+  try {
+    const raw = sessionStorage.getItem(FILTER_PREFS_KEY);
+    if (!raw) return;
+    const p = JSON.parse(raw);
+    if (p.sortBy) sortBy = p.sortBy;
+    if (p.filterMode) filterMode = p.filterMode;
+    if (p.filterDate) filterDate = p.filterDate;
+    if (typeof p.filterMinParts === 'number') filterMinParts = p.filterMinParts;
+    if (typeof p.filterExactParts === 'number') filterExactParts = p.filterExactParts;
+    if (p.filterGrade) filterGrade = p.filterGrade;
+    if (p.filterEventFormat) filterEventFormat = p.filterEventFormat;
+    if (typeof p.filterSchoolCode === 'string') filterSchoolCode = p.filterSchoolCode;
+    if (p.filterIssues) filterIssues = p.filterIssues;
+    if (typeof p.filterDuplicatesOnly === 'boolean') filterDuplicatesOnly = p.filterDuplicatesOnly;
+  } catch { /* ignore */ }
+}
+
+function syncFilterChips() {
+  document.getElementById('sort-select').value = sortBy;
+  const schoolSelect = document.getElementById('filter-school');
+  if (schoolSelect) schoolSelect.value = filterSchoolCode;
+  document.querySelectorAll('#filter-mode .filter-chip').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.mode === filterMode);
+  });
+  document.querySelectorAll('#filter-date .filter-chip').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.date === filterDate);
+  });
+  document.querySelectorAll('#filter-size .filter-chip').forEach(btn => {
+    const size = Number(btn.dataset.size);
+    const active = size === 4
+      ? filterExactParts === 4 && !filterMinParts
+      : size === 0
+        ? !filterMinParts && !filterExactParts
+        : filterMinParts === size && !filterExactParts;
+    btn.classList.toggle('active', active);
+  });
+  document.querySelectorAll('#filter-grade .filter-chip').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.grade === filterGrade);
+  });
+  document.querySelectorAll('#filter-format .filter-chip').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.format === filterEventFormat);
+  });
+  document.querySelectorAll('#filter-issues .filter-chip').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.issues === filterIssues);
+  });
+}
+
+function syncQuickFilterChips() {
+  document.querySelectorAll('.quick-filter-chip').forEach(btn => {
+    const id = btn.dataset.quick;
+    btn.classList.toggle('active', isQuickFilterActive(id));
+  });
+}
+
+function isQuickFilterActive(id) {
+  switch (id) {
+    case 'duplicates': return filterDuplicatesOnly;
+    case 'today': return filterDate === 'today';
+    case 'week': return filterDate === 'week';
+    case 'multi': return filterMode === 'multi';
+    case 'senior': return filterGrade === 'senior';
+    case 'online': return filterEventFormat === 'online';
+    case 'hybrid': return filterEventFormat === 'hybrid';
+    case 'missing-code': return filterIssues === 'missing-code';
+    case 'full-teams': return filterMinParts === 3 && !filterExactParts;
+    default: return false;
+  }
+}
+
+function toggleQuickFilter(id) {
+  switch (id) {
+    case 'duplicates':
+      filterDuplicatesOnly = !filterDuplicatesOnly;
+      break;
+    case 'today':
+      filterDate = filterDate === 'today' ? 'all' : 'today';
+      break;
+    case 'week':
+      filterDate = filterDate === 'week' ? 'all' : 'week';
+      break;
+    case 'multi':
+      filterMode = filterMode === 'multi' ? 'all' : 'multi';
+      break;
+    case 'senior':
+      filterGrade = filterGrade === 'senior' ? 'all' : 'senior';
+      break;
+    case 'online':
+      filterEventFormat = filterEventFormat === 'online' ? 'all' : 'online';
+      break;
+    case 'hybrid':
+      filterEventFormat = filterEventFormat === 'hybrid' ? 'all' : 'hybrid';
+      break;
+    case 'missing-code':
+      filterIssues = filterIssues === 'missing-code' ? 'all' : 'missing-code';
+      break;
+    case 'full-teams':
+      if (filterMinParts === 3 && !filterExactParts) {
+        filterMinParts = 0;
+      } else {
+        filterMinParts = 3;
+        filterExactParts = 0;
+      }
+      break;
+    default:
+      return;
+  }
+  syncFilterChips();
+  saveFilterPrefs();
+  updateResetFiltersBtn();
+  applyFilter();
+}
+
+function renderSchoolFilterOptions() {
+  const select = document.getElementById('filter-school');
+  if (!select) return;
+
+  const schools = new Map();
+  allFlatRows().forEach(({ ev }) => {
+    const code = ev.school_code;
+    if (!code || code === '-') return;
+    if (!schools.has(code)) schools.set(code, ev.school_name || code);
+  });
+
+  const sorted = [...schools.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+  select.innerHTML = `<option value="">All schools</option>${sorted.map(([code, name]) =>
+    `<option value="${esc(code)}">${esc(code)} · ${esc(name)}</option>`,
+  ).join('')}`;
+  select.value = filterSchoolCode;
+}
+
+function renderActiveFilterBar() {
+  const bar = document.getElementById('filter-bar');
+  if (!bar) return;
+
+  const tags = [];
+
+  const q = document.getElementById('search')?.value.trim();
+  if (q) tags.push({ label: `Search: ${q}`, clear: 'search' });
+
+  if (filterMode !== 'all') tags.push({ label: `Mode: ${filterMode}`, clear: 'mode' });
+  if (filterDate !== 'all') {
+    const dateLabels = { today: 'Today', week: '7 days', month: '30 days' };
+    tags.push({ label: dateLabels[filterDate] || filterDate, clear: 'date' });
+  }
+  if (filterExactParts === 4) tags.push({ label: '4 participants', clear: 'size' });
+  else if (filterMinParts > 0) tags.push({ label: `${filterMinParts}+ people`, clear: 'size' });
+  if (filterGrade !== 'all') tags.push({ label: filterGrade === 'senior' ? '11th & 12th' : filterGrade, clear: 'grade' });
+  if (filterEventFormat !== 'all') tags.push({ label: filterEventFormat, clear: 'format' });
+  if (filterSchoolCode) tags.push({ label: filterSchoolCode, clear: 'school' });
+  if (filterIssues !== 'all') tags.push({ label: filterIssues.replace('-', ' '), clear: 'issues' });
+  if (filterDuplicatesOnly) tags.push({ label: 'Duplicates', clear: 'duplicates' });
+  if (adminSession.role === 'core' && coreEventFilter !== 'all') {
+    const ev = EVENTS.find(e => e.id === coreEventFilter);
+    tags.push({ label: ev?.name || coreEventFilter, clear: 'event' });
+  }
+
+  if (!tags.length) {
+    bar.classList.add('hidden');
+    bar.innerHTML = '';
+    return;
+  }
+
+  bar.classList.remove('hidden');
+  bar.innerHTML = `
+    <span class="filter-bar-lbl">Active</span>
+    ${tags.map(tag => `
+      <span class="filter-tag">
+        ${esc(tag.label)}
+        <button type="button" class="filter-tag-clear" data-clear="${esc(tag.clear)}" aria-label="Remove filter">×</button>
+      </span>
+    `).join('')}
+    <button type="button" class="filter-bar-clear" id="filter-bar-clear-all">Clear all</button>
+  `;
+
+  bar.querySelectorAll('[data-clear]').forEach(btn => {
+    btn.addEventListener('click', () => clearFilterTag(btn.dataset.clear));
+  });
+  bar.querySelector('#filter-bar-clear-all')?.addEventListener('click', resetAdvancedFilters);
+}
+
+function clearFilterTag(key) {
+  switch (key) {
+    case 'search':
+      document.getElementById('search').value = '';
+      break;
+    case 'mode':
+      filterMode = 'all';
+      break;
+    case 'date':
+      filterDate = 'all';
+      break;
+    case 'size':
+      filterMinParts = 0;
+      filterExactParts = 0;
+      break;
+    case 'grade':
+      filterGrade = 'all';
+      break;
+    case 'format':
+      filterEventFormat = 'all';
+      break;
+    case 'school':
+      filterSchoolCode = '';
+      break;
+    case 'issues':
+      filterIssues = 'all';
+      break;
+    case 'duplicates':
+      filterDuplicatesOnly = false;
+      break;
+    case 'event':
+      coreEventFilter = 'all';
+      renderEventTabs();
+      break;
+    default:
+      break;
+  }
+  syncFilterChips();
+  saveFilterPrefs();
+  updateResetFiltersBtn();
+  applyFilter();
+}
+
+function updateLastSync() {
+  const el = document.getElementById('last-sync');
+  if (!el) return;
+  el.textContent = lastRefreshedAt
+    ? `Updated ${fmtDate(lastRefreshedAt)}`
+    : '';
+}
+
+function expandAllCards() {
+  document.querySelectorAll('#reg-list .reg-card').forEach(card => card.classList.add('open'));
+}
+
+function collapseAllCards() {
+  document.querySelectorAll('#reg-list .reg-card').forEach(card => card.classList.remove('open'));
+}
+
+function tableToTsv(table) {
+  if (!table) return '';
+  const lines = [];
+  table.querySelectorAll('tr').forEach(tr => {
+    const cells = [...tr.children].map(cell => String(cell.textContent || '').replace(/\t/g, ' ').trim());
+    lines.push(cells.join('\t'));
+  });
+  return lines.join('\n');
+}
+
+async function copyActiveSheet() {
+  const table = getActiveSheetTable();
+  if (!table) {
+    showToast('Switch to Sheet view first');
+    return;
+  }
+  const ok = await copyToClipboard(tableToTsv(table));
+  showToast(ok ? 'Sheet copied - paste into Excel' : 'Could not copy');
+}
+
+function getExportPayload() {
+  if (adminSession.role === 'team') {
+    return getTeamDisplayRows().map(({ reg, ev }) => ({
+      schoolCode: ev.school_code,
+      submittedAt: reg.submitted_at,
+      mode: reg.mode,
+      event: ev.event_name,
+      school: ev.school_name,
+      teacher: ev.teacher_name,
+      teacherPhone: ev.teacher_phone,
+      teacherEmail: ev.teacher_email,
+      participants: ev.participants || [],
+    }));
+  }
+  if (adminSession.role === 'core' && coreViewMode === 'registrations') {
+    return filterCoreRegistrations().map(reg => ({
+      registrationId: reg.registration_id,
+      submittedAt: reg.submitted_at,
+      mode: reg.mode,
+      events: (reg.event_registrations || []).map(ev => ({
+        event: ev.event_name,
+        schoolCode: ev.school_code,
+        school: ev.school_name,
+        teacher: ev.teacher_name,
+        teacherPhone: ev.teacher_phone,
+        teacherEmail: ev.teacher_email,
+        participants: ev.participants || [],
+      })),
+    }));
+  }
+  return filteredCoreFlatRows().map(({ reg, ev }) => ({
+    submittedAt: reg.submitted_at,
+    mode: reg.mode,
+    event: ev.event_name,
+    schoolCode: ev.school_code,
+    school: ev.school_name,
+    teacher: ev.teacher_name,
+    teacherPhone: ev.teacher_phone,
+    teacherEmail: ev.teacher_email,
+    participants: ev.participants || [],
+  }));
+}
+
+function exportJson() {
+  const payload = {
+    exportedAt: new Date().toISOString(),
+    role: adminSession.role,
+    view: coreViewMode,
+    layout: displayLayout,
+    filters: {
+      sortBy,
+      filterMode,
+      filterDate,
+      filterMinParts,
+      filterExactParts,
+      filterGrade,
+      filterEventFormat,
+      filterSchoolCode,
+      filterIssues,
+      filterDuplicatesOnly,
+      coreEventFilter,
+      search: document.getElementById('search').value.trim(),
+    },
+    data: getExportPayload(),
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `cyfernode_export_${Date.now()}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('JSON exported');
+}
+
+function printView() {
+  window.print();
+  document.getElementById('export-menu')?.classList.remove('open');
+}
+
+const MASTER_CSV_HEADER = [
+  'Registration ID',
+  'Submitted At',
+  'Registration Mode',
+  'Event ID',
+  'Event Name',
+  'Event Category',
+  'Event Mode',
+  'School Code',
+  'School Name',
+  'Teacher Name',
+  'Teacher Phone',
+  'Teacher Email',
+  'Participant #',
+  'Participant Name',
+  'Participant Email',
+  'Participant Phone',
+  'Participant Grade',
+];
+
+function getMasterCsvRows(eventIdFilter = null) {
+  const rows = [];
+  allRegs.forEach(reg => {
+    (reg.event_registrations || []).forEach(ev => {
+      if (eventIdFilter && ev.event_id !== eventIdFilter) return;
+      const base = [
+        reg.registration_id,
+        reg.submitted_at,
+        reg.mode,
+        ev.event_id,
+        ev.event_name,
+        ev.event_category || '',
+        ev.event_mode || '',
+        ev.school_code || '',
+        ev.school_name,
+        ev.teacher_name,
+        ev.teacher_phone,
+        ev.teacher_email,
+      ];
+      const parts = ev.participants || [];
+      if (!parts.length) {
+        rows.push([...base, '', '', '', '', '']);
+        return;
+      }
+      parts.forEach(p => {
+        rows.push([
+          ...base,
+          p.participant_no ?? '',
+          p.name ?? '',
+          p.email ?? '',
+          p.phone ?? '',
+          p.grade ?? '',
+        ]);
+      });
+    });
+  });
+  return rows;
+}
+
+function masterCsvFilename(eventIdFilter = null) {
+  if (!eventIdFilter) return 'master-csv-all-events.csv';
+  const ev = EVENTS.find(e => e.id === eventIdFilter);
+  const slug = (ev?.name || eventIdFilter).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  return `master-csv-${slug}.csv`;
+}
+
+function exportMasterCsv(eventIdFilter = null) {
+  const dataRows = getMasterCsvRows(eventIdFilter);
+  if (!dataRows.length) {
+    showToast('No data for Master CSV');
+    document.getElementById('export-menu')?.classList.remove('open');
+    return;
+  }
+  downloadCsv([MASTER_CSV_HEADER, ...dataRows], masterCsvFilename(eventIdFilter));
+  const label = eventIdFilter
+    ? (EVENTS.find(e => e.id === eventIdFilter)?.name || 'event')
+    : 'all events';
+  showToast(`Master CSV saved (${dataRows.length} rows · ${label})`);
+  document.getElementById('export-menu')?.classList.remove('open');
+}
+
+function exportInfoIcon(explanation) {
+  return `<span class="export-info" role="img" tabindex="0" title="${esc(explanation)}" aria-label="${esc(explanation)}" data-export-info>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
+    </svg>
+  </span>`;
+}
+
+function exportMenuItem({ kind, label, desc, info, eventId }) {
+  const extra = eventId ? ` data-event-id="${esc(eventId)}"` : '';
+  return `
+    <button type="button" class="export-item" data-export="${esc(kind)}"${extra}>
+      <span class="export-item-row">
+        <span class="export-item-label">${esc(label)}</span>
+        ${exportInfoIcon(info || desc)}
+      </span>
+      <span class="export-item-desc">${esc(desc)}</span>
+    </button>
+  `;
+}
+
+function renderExportMenu() {
+  const menu = document.getElementById('export-menu');
+  if (!menu) return;
+
+  const masterInfo = 'Complete spreadsheet export with every stored field: registration ID, dates, school code, school name, teacher contact, event details, and each participant name, email, phone, and class. One row per participant.';
+
+  menu.innerHTML = `
+    ${exportMenuItem({
+      kind: 'csv',
+      label: 'Filtered CSV',
+      desc: 'What you see on screen now',
+      info: 'Exports the current table or cards view, including active search, filters, and event selection.',
+    })}
+    <div class="export-divider"></div>
+    <div class="export-section-head">
+      <span class="export-section-lbl">Master CSV</span>
+      ${exportInfoIcon(masterInfo)}
+    </div>
+    <p class="export-section-desc">Full database export. Ignores filters.</p>
+    ${exportMenuItem({
+      kind: 'master-all',
+      label: 'All events',
+      desc: 'Everything in one file',
+      info: 'All events and all registrations in a single master CSV file.',
+    })}
+    ${EVENTS.map(ev => exportMenuItem({
+      kind: 'master-event',
+      label: ev.name,
+      desc: 'This event only',
+      info: `Master CSV for ${ev.name} only, with every field for each participant.`,
+      eventId: ev.id,
+    })).join('')}
+    <div class="export-divider"></div>
+    ${exportMenuItem({
+      kind: 'json',
+      label: 'JSON',
+      desc: 'Filtered raw data',
+      info: 'Structured JSON of the current filtered view, useful for backups or integrations.',
+    })}
+    ${exportMenuItem({
+      kind: 'print',
+      label: 'Print',
+      desc: 'Paper copy of current view',
+      info: 'Opens a print-friendly version of the current table or cards.',
+    })}
+  `;
+}
+
+function initToolbarDrawers() {
+  const DRAWER_PREFS_KEY = 'cyfernode_admin_drawers';
+
+  function setDrawerOpen(id, open) {
+    const drawer = document.getElementById(id);
+    const toggle = id === 'filters-drawer'
+      ? document.getElementById('toggle-filters')
+      : document.getElementById('toggle-explorer');
+    if (!drawer || !toggle) return;
+    drawer.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(DRAWER_PREFS_KEY) || '{}');
+      saved[id] = open;
+      sessionStorage.setItem(DRAWER_PREFS_KEY, JSON.stringify(saved));
+    } catch { /* ignore */ }
+  }
+
+  let saved = {};
+  try { saved = JSON.parse(sessionStorage.getItem(DRAWER_PREFS_KEY) || '{}'); } catch { /* ignore */ }
+
+  if (saved['filters-drawer']) setDrawerOpen('filters-drawer', true);
+  if (saved['explorer-drawer']) setDrawerOpen('explorer-drawer', true);
+
+  document.getElementById('toggle-filters')?.addEventListener('click', () => {
+    const drawer = document.getElementById('filters-drawer');
+    setDrawerOpen('filters-drawer', !drawer?.classList.contains('open'));
+  });
+
+  document.getElementById('toggle-explorer')?.addEventListener('click', () => {
+    const drawer = document.getElementById('explorer-drawer');
+    setDrawerOpen('explorer-drawer', !drawer?.classList.contains('open'));
+  });
+}
+
+function bindFilterChipGroup(selector, onSelect) {
+  document.querySelectorAll(selector).forEach(btn => {
+    btn.addEventListener('click', () => {
+      onSelect(btn);
+      syncFilterChips();
+      saveFilterPrefs();
+      updateResetFiltersBtn();
+      applyFilter();
+    });
+  });
+}
+
+function initToolbarTools() {
+  loadFilterPrefs();
+  syncFilterChips();
+  updateResetFiltersBtn();
+  initToolbarDrawers();
+
+  document.getElementById('sort-select').addEventListener('change', (e) => {
+    sortBy = e.target.value;
+    saveFilterPrefs();
+    applyFilter();
+  });
+
+  document.getElementById('filter-school')?.addEventListener('change', (e) => {
+    filterSchoolCode = e.target.value;
+    saveFilterPrefs();
+    updateResetFiltersBtn();
+    applyFilter();
+  });
+
+  bindFilterChipGroup('#filter-mode .filter-chip', (btn) => {
+    filterMode = btn.dataset.mode;
+  });
+
+  bindFilterChipGroup('#filter-date .filter-chip', (btn) => {
+    filterDate = btn.dataset.date;
+  });
+
+  document.querySelectorAll('#filter-size .filter-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const size = Number(btn.dataset.size);
+      if (size === 4) {
+        filterExactParts = 4;
+        filterMinParts = 0;
+      } else if (size === 0) {
+        filterExactParts = 0;
+        filterMinParts = 0;
+      } else {
+        filterExactParts = 0;
+        filterMinParts = size;
+      }
+      syncFilterChips();
+      saveFilterPrefs();
+      updateResetFiltersBtn();
+      applyFilter();
+    });
+  });
+
+  bindFilterChipGroup('#filter-grade .filter-chip', (btn) => {
+    filterGrade = btn.dataset.grade;
+  });
+
+  bindFilterChipGroup('#filter-format .filter-chip', (btn) => {
+    filterEventFormat = btn.dataset.format;
+  });
+
+  bindFilterChipGroup('#filter-issues .filter-chip', (btn) => {
+    filterIssues = btn.dataset.issues;
+  });
+
+  document.querySelectorAll('.quick-filter-chip').forEach(btn => {
+    btn.addEventListener('click', () => toggleQuickFilter(btn.dataset.quick));
+  });
+
+  document.getElementById('btn-reset-filters').addEventListener('click', resetAdvancedFilters);
+  document.getElementById('btn-expand-all').addEventListener('click', expandAllCards);
+  document.getElementById('btn-collapse-all').addEventListener('click', collapseAllCards);
+
+  document.getElementById('page').addEventListener('click', async (e) => {
+    const copyEl = e.target.closest('[data-copy]');
+    if (copyEl) {
+      e.preventDefault();
+      e.stopPropagation();
+      const ok = await copyToClipboard(copyEl.dataset.copy);
+      showToast(ok ? 'Copied to clipboard' : 'Could not copy');
+      return;
+    }
+    const sheetCopy = e.target.closest('[data-copy-sheet]');
+    if (sheetCopy) {
+      e.preventDefault();
+      copyActiveSheet();
+    }
+  });
+
+  document.getElementById('btn-export-invites')?.addEventListener('click', exportInviteCsv);
+
+  document.getElementById('dash-tabs')?.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-dash-tab]');
+    if (!btn) return;
+    setDashTab(btn.dataset.dashTab);
+  });
+
+  const exportBtn = document.getElementById('btn-export');
+  const exportMenu = document.getElementById('export-menu');
+  renderExportMenu();
+  exportBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    exportMenu.classList.toggle('open');
+  });
+  exportMenu.addEventListener('click', (e) => {
+    if (e.target.closest('[data-export-info]')) {
+      e.preventDefault();
+      e.stopPropagation();
+      const infoEl = e.target.closest('[data-export-info]');
+      const msg = infoEl?.getAttribute('title') || infoEl?.getAttribute('aria-label');
+      if (msg) showToast(msg);
+      return;
+    }
+    const btn = e.target.closest('[data-export]');
+    if (!btn || btn.hasAttribute('data-export-info')) return;
+    e.stopPropagation();
+    exportMenu.classList.remove('open');
+    const kind = btn.dataset.export;
+    if (kind === 'csv') exportCsv();
+    else if (kind === 'json') exportJson();
+    else if (kind === 'print') printView();
+    else if (kind === 'master-all') exportMasterCsv();
+    else if (kind === 'master-event') exportMasterCsv(btn.dataset.eventId);
+  });
+  document.addEventListener('click', () => exportMenu.classList.remove('open'));
+
+  document.getElementById('btn-help')?.addEventListener('click', () => openShortcuts());
+  document.getElementById('shortcuts-close')?.addEventListener('click', closeShortcuts);
+  document.getElementById('shortcuts-backdrop')?.addEventListener('click', (e) => {
+    if (e.target.id === 'shortcuts-backdrop') closeShortcuts();
+  });
+}
+
+function openShortcuts() {
+  const el = document.getElementById('shortcuts-backdrop');
+  el.classList.add('open');
+  el.setAttribute('aria-hidden', 'false');
+}
+
+function closeShortcuts() {
+  const el = document.getElementById('shortcuts-backdrop');
+  el.classList.remove('open');
+  el.setAttribute('aria-hidden', 'true');
+}
+
+function initKeyboardShortcuts() {
+  document.addEventListener('keydown', (e) => {
+    const dashActive = document.getElementById('dash').classList.contains('active');
+    if (!dashActive) return;
+
+    const tag = e.target.tagName;
+    const typing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || e.target.isContentEditable;
+
+    if (e.key === '?' && !typing) {
+      e.preventDefault();
+      openShortcuts();
+      return;
+    }
+    if (e.key === '/' && !typing) {
+      e.preventDefault();
+      document.getElementById('search').focus();
+      return;
+    }
+    if ((e.key === 'r' || e.key === 'R') && !typing) {
+      e.preventDefault();
+      loadDashboard();
+      return;
+    }
+    if ((e.key === 's' || e.key === 'S') && !typing) {
+      e.preventDefault();
+      setDisplayLayout(displayLayout === 'sheet' ? 'cards' : 'sheet');
+      applyFilter();
+      return;
+    }
+    if ((e.key === 'f' || e.key === 'F') && !typing) {
+      e.preventDefault();
+      document.getElementById('toggle-filters')?.click();
+      return;
+    }
+    if (e.key === 'Escape') {
+      closeEditModal();
+      closeSheetLightbox();
+      closeShortcuts();
+      document.getElementById('export-menu')?.classList.remove('open');
+      if (hasActiveAdvancedFilters() && !typing) resetAdvancedFilters();
+    }
+  });
+}
+
+function filteredCoreFlatRows() {
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  let rows = coreFlatRows();
+  if (q) rows = rows.filter(r => coreRowSearchText(r).includes(q));
+  rows = applyRowFilters(rows);
+  updateResetFiltersBtn();
+  return sortFlatRows(rows);
+}
+
+function visibleFields() {
+  return (FIELDS_BY_MODE[coreViewMode] || []).filter(k => coreFields[k]);
+}
+
+function setDisplayLayout(layout) {
+  displayLayout = layout === 'sheet' ? 'sheet' : 'cards';
+  document.body.classList.toggle('layout-sheet', displayLayout === 'sheet');
+  document.getElementById('layout-cards').classList.toggle('active', displayLayout === 'cards');
+  document.getElementById('layout-sheet').classList.toggle('active', displayLayout === 'sheet');
+  try {
+    sessionStorage.setItem('cyfernode_admin_layout', displayLayout);
+  } catch { /* ignore */ }
+}
+
+function initLayoutToggle() {
+  const saved = sessionStorage.getItem('cyfernode_admin_layout');
+  if (saved === 'sheet' || saved === 'cards') displayLayout = saved;
+  setDisplayLayout(displayLayout);
+  document.querySelectorAll('.layout-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      closeSheetLightbox();
+      setDisplayLayout(btn.dataset.layout);
+      applyFilter();
+    });
+  });
+  initSheetLightbox();
+}
+
+function getActiveSheetTable() {
+  if (displayLayout !== 'sheet') return null;
+
+  if (adminSession.role === 'team') {
+    const view = document.getElementById('team-sheet-view');
+    if (!view?.classList.contains('active')) return null;
+    return view.querySelector('table');
+  }
+
+  if (coreViewMode === 'registrations') {
+    const view = document.getElementById('core-reg-sheet-view');
+    if (!view?.classList.contains('active')) return null;
+    return view.querySelector('table');
+  }
+
+  const view = document.getElementById('core-table-view');
+  if (!view?.classList.contains('active')) return null;
+  return view.querySelector('table');
+}
+
+function openSheetLightbox() {
+  const source = getActiveSheetTable();
+  if (!source) return;
+
+  const sourceHead = source.querySelector('thead');
+  const sourceBody = source.querySelector('tbody');
+  if (!sourceHead || !sourceBody) return;
+
+  const lightbox = document.getElementById('sheet-lightbox');
+  const target = document.getElementById('sheet-lightbox-table');
+  const head = document.getElementById('sheet-lightbox-head');
+  const body = document.getElementById('sheet-lightbox-body');
+
+  target.className = source.className;
+  head.innerHTML = sourceHead.innerHTML;
+  body.innerHTML = sourceBody.innerHTML;
+
+  lightbox.classList.add('open');
+  lightbox.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('sheet-lightbox-open');
+  document.getElementById('sheet-lightbox-close').focus();
+}
+
+function syncSheetLightboxIfOpen() {
+  const lightbox = document.getElementById('sheet-lightbox');
+  if (!lightbox.classList.contains('open')) return;
+  if (!getActiveSheetTable()) {
+    closeSheetLightbox();
+    return;
+  }
+  openSheetLightbox();
+}
+
+function closeSheetLightbox() {
+  const lightbox = document.getElementById('sheet-lightbox');
+  if (!lightbox.classList.contains('open')) return;
+  lightbox.classList.remove('open');
+  lightbox.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('sheet-lightbox-open');
+  document.getElementById('sheet-lightbox-head').innerHTML = '';
+  document.getElementById('sheet-lightbox-body').innerHTML = '';
+}
+
+function initSheetLightbox() {
+  document.querySelectorAll('.sheet-expand-btn').forEach(btn => {
+    btn.addEventListener('click', openSheetLightbox);
+  });
+  document.getElementById('sheet-lightbox-close').addEventListener('click', closeSheetLightbox);
+  document.getElementById('sheet-lightbox').addEventListener('click', (e) => {
+    if (e.target.id === 'sheet-lightbox') closeSheetLightbox();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeSheetLightbox();
+  });
+}
+
+function maxParticipantsInRows(rows) {
+  return rows.reduce((max, row) => {
+    const ev = row.ev || row;
+    const parts = ev.participants || row.participants || [];
+    return Math.max(max, parts.length);
+  }, 0);
+}
+
+function renderRegistrationSheet(headId, bodyId, rows, { showEvent = false } = {}) {
+  const head = document.getElementById(headId);
+  const body = document.getElementById(bodyId);
+  if (!head || !body) return;
+
+  document.getElementById('stat-showing').textContent = String(rows.length);
+
+  if (!rows.length) {
+    head.innerHTML = '';
+    body.innerHTML = '';
+    return;
+  }
+
+  const pCount = Math.max(maxParticipantsInRows(rows), 1);
+  const pHeaders = [];
+  for (let i = 1; i <= pCount; i += 1) {
+    pHeaders.push(`P${i} name`, `P${i} email`, `P${i} phone`, `P${i} grade`);
+  }
+
+  head.innerHTML = `<tr>
+    <th class="col-num">#</th>
+    ${showEvent ? '<th>Event</th>' : ''}
+    <th>School code</th>
+    <th>Submitted</th>
+    <th>School</th>
+    <th>Teacher</th>
+    <th>Teacher phone</th>
+    <th>Teacher email</th>
+    ${pHeaders.map((h, i) => `<th class="${i === 0 ? 'group-start' : ''}">${h}</th>`).join('')}
+  </tr>`;
+
+  body.innerHTML = rows.map(({ reg, ev }, idx) => {
+    const parts = ev.participants || [];
+    const pCells = [];
+    for (let i = 0; i < pCount; i += 1) {
+      const p = parts[i];
+      const group = i === 0 ? ' group-start' : '';
+      pCells.push(
+        `<td class="${group}">${esc(p?.name)}</td>`,
+        `<td>${esc(p?.email)}</td>`,
+        `<td>${esc(p?.phone)}</td>`,
+        `<td>${esc(p?.grade)}</td>`,
+      );
+    }
+    const eventCell = showEvent ? `<td>${esc(ev.event_name)}</td>` : '';
+    return `<tr>
+      <td class="col-num">${idx + 1}</td>
+      ${eventCell}
+      <td class="col-code">${esc(ev.school_code || '-')}</td>
+      <td class="col-date">${esc(fmtDateShort(reg.submitted_at))}</td>
+      <td>${esc(ev.school_name)}</td>
+      <td>${esc(ev.teacher_name)}</td>
+      <td>${esc(ev.teacher_phone)}</td>
+      <td>${esc(ev.teacher_email)}</td>
+      ${pCells.join('')}
+    </tr>`;
+  }).join('');
+}
+
+function setTeamResultsView() {
+  const sheet = displayLayout === 'sheet';
+  document.getElementById('team-cards-view').classList.toggle('hidden', sheet);
+  document.getElementById('team-sheet-view').classList.toggle('active', sheet);
+}
+
+function setCoreRegistrationsLayout() {
+  const sheet = displayLayout === 'sheet';
+  document.getElementById('core-reg-cards-wrap').classList.toggle('hidden', sheet);
+  document.getElementById('core-reg-sheet-view').classList.toggle('active', sheet);
+}
+
+function setCoreResultsView(mode) {
+  const isCards = mode === 'registrations' && displayLayout === 'cards';
+  const isRegSheet = mode === 'registrations' && displayLayout === 'sheet';
+  const isExplorer = mode !== 'registrations';
+  document.getElementById('core-registrations-view').style.display = (mode === 'registrations') ? 'block' : 'none';
+  document.getElementById('core-reg-cards-wrap').classList.toggle('hidden', !isCards);
+  document.getElementById('core-reg-sheet-view').classList.toggle('active', isRegSheet);
+  document.getElementById('core-table-view').classList.toggle('active', isExplorer);
+}
+
+function renderExplorerTable(rows) {
+  const head = document.getElementById('explorer-head');
+  const body = document.getElementById('explorer-body');
+  const cols = visibleFields();
+  if (!cols.length || !rows.length) {
+    head.innerHTML = '';
+    body.innerHTML = '';
+    return;
+  }
+
+  head.innerHTML = `<tr>${cols.map(c => `<th>${FIELD_LABELS[c]}</th>`).join('')}</tr>`;
+
+  if (coreViewMode === 'schools') {
+    const map = new Map();
+    rows.forEach(({ ev }) => {
+      const key = `${ev.event_id}::${ev.school_code || ev.school_name}`;
+      const cur = map.get(key) || {
+        schoolCode: ev.school_code || '-',
+        schoolName: ev.school_name,
+        event: ev.event_name,
+        entries: 0,
+        participants: 0,
+      };
+      cur.entries += 1;
+      cur.participants += (ev.participants || []).length;
+      map.set(key, cur);
+    });
+    const items = [...map.values()];
+    document.getElementById('stat-showing').textContent = String(items.length);
+    body.innerHTML = items.map(item => `<tr>${cols.map(c => {
+      if (c === 'schoolCode') return `<td class="code">${esc(item.schoolCode)}</td>`;
+      if (c === 'participants' || c === 'entries') return `<td class="num">${esc(item[c])}</td>`;
+      return `<td>${esc(item[c])}</td>`;
+    }).join('')}</tr>`).join('');
+    return;
+  }
+
+  if (coreViewMode === 'summary') {
+    const map = new Map();
+    rows.forEach(({ ev }) => {
+      const key = `${ev.event_id}::${ev.school_code || ev.school_name}`;
+      const cur = map.get(key) || {
+        event: ev.event_name,
+        schoolCode: ev.school_code || '-',
+        schoolName: ev.school_name,
+        participants: 0,
+      };
+      cur.participants += (ev.participants || []).length;
+      map.set(key, cur);
+    });
+    const items = [...map.values()].sort((a, b) => a.event.localeCompare(b.event) || a.schoolName.localeCompare(b.schoolName));
+    document.getElementById('stat-showing').textContent = String(items.reduce((n, i) => n + i.participants, 0));
+    body.innerHTML = items.map(item => `<tr>${cols.map(c => {
+      if (c === 'schoolCode') return `<td class="code">${esc(item.schoolCode)}</td>`;
+      if (c === 'participants') return `<td class="num">${esc(item.participants)}</td>`;
+      return `<td>${esc(item[c])}</td>`;
+    }).join('')}</tr>`).join('');
+    return;
+  }
+
+  if (coreViewMode === 'teachers') {
+    document.getElementById('stat-showing').textContent = String(rows.length);
+    body.innerHTML = rows.map(({ ev }) => {
+      const data = {
+        schoolCode: ev.school_code || '-',
+        schoolName: ev.school_name,
+        event: ev.event_name,
+        teacherName: ev.teacher_name,
+        teacherPhone: ev.teacher_phone,
+        teacherEmail: ev.teacher_email,
+      };
+      return `<tr>${cols.map(c => {
+        if (c === 'schoolCode') return `<td class="code">${esc(data.schoolCode)}</td>`;
+        return `<td>${esc(data[c])}</td>`;
+      }).join('')}</tr>`;
+    }).join('');
+    return;
+  }
+
+  if (coreViewMode === 'participants') {
+    const q = document.getElementById('search').value.trim().toLowerCase();
+    const flat = [];
+    rows.forEach(row => {
+      (row.ev.participants || []).forEach(p => {
+        if (!q || participantSearchText(row, p).includes(q)) flat.push({ row, p });
+      });
+    });
+    document.getElementById('stat-showing').textContent = String(flat.length);
+    body.innerHTML = flat.map(({ row, p }) => {
+      const { ev } = row;
+      const data = {
+        schoolCode: ev.school_code || '-',
+        schoolName: ev.school_name,
+        event: ev.event_name,
+        teacherName: ev.teacher_name,
+        pName: p.name,
+        pEmail: p.email,
+        pPhone: p.phone,
+        pGrade: p.grade,
+      };
+      return `<tr>${cols.map(c => {
+        if (c === 'schoolCode') return `<td class="code">${esc(data.schoolCode)}</td>`;
+        if (c === 'pGrade') return `<td>${esc(data.pGrade)}</td>`;
+        return `<td>${esc(data[c])}</td>`;
+      }).join('')}</tr>`;
+    }).join('');
+  }
+}
+
+function updateCoreStats(rows) {
+  const schools = new Set(rows.map(r => r.ev.school_code || r.ev.school_name)).size;
+  const participants = rows.reduce((n, r) => n + (r.ev.participants || []).length, 0);
+  const teachers = rows.length;
+
+  if (coreViewMode === 'participants') {
+    document.getElementById('stat-lbl-total').textContent = 'Participants';
+    document.getElementById('stat-lbl-secondary').textContent = 'Schools';
+    const q = document.getElementById('search').value.trim().toLowerCase();
+    let pCount = 0;
+    rows.forEach(row => {
+      (row.ev.participants || []).forEach(p => {
+        if (!q || participantSearchText(row, p).includes(q)) pCount += 1;
+      });
+    });
+    document.getElementById('stat-total').textContent = String(pCount);
+    document.getElementById('stat-events').textContent = String(schools);
+    return;
+  }
+
+  if (coreViewMode === 'summary') {
+    document.getElementById('stat-lbl-total').textContent = 'Participants';
+    document.getElementById('stat-lbl-secondary').textContent = 'Schools';
+    document.getElementById('stat-total').textContent = String(participants);
+    document.getElementById('stat-events').textContent = String(schools);
+    return;
+  }
+
+  if (coreViewMode === 'teachers') {
+    document.getElementById('stat-lbl-total').textContent = 'Teachers';
+    document.getElementById('stat-lbl-secondary').textContent = 'Participants';
+    document.getElementById('stat-total').textContent = String(teachers);
+    document.getElementById('stat-events').textContent = String(participants);
+    return;
+  }
+
+  if (coreViewMode === 'schools') {
+    document.getElementById('stat-lbl-total').textContent = 'Schools';
+    document.getElementById('stat-lbl-secondary').textContent = 'Participants';
+    document.getElementById('stat-total').textContent = String(schools);
+    document.getElementById('stat-events').textContent = String(participants);
+    return;
+  }
+
+  document.getElementById('stat-lbl-total').textContent = 'Registrations';
+  document.getElementById('stat-lbl-secondary').textContent = 'Participants';
+  const regs = filterCoreRegistrations();
+  document.getElementById('stat-total').textContent = String(regs.length);
+  document.getElementById('stat-events').textContent = String(participants);
+}
+
+function filterCoreRegistrations() {
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  let regs = allRegs.map(reg => {
+    if (coreEventFilter === 'all') return reg;
+    const events = (reg.event_registrations || []).filter(ev => ev.event_id === coreEventFilter);
+    if (!events.length) return null;
+    return { ...reg, event_registrations: events };
+  }).filter(Boolean);
+  if (q) regs = regs.filter(r => regSearchText(r).includes(q));
+  regs = applyRegFilters(regs);
+  updateResetFiltersBtn();
+  return sortRegistrations(regs);
+}
+
+function saveSession() {
+  sessionStorage.setItem(SESSION_KEY, JSON.stringify(adminSession));
+}
+
+function loadSession() {
+  try {
+    const raw = sessionStorage.getItem(SESSION_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed?.password || !['core', 'team'].includes(parsed.role)) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+function clearSession() {
+  sessionStorage.removeItem(SESSION_KEY);
+  adminSession = { role: 'core', password: '' };
+}
+
+function setDashTab(tab) {
+  if (adminSession.role !== 'core') tab = 'registrations';
+  dashTab = tab;
+  document.body.classList.toggle('view-invites', tab === 'invites');
+  document.querySelectorAll('.dash-tab').forEach(btn => {
+    const active = btn.dataset.dashTab === tab;
+    btn.classList.toggle('active', active);
+    btn.setAttribute('aria-selected', active ? 'true' : 'false');
+  });
+
+  const sub = document.getElementById('dash-sub');
+  if (sub) {
+    sub.textContent = tab === 'invites'
+      ? 'Schools that requested a registration invite from the landing page.'
+      : 'Explore all data - filter by event, view, and columns.';
+  }
+
+  if (tab === 'invites') {
+    renderInviteRequests();
+    updateInviteStats();
+  } else {
+    applyFilter();
+  }
+}
+
+function updateInviteTabCount() {
+  const badge = document.getElementById('invite-tab-count');
+  if (badge) badge.textContent = String(allInvites.length);
+}
+
+function updateInviteStats() {
+  document.getElementById('stat-lbl-total').textContent = 'Requests';
+  document.getElementById('stat-lbl-secondary').textContent = 'Latest';
+  document.getElementById('stat-total').textContent = String(allInvites.length);
+  document.getElementById('stat-showing').textContent = String(allInvites.length);
+  document.getElementById('stat-events').textContent = allInvites[0]
+    ? fmtDateShort(allInvites[0].submitted_at)
+    : '-';
+}
+
+function renderInviteRequests() {
+  const tbody = document.getElementById('invite-list');
+  const empty = document.getElementById('invite-empty');
+  if (!tbody || !empty) return;
+
+  if (!allInvites.length) {
+    tbody.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+
+  empty.classList.add('hidden');
+  tbody.innerHTML = allInvites.map((row, index) => `
+    <tr>
+      <td>${index + 1}</td>
+      <td><a href="mailto:${esc(row.school_email)}">${esc(row.school_email)}</a></td>
+      <td>${esc(fmtDate(row.submitted_at))}</td>
+    </tr>
+  `).join('');
+}
+
+function exportInviteCsv() {
+  const rows = [
+    ['School email', 'Submitted at'],
+    ...allInvites.map(row => [row.school_email, row.submitted_at]),
+  ];
+  downloadCsv(rows, `cyfernode_invite_requests_${Date.now()}.csv`);
+  showToast('Invite requests exported');
+}
+
+function setAdminView(role) {
+  document.body.classList.toggle('view-team', role === 'team');
+  const roleEl = document.getElementById('dash-role');
+  roleEl.textContent = role === 'team' ? 'Team' : 'Core';
+  roleEl.classList.toggle('core', role === 'core');
+  if (role === 'team' && dashTab === 'invites') {
+    setDashTab('registrations');
+  }
+  document.getElementById('dash-sub').textContent = role === 'team'
+    ? 'Browse registrations one event at a time.'
+    : dashTab === 'invites'
+      ? 'Schools that requested a registration invite from the landing page.'
+      : 'Explore all data - filter by event, view, and columns.';
+  document.getElementById('search').placeholder = role === 'team'
+    ? 'Search school code, teacher, participant…'
+    : 'Search names, codes, emails, phones…';
+  setDisplayLayout(displayLayout);
+  renderEventTabs();
+  if (role === 'core') {
+    initCoreExplorer();
+    if (dashTab === 'invites') {
+      renderInviteRequests();
+      updateInviteStats();
+    } else {
+      setCoreResultsView(coreViewMode);
+    }
+  }
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id)?.classList.add('active');
+}
+
+function fmtDate(iso) {
+  if (!iso) return '-';
+  return new Date(iso).toLocaleString('en-IN', {
+    day: 'numeric', month: 'short', year: 'numeric',
+    hour: '2-digit', minute: '2-digit',
+  });
+}
+
+function fmtDateShort(iso) {
+  if (!iso) return '-';
+  return new Date(iso).toLocaleDateString('en-IN', {
+    day: 'numeric', month: 'short', year: 'numeric',
+  });
+}
+
+function esc(s) {
+  return String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function schoolCodeForEvent(ev) {
+  return ev?.school_code || '-';
+}
+
+function schoolCodesForReg(reg) {
+  const codes = [...new Set(
+    (reg.event_registrations || [])
+      .map(ev => ev.school_code)
+      .filter(Boolean),
+  )];
+  return codes.length ? codes.join(' · ') : '-';
+}
+
+async function fetchRegistrations(session) {
+  let res;
+  try {
+    res = await fetch(ADMIN_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'apikey': SUPABASE_ANON_KEY,
+        'x-admin-password': session.password,
+        'x-admin-role': session.role,
+      },
+      body: JSON.stringify({ password: session.password, role: session.role }),
+    });
+  } catch {
+    throw new Error(
+      'Could not reach the admin API. The admin-list Edge Function may not be deployed yet - see deploy steps in the Supabase dashboard or run: npx supabase functions deploy admin-list',
+    );
+  }
+
+  const data = await res.json().catch(() => ({}));
+  if (res.status === 404) {
+    throw new Error(
+      'Admin API not found. Deploy the admin-list Edge Function to Supabase, then set ADMIN_PASSWORD_CORE and ADMIN_PASSWORD_TEAM secrets.',
+    );
+  }
+  if (!res.ok || !data.ok) {
+    throw new Error(data.error || `Request failed (${res.status})`);
+  }
+  if (data.role) adminSession.role = data.role;
+  return {
+    registrations: data.registrations || [],
+    inviteRequests: data.invite_requests || [],
+  };
+}
+
+async function adminMutate(action, payload = {}) {
+  if (adminSession.role !== 'core') {
+    throw new Error('Only core admin can change registrations');
+  }
+
+  let res;
+  try {
+    res = await fetch(ADMIN_MUTATE_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'apikey': SUPABASE_ANON_KEY,
+        'x-admin-password': adminSession.password,
+        'x-admin-role': adminSession.role,
+      },
+      body: JSON.stringify({
+        password: adminSession.password,
+        role: adminSession.role,
+        action,
+        ...payload,
+      }),
+    });
+  } catch {
+    throw new Error(
+      'Could not reach the admin update API. Deploy admin-mutate: npx supabase functions deploy admin-mutate',
+    );
+  }
+
+  const data = await res.json().catch(() => ({}));
+  if (res.status === 404) {
+    throw new Error('Admin update API not found. Deploy the admin-mutate Edge Function to Supabase.');
+  }
+  if (!res.ok || !data.ok) {
+    throw new Error(data.error || `Update failed (${res.status})`);
+  }
+  return data;
+}
+
+function findRegistrationByDbId(id) {
+  return allRegs.find(reg => reg.id === id) || null;
+}
+
+function findEventRegistration(regDbId, eventRegId) {
+  const reg = findRegistrationByDbId(regDbId);
+  if (!reg) return null;
+  const ev = (reg.event_registrations || []).find(item => item.id === eventRegId);
+  if (!ev) return null;
+  return { reg, ev };
+}
+
+let editParticipantDraft = [];
+let editEventId = '';
+
+function closeEditModal() {
+  const backdrop = document.getElementById('edit-backdrop');
+  backdrop.classList.remove('open');
+  backdrop.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('edit-open');
+  document.getElementById('edit-err').classList.remove('show');
+}
+
+function renderEditParticipants() {
+  const wrap = document.getElementById('edit-participants');
+  const max = EVENT_MAX[editEventId] || Math.max(editParticipantDraft.length, 1);
+  const parts = editParticipantDraft;
+
+  wrap.innerHTML = parts.map((p, index) => {
+    const gradeOptions = GRADES.map(g => `
+      <option value="${g}"${p.grade === g ? ' selected' : ''}>${g}</option>
+    `).join('');
+    return `
+      <div class="edit-participant" data-participant="${index + 1}">
+        <div class="edit-participant-lbl">Participant ${index + 1}</div>
+        <div class="edit-grid">
+          <div class="field span-2">
+            <label class="field-lbl" for="edit-p-name-${index}">Name</label>
+            <input class="field-input" type="text" id="edit-p-name-${index}" value="${esc(p.name)}" required>
+          </div>
+          <div class="field">
+            <label class="field-lbl" for="edit-p-email-${index}">Email</label>
+            <input class="field-input" type="email" id="edit-p-email-${index}" value="${esc(p.email)}" required>
+          </div>
+          <div class="field">
+            <label class="field-lbl" for="edit-p-phone-${index}">Phone</label>
+            <input class="field-input" type="tel" id="edit-p-phone-${index}" value="${esc(p.phone)}" required>
+          </div>
+          <div class="field">
+            <label class="field-lbl" for="edit-p-grade-${index}">Class</label>
+            <select class="field-input" id="edit-p-grade-${index}" required>${gradeOptions}</select>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  if (parts.length < max) {
+    wrap.innerHTML += `
+      <button type="button" class="action-btn" id="edit-add-participant">
+        Add participant (${parts.length}/${max})
+      </button>
+    `;
+    document.getElementById('edit-add-participant')?.addEventListener('click', () => {
+      editParticipantDraft = collectEditParticipants();
+      if (editParticipantDraft.length < max) {
+        editParticipantDraft.push({ name: '', email: '', phone: '', grade: '9th' });
+      }
+      renderEditParticipants();
+    });
+  }
+}
+
+function collectEditParticipants() {
+  const count = document.querySelectorAll('#edit-participants .edit-participant').length;
+  const participants = [];
+  for (let index = 0; index < count; index += 1) {
+    participants.push({
+      name: document.getElementById(`edit-p-name-${index}`)?.value.trim() || '',
+      email: document.getElementById(`edit-p-email-${index}`)?.value.trim() || '',
+      phone: document.getElementById(`edit-p-phone-${index}`)?.value.trim() || '',
+      grade: document.getElementById(`edit-p-grade-${index}`)?.value || '',
+    });
+  }
+  return participants;
+}
+
+function openEditModal(regDbId, eventRegId) {
+  const match = findEventRegistration(regDbId, eventRegId);
+  if (!match) {
+    showToast('Registration not found');
+    return;
+  }
+
+  const { reg, ev } = match;
+  editEventId = ev.event_id;
+  editParticipantDraft = (ev.participants || []).map(p => ({
+    name: p.name || '',
+    email: p.email || '',
+    phone: p.phone || '',
+    grade: p.grade || '9th',
+  }));
+  if (!editParticipantDraft.length) {
+    editParticipantDraft = [{ name: '', email: '', phone: '', grade: '9th' }];
+  }
+
+  document.getElementById('edit-event-reg-id').value = ev.id;
+  document.getElementById('edit-title').textContent = `Edit ${ev.event_name}`;
+  document.getElementById('edit-sub').textContent = `${reg.registration_id} · ${schoolCodeForEvent(ev)}`;
+  document.getElementById('edit-school').value = ev.school_name || '';
+  document.getElementById('edit-teacher-name').value = ev.teacher_name || '';
+  document.getElementById('edit-teacher-phone').value = ev.teacher_phone || '';
+  document.getElementById('edit-teacher-email').value = ev.teacher_email || '';
+  document.getElementById('edit-err').classList.remove('show');
+  renderEditParticipants();
+
+  const backdrop = document.getElementById('edit-backdrop');
+  backdrop.classList.add('open');
+  backdrop.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('edit-open');
+  document.getElementById('edit-school').focus();
+}
+
+async function saveEditModal(event) {
+  event.preventDefault();
+  const errBox = document.getElementById('edit-err');
+  const saveBtn = document.getElementById('edit-save');
+  errBox.classList.remove('show');
+
+  const eventRegistrationId = document.getElementById('edit-event-reg-id').value;
+  const payload = {
+    eventRegistrationId,
+    schoolName: document.getElementById('edit-school').value.trim(),
+    teacherName: document.getElementById('edit-teacher-name').value.trim(),
+    teacherPhone: document.getElementById('edit-teacher-phone').value.trim(),
+    teacherEmail: document.getElementById('edit-teacher-email').value.trim(),
+    participants: collectEditParticipants(),
+  };
+
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Saving…';
+
+  try {
+    await adminMutate('update_event', payload);
+    closeEditModal();
+    showToast('Registration updated');
+    await loadDashboard();
+  } catch (err) {
+    errBox.textContent = err.message || 'Could not save changes';
+    errBox.classList.add('show');
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = 'Save changes';
+  }
+}
+
+async function deleteRegistrationById(regDbId) {
+  const reg = findRegistrationByDbId(regDbId);
+  if (!reg) {
+    showToast('Registration not found');
+    return;
+  }
+
+  const label = reg.registration_id || 'this registration';
+  if (!window.confirm(`Delete ${label}? This removes all events and participants.`)) return;
+
+  try {
+    await adminMutate('delete_registration', { registrationId: regDbId });
+    showToast('Registration deleted');
+    await loadDashboard();
+  } catch (err) {
+    showToast(err.message || 'Delete failed');
+  }
+}
+
+async function deleteEventRegistration(regDbId, eventRegId) {
+  const match = findEventRegistration(regDbId, eventRegId);
+  if (!match) {
+    showToast('Event registration not found');
+    return;
+  }
+
+  const { reg, ev } = match;
+  const eventCount = (reg.event_registrations || []).length;
+  const message = eventCount <= 1
+    ? `Remove ${ev.event_name}? This will delete the entire registration.`
+    : `Remove ${ev.event_name} from ${reg.registration_id}?`;
+
+  if (!window.confirm(message)) return;
+
+  try {
+    await adminMutate('delete_event', { eventRegistrationId: eventRegId });
+    showToast(eventCount <= 1 ? 'Registration deleted' : 'Event removed');
+    await loadDashboard();
+  } catch (err) {
+    showToast(err.message || 'Delete failed');
+  }
+}
+
+function initAdminMutations() {
+  document.getElementById('edit-form')?.addEventListener('submit', saveEditModal);
+  document.getElementById('edit-close')?.addEventListener('click', closeEditModal);
+  document.getElementById('edit-cancel')?.addEventListener('click', closeEditModal);
+  document.getElementById('edit-backdrop')?.addEventListener('click', (e) => {
+    if (e.target.id === 'edit-backdrop') closeEditModal();
+  });
+
+  document.getElementById('core-panel')?.addEventListener('click', (e) => {
+    if (adminSession.role !== 'core') return;
+
+    const editBtn = e.target.closest('[data-action="edit-event"]');
+    if (editBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      openEditModal(editBtn.dataset.regId, editBtn.dataset.eventId);
+      return;
+    }
+
+    const deleteEventBtn = e.target.closest('[data-action="delete-event"]');
+    if (deleteEventBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      deleteEventRegistration(deleteEventBtn.dataset.regId, deleteEventBtn.dataset.eventId);
+      return;
+    }
+
+    const deleteRegBtn = e.target.closest('[data-action="delete-reg"]');
+    if (deleteRegBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      deleteRegistrationById(deleteRegBtn.dataset.regId);
+    }
+  });
+}
+
+function regSearchText(reg) {
+  const parts = [schoolCodesForReg(reg), reg.mode];
+  (reg.event_registrations || []).forEach(ev => {
+    parts.push(ev.school_code, ev.event_name, ev.school_name, ev.teacher_name, ev.teacher_email, ev.teacher_phone);
+    (ev.participants || []).forEach(p => {
+      parts.push(p.name, p.email, p.phone, p.grade);
+    });
+  });
+  return parts.join(' ').toLowerCase();
+}
+
+function teamRowsForEvent(eventId) {
+  const rows = [];
+  allRegs.forEach(reg => {
+    (reg.event_registrations || []).forEach(ev => {
+      if (ev.event_id === eventId) {
+        rows.push({ reg, ev });
+      }
+    });
+  });
+  return rows;
+}
+
+function teamRowSearchText(row) {
+  const { reg, ev } = row;
+  const parts = [
+    ev.school_code,
+    ev.school_name,
+    ev.teacher_name,
+    ev.teacher_email,
+    ev.teacher_phone,
+  ];
+  (ev.participants || []).forEach(p => {
+    parts.push(p.name, p.email, p.phone, p.grade);
+  });
+  return parts.join(' ').toLowerCase();
+}
+
+function maxParticipants(rows) {
+  return rows.reduce((max, row) => Math.max(max, row.ev.participants?.length || 0), 0);
+}
+
+function renderList(regs) {
+  const list = document.getElementById('reg-list');
+  const empty = document.getElementById('empty');
+  document.getElementById('stat-showing').textContent = String(regs.length);
+
+  if (!regs.length) {
+    list.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  list.innerHTML = regs.map(reg => {
+    const events = reg.event_registrations || [];
+    const eventNames = events.map(e => e.event_name).join(' · ') || '-';
+    const flatForDup = events.map(ev => ({ reg, ev }));
+    const dupKeys = duplicateKeysForRows(flatForDup);
+    const body = events.map(ev => {
+      const dup = dupKeys.has(rowDupKey({ reg, ev }));
+      const parts = (ev.participants || []).map(p => `
+        <div class="p-card">
+          <div class="p-name"><span>${esc(p.name)}</span><span class="p-grade">${esc(p.grade)}</span></div>
+          <div class="p-meta">${esc(p.phone)} · ${esc(p.email)}</div>
+        </div>
+      `).join('');
+
+      return `
+        <div class="ev-block">
+          <div class="ev-title">${esc(ev.event_name)}${dup ? '<span class="dup-badge">Duplicate</span>' : ''}</div>
+          <div class="detail-grid">
+            <div><div class="detail-lbl">School code</div><div class="detail-val">${esc(schoolCodeForEvent(ev))}${copyBtn(ev.school_code, 'Copy school code')}</div></div>
+            <div><div class="detail-lbl">School</div><div class="detail-val">${esc(ev.school_name)}</div></div>
+            <div><div class="detail-lbl">Teacher</div><div class="detail-val">${esc(ev.teacher_name)}</div></div>
+            <div><div class="detail-lbl">Teacher phone</div><div class="detail-val">${esc(ev.teacher_phone)}${copyBtn(ev.teacher_phone, 'Copy phone')}</div></div>
+            <div><div class="detail-lbl">Teacher email</div><div class="detail-val">${esc(ev.teacher_email)}${copyBtn(ev.teacher_email, 'Copy email')}</div></div>
+          </div>
+          <div class="p-section-lbl">Participants</div>
+          <div class="p-list">${parts || '<div class="detail-val">-</div>'}</div>
+          <div class="reg-actions core-admin-actions">
+            <button type="button" class="action-btn" data-action="edit-event" data-reg-id="${esc(reg.id)}" data-event-id="${esc(ev.id)}">Edit</button>
+            <button type="button" class="action-btn danger" data-action="delete-event" data-reg-id="${esc(reg.id)}" data-event-id="${esc(ev.id)}">Remove event</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <article class="reg-card" data-id="${esc(reg.registration_id)}">
+        <div class="reg-head" onclick="this.parentElement.classList.toggle('open')">
+          <div class="reg-head-main">
+            <div class="reg-id">${esc(schoolCodesForReg(reg))}${copyBtn(schoolCodesForReg(reg).split(' · ')[0], 'Copy school code')}</div>
+            <div class="reg-meta">${fmtDate(reg.submitted_at)} · ${esc(eventNames)}</div>
+          </div>
+          <div class="reg-head-side">
+            <div class="reg-head-actions core-admin-actions">
+              <button type="button" class="action-btn danger" data-action="delete-reg" data-reg-id="${esc(reg.id)}">Delete</button>
+            </div>
+            <div class="reg-badge">${esc(reg.mode)} · ${events.length} event${events.length === 1 ? '' : 's'}</div>
+            <span class="reg-chevron" aria-hidden="true">▾</span>
+          </div>
+        </div>
+        <div class="reg-body">${body}</div>
+      </article>
+    `;
+  }).join('');
+}
+
+function renderTeamList(rows) {
+  const list = document.getElementById('team-list');
+  const empty = document.getElementById('team-empty');
+  document.getElementById('stat-showing').textContent = String(rows.length);
+
+  if (!rows.length) {
+    list.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+
+  empty.style.display = 'none';
+  const dupKeys = duplicateKeysForRows(rows);
+  list.innerHTML = rows.map(({ reg, ev }) => {
+    const dup = dupKeys.has(rowDupKey({ reg, ev }));
+    const participants = (ev.participants || []).map(p => `
+      <div class="participant-chip">
+        <div class="participant-chip-name"><span>${esc(p.name)}</span></div>
+        <span class="p-grade">${esc(p.grade)}</span>
+        <div class="participant-chip-meta">${esc(p.phone)} · ${esc(p.email)}</div>
+      </div>
+    `).join('');
+
+    return `
+      <article class="team-entry">
+        <div class="team-entry-top">
+          <div>
+            <div class="team-school">${esc(ev.school_name)}${dup ? '<span class="dup-badge">Duplicate</span>' : ''}</div>
+            <div class="team-teacher">
+              ${esc(ev.teacher_name)}<br>
+              ${esc(ev.teacher_phone)} · ${esc(ev.teacher_email)}
+            </div>
+          </div>
+          <div class="team-meta">
+            <div class="team-reg-id">${esc(schoolCodeForEvent(ev))}${copyBtn(ev.school_code, 'Copy code')}</div>
+            <div class="team-date">${esc(fmtDateShort(reg.submitted_at))}</div>
+          </div>
+        </div>
+        <div class="team-participants">
+          <div class="team-participants-lbl">Participants (${(ev.participants || []).length})</div>
+          <div class="participant-grid">${participants || '<div class="detail-val">-</div>'}</div>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+function updateStats(regs) {
+  if (adminSession.role === 'team') {
+    document.getElementById('stat-lbl-total').textContent = 'Entries';
+    document.getElementById('stat-lbl-secondary').textContent = 'Participants';
+    const rows = teamRowsForEvent(selectedEventId);
+    const participants = rows.reduce((n, row) => n + (row.ev.participants?.length || 0), 0);
+    document.getElementById('stat-total').textContent = String(rows.length);
+    document.getElementById('stat-events').textContent = String(participants);
+    return;
+  }
+
+  updateCoreStats(filteredCoreFlatRows());
+}
+
+function applyFilter() {
+  syncSheetLightboxIfOpen();
+  updateResetFiltersBtn();
+  const empty = document.getElementById('empty');
+
+  if (adminSession.role === 'team') {
+    const rows = getTeamDisplayRows();
+    setTeamResultsView();
+    const teamEmpty = document.getElementById('team-empty');
+    if (!rows.length) {
+      document.getElementById('team-list').innerHTML = '';
+      document.getElementById('team-sheet-body').innerHTML = '';
+      document.getElementById('team-sheet-head').innerHTML = '';
+      teamEmpty.style.display = 'block';
+    } else {
+      teamEmpty.style.display = 'none';
+      if (displayLayout === 'sheet') {
+        renderRegistrationSheet('team-sheet-head', 'team-sheet-body', rows, { showEvent: false });
+      } else {
+        renderTeamList(rows);
+      }
+    }
+    updateStats(allRegs);
+    return;
+  }
+
+  const rows = filteredCoreFlatRows();
+  setCoreResultsView(coreViewMode);
+  updateCoreStats(rows);
+
+  if (coreViewMode === 'registrations') {
+    const regs = filterCoreRegistrations();
+    if (displayLayout === 'sheet') {
+      document.getElementById('reg-list').innerHTML = '';
+      renderRegistrationSheet('core-reg-sheet-head', 'core-reg-sheet-body', rows, {
+        showEvent: coreEventFilter === 'all',
+      });
+      empty.style.display = rows.length ? 'none' : 'block';
+    } else {
+      renderList(regs);
+      empty.style.display = regs.length ? 'none' : 'block';
+    }
+    return;
+  }
+
+  document.getElementById('reg-list').innerHTML = '';
+  renderExplorerTable(rows);
+  let hasRows = rows.length > 0;
+  if (coreViewMode === 'participants') {
+    const q = document.getElementById('search').value.trim().toLowerCase();
+    hasRows = rows.some(row =>
+      (row.ev.participants || []).some(p => !q || participantSearchText(row, p).includes(q)),
+    );
+  }
+  empty.style.display = hasRows && visibleFields().length ? 'none' : 'block';
+  if (!visibleFields().length) {
+    document.getElementById('empty-title').textContent = 'Pick at least one column';
+    document.getElementById('empty-hint').textContent = 'Enable columns above to build your view.';
+  } else {
+    document.getElementById('empty-title').textContent = 'No matches';
+    document.getElementById('empty-hint').textContent = 'Try a different search, event, or column selection.';
+  }
+}
+
+async function loadDashboard() {
+  const loading = document.getElementById('loading');
+  const errBox = document.getElementById('dash-err');
+  loading.classList.add('show');
+  errBox.classList.remove('show');
+
+  try {
+    const data = await fetchRegistrations(adminSession);
+    allRegs = data.registrations;
+    allInvites = data.inviteRequests;
+    lastRefreshedAt = new Date().toISOString();
+    updateLastSync();
+    updateInviteTabCount();
+    renderSchoolFilterOptions();
+    renderExportMenu();
+    saveSession();
+    setAdminView(adminSession.role);
+    if (dashTab === 'invites' && adminSession.role === 'core') {
+      setDashTab('invites');
+    } else {
+      applyFilter();
+    }
+  } catch (err) {
+    errBox.textContent = err.message || 'Could not load registrations.';
+    errBox.classList.add('show');
+    if (String(err.message).toLowerCase().includes('invalid password')) {
+      clearSession();
+      showScreen('login');
+    }
+  } finally {
+    loading.classList.remove('show');
+  }
+}
+
+function initEventTabs() {
+  renderEventTabs();
+}
+
+function countForEvent(eventId) {
+  return teamRowsForEvent(eventId).length;
+}
+
+function exportCoreExplorerCsv(rows) {
+  const cols = visibleFields();
+  if (!cols.length) return;
+  const header = cols.map(c => FIELD_LABELS[c]);
+  const csvRows = [header];
+
+  if (coreViewMode === 'schools' || coreViewMode === 'summary') {
+    const map = new Map();
+    rows.forEach(({ ev }) => {
+      const key = `${ev.event_id}::${ev.school_code || ev.school_name}`;
+      const cur = map.get(key) || {
+        schoolCode: ev.school_code || '',
+        schoolName: ev.school_name,
+        event: ev.event_name,
+        entries: 0,
+        participants: 0,
+      };
+      cur.entries += 1;
+      cur.participants += (ev.participants || []).length;
+      map.set(key, cur);
+    });
+    [...map.values()].forEach(item => {
+      csvRows.push(cols.map(c => item[c] ?? ''));
+    });
+    downloadCsv(csvRows, `cyfernode_core_${coreViewMode}_${Date.now()}.csv`);
+    return;
+  }
+
+  if (coreViewMode === 'teachers') {
+    rows.forEach(({ ev }) => {
+      const data = {
+        schoolCode: ev.school_code || '',
+        schoolName: ev.school_name,
+        event: ev.event_name,
+        teacherName: ev.teacher_name,
+        teacherPhone: ev.teacher_phone,
+        teacherEmail: ev.teacher_email,
+      };
+      csvRows.push(cols.map(c => data[c] ?? ''));
+    });
+    downloadCsv(csvRows, `cyfernode_core_teachers_${Date.now()}.csv`);
+    return;
+  }
+
+  if (coreViewMode === 'participants') {
+    rows.forEach(row => {
+      (row.ev.participants || []).forEach(p => {
+        const data = {
+          schoolCode: row.ev.school_code || '',
+          schoolName: row.ev.school_name,
+          event: row.ev.event_name,
+          teacherName: row.ev.teacher_name,
+          pName: p.name,
+          pEmail: p.email,
+          pPhone: p.phone,
+          pGrade: p.grade,
+        };
+        csvRows.push(cols.map(c => data[c] ?? ''));
+      });
+    });
+    downloadCsv(csvRows, `cyfernode_core_participants_${Date.now()}.csv`);
+  }
+}
+
+function exportCsv() {
+  if (adminSession.role === 'team') {
+    const rows = getTeamDisplayRows();
+    const pCount = Math.max(maxParticipants(rows), 1);
+    const header = [
+      'School Code', 'Submitted', 'School', 'Teacher', 'Teacher Phone', 'Teacher Email',
+    ];
+    for (let i = 1; i <= pCount; i += 1) {
+      header.push(`P${i} Name`, `P${i} Email`, `P${i} Phone`, `P${i} Grade`);
+    }
+    const csvRows = [header];
+    rows.forEach(({ reg, ev }) => {
+      const line = [
+        ev.school_code || '',
+        reg.submitted_at,
+        ev.school_name,
+        ev.teacher_name,
+        ev.teacher_phone,
+        ev.teacher_email,
+      ];
+      const parts = ev.participants || [];
+      for (let i = 0; i < pCount; i += 1) {
+        const p = parts[i];
+        line.push(p?.name ?? '', p?.email ?? '', p?.phone ?? '', p?.grade ?? '');
+      }
+      csvRows.push(line);
+    });
+    downloadCsv(csvRows, `cyfernode_${selectedEventId}_${Date.now()}.csv`);
+    return;
+  }
+
+  if (adminSession.role === 'core' && coreViewMode !== 'registrations') {
+    exportCoreExplorerCsv(filteredCoreFlatRows());
+    return;
+  }
+
+  const rows = [['School Code', 'Submitted', 'Mode', 'Event', 'School', 'Teacher', 'Teacher Phone', 'Teacher Email', 'Participant #', 'Name', 'Email', 'Phone', 'Grade']];
+  const regs = filterCoreRegistrations();
+  regs.forEach(reg => {
+    (reg.event_registrations || []).forEach(ev => {
+      const base = [
+        ev.school_code || '',
+        reg.submitted_at,
+        reg.mode,
+        ev.event_name,
+        ev.school_name,
+        ev.teacher_name,
+        ev.teacher_phone,
+        ev.teacher_email,
+      ];
+      const parts = ev.participants || [];
+      if (!parts.length) {
+        rows.push([...base, '', '', '', '', '']);
+      } else {
+        parts.forEach(p => {
+          rows.push([...base, p.participant_no, p.name, p.email, p.phone, p.grade]);
+        });
+      }
+    });
+  });
+  downloadCsv(rows, `cyfernode_registrations_${Date.now()}.csv`);
+}
+
+function downloadCsv(rows, filename) {
+  const csv = rows.map(r => r.map(c => `"${String(c ?? '').replace(/"/g, '""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function countParticipantsForEvent(eventId) {
+  return teamRowsForEvent(eventId).reduce((n, row) => n + (row.ev.participants?.length || 0), 0);
+}
+
+function countAllParticipants() {
+  let total = 0;
+  allRegs.forEach(reg => {
+    (reg.event_registrations || []).forEach(ev => {
+      total += (ev.participants || []).length;
+    });
+  });
+  return total;
+}
+
+function renderEventTabs() {
+  const tabs = document.getElementById('event-tabs');
+  if (!tabs) return;
+
+  if (adminSession.role === 'team') {
+    tabs.innerHTML = EVENTS.map(ev => {
+      const count = countForEvent(ev.id);
+      const active = ev.id === selectedEventId ? ' active' : '';
+      return `<button type="button" class="event-tab${active}" data-event-id="${esc(ev.id)}" role="tab">
+        ${esc(ev.name)}<span class="event-tab-count">${count}</span>
+      </button>`;
+    }).join('');
+    tabs.querySelectorAll('.event-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        selectedEventId = btn.dataset.eventId;
+        renderEventTabs();
+        updateResetFiltersBtn();
+        applyFilter();
+      });
+    });
+    return;
+  }
+
+  const allActive = coreEventFilter === 'all' ? ' active' : '';
+  tabs.innerHTML = `
+    <button type="button" class="event-tab event-tab-all${allActive}" data-event-id="all" role="tab">
+      All events<span class="event-tab-count">${countAllParticipants()}</span>
+    </button>
+    ${EVENTS.map(ev => {
+      const count = countParticipantsForEvent(ev.id);
+      const active = ev.id === coreEventFilter ? ' active' : '';
+      return `<button type="button" class="event-tab${active}" data-event-id="${esc(ev.id)}" role="tab">
+        ${esc(ev.name)}<span class="event-tab-count">${count}</span>
+      </button>`;
+    }).join('')}
+  `;
+  tabs.querySelectorAll('.event-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      coreEventFilter = btn.dataset.eventId;
+      renderEventTabs();
+      updateResetFiltersBtn();
+      applyFilter();
+    });
+  });
+}
+
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const errBox = document.getElementById('login-err');
+  const pw = document.getElementById('password').value;
+  const role = document.querySelector('input[name="role"]:checked')?.value === 'team' ? 'team' : 'core';
+  errBox.classList.remove('show');
+
+  try {
+    adminSession = { role, password: pw };
+    await fetchRegistrations(adminSession);
+    saveSession();
+    setAdminView(role);
+    showScreen('dash');
+    await loadDashboard();
+  } catch (err) {
+    adminSession = { role: 'core', password: '' };
+    errBox.textContent = err.message || 'Sign in failed.';
+    errBox.classList.add('show');
+  }
+});
+
+document.getElementById('btn-logout').addEventListener('click', () => {
+  clearSession();
+  allRegs = [];
+  document.getElementById('password').value = '';
+  document.querySelector('input[name="role"][value="core"]').checked = true;
+  document.body.classList.remove('view-team');
+  showScreen('login');
+});
+
+document.getElementById('btn-refresh').addEventListener('click', loadDashboard);
+document.getElementById('search').addEventListener('input', applyFilter);
+
+window.addEventListener('load', async () => {
+  document.getElementById('page').classList.add('show');
+  initLayoutToggle();
+  initToolbarTools();
+  initKeyboardShortcuts();
+  initAdminMutations();
+  initCoreExplorer();
+  initColumnActions();
+  initEventTabs();
+  const saved = loadSession();
+  if (saved) {
+    adminSession = saved;
+    setAdminView(saved.role);
+    showScreen('dash');
+    await loadDashboard();
+  }
+});
+</script>
+</body>
+</html>

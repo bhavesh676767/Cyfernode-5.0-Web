@@ -1,0 +1,17 @@
+# Supabase local/dev config (linked project: stjjvgnewkswzwmmzyoh)
+project_id = "stjjvgnewkswzwmmzyoh"
+
+[api]
+enabled = true
+
+[functions.register]
+verify_jwt = false
+
+[functions.admin-list]
+verify_jwt = false
+
+[functions.admin-mutate]
+verify_jwt = false
+
+[functions.request-invite]
+verify_jwt = false

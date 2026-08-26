@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt - Cyfernode 5.0</title>
+<meta name="description" content="Event prompt for Cyfernode 5.0.">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --text: #111114;
+  --muted: rgba(17, 17, 20, 0.56);
+  --orange: #d24500;
+  --font-sans: 'Satoshi', system-ui, sans-serif;
+  --font-px: 'Satoshi', system-ui, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100%;
+  background: #fff;
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+#exit-btn {
+  position: fixed;
+  top: 28px;
+  left: 28px;
+  z-index: 800;
+  font-family: var(--font-px);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: color 0.2s;
+}
+
+#exit-btn:hover {
+  color: var(--orange);
+}
+
+#exit-btn i {
+  font-size: 15px;
+}
+
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 100px 24px 56px;
+}
+
+.panel {
+  width: min(100%, 640px);
+}
+
+.head {
+  margin-bottom: 28px;
+}
+
+.eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.title {
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+}
+
+.prompt-body {
+  font-size: 16px;
+  line-height: 1.65;
+  color: rgba(17, 17, 20, 0.82);
+}
+
+.prompt-body p + p {
+  margin-top: 14px;
+}
+
+.not-found {
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  #exit-btn {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+  }
+
+  .page {
+    padding: 100px 16px 40px;
+  }
+}
+</style>
+</head>
+<body>
+<a href="/prompts" id="exit-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
+
+<main class="page">
+  <article class="panel" id="prompt-panel" hidden>
+    <header class="head">
+      <p class="eyebrow" id="prompt-category"></p>
+      <h1 class="title" id="prompt-title"></h1>
+    </header>
+    <div class="prompt-body" id="prompt-body">
+      <p>The full event prompt will be published here soon.</p>
+    </div>
+  </article>
+
+  <div class="panel not-found" id="prompt-not-found" hidden>
+    <p>Prompt not found.</p>
+    <p><a href="/prompts">Return to prompts</a></p>
+  </div>
+</main>
+
+<script src="/prompts/events.js"></script>
+<script>
+(function () {
+  const slug = location.pathname.replace(/\/$/, '').split('/').pop() || ''
+  const event = window.getCyfernodeEventByPromptSlug(slug)
+  const panel = document.getElementById('prompt-panel')
+  const notFound = document.getElementById('prompt-not-found')
+
+  if (!event) {
+    document.title = 'Prompt not found - Cyfernode 5.0'
+    notFound.hidden = false
+    return
+  }
+
+  document.title = `${event.name} Prompt - Cyfernode 5.0`
+  document.getElementById('prompt-category').textContent = event.category
+  document.getElementById('prompt-title').textContent = event.name
+  panel.hidden = false
+})()
+</script>
+</body>
+</html>

@@ -6,7 +6,7 @@ import { Home } from '@/pages/Home/Home'
  * deliberately declares no catch-all: an unmatched path must render nothing
  * rather than cover the Framer page that lives there.
  *
- * "/register" is intentionally absent — it is a standalone document at
+ * "/register" is intentionally absent; it is a standalone document at
  * public/register/index.html, reached by a full page load, not by this router.
  */
 export function AppRouter() {

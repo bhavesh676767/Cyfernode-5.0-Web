@@ -11,6 +11,7 @@ const FRAMER_SELECTORS = ['#main']
 const REACT_PATHS = []
 const REGISTER_PATH = '/register'
 const REGISTER_TRIGGER_SELECTOR = '.framer-1umqj66-container'
+const INVITE_TRIGGER_SELECTOR = '.framer-13hwuku-container'
 
 export function isReactPath(pathname) {
   return REACT_PATHS.includes(pathname)
@@ -63,7 +64,7 @@ export function canonicalizeIndexHtmlUrl() {
  * client-side route change; the short delay lets the fade-out play first.
  */
 export function enableRegistrationTrigger() {
-  if (window.__cyfernodeRegisterTriggerEnabled) return
+  if (window.__cyfernodeFramerCtaEnabled || window.__cyfernodeRegisterTriggerEnabled) return
   window.__cyfernodeRegisterTriggerEnabled = true
 
   document.addEventListener('click', (event) => {
@@ -80,5 +81,26 @@ export function enableRegistrationTrigger() {
     window.setTimeout(() => {
       window.location.assign(REGISTER_PATH)
     }, 180)
+  }, true)
+}
+
+/**
+ * The invite request CTA is rendered by Framer. Open the React modal instead
+ * of navigating away.
+ */
+export function enableInviteRequestTrigger() {
+  if (window.__cyfernodeFramerCtaEnabled || window.__cyfernodeInviteTriggerEnabled) return
+  window.__cyfernodeInviteTriggerEnabled = true
+
+  document.addEventListener('click', (event) => {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+    if (!(event.target instanceof Element)) return
+
+    const trigger = event.target.closest(INVITE_TRIGGER_SELECTOR)
+    if (!trigger) return
+
+    event.preventDefault()
+    event.stopPropagation()
+    window.dispatchEvent(new CustomEvent('cyfernode:open-invite-modal'))
   }, true)
 }

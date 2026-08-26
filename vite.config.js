@@ -6,31 +6,49 @@ import { defineConfig } from 'vite'
 const rootDir = path.dirname(fileURLToPath(import.meta.url))
 const REACT_ENTRY = '/src/main.jsx'
 
-const REGISTER_DOCUMENT = '/register/index.html'
-const REGISTER_ALIASES = new Set(['/register', '/register/', '/register.html'])
+const STANDALONE_ROUTES = [
+  {
+    document: '/register/index.html',
+    aliases: new Set(['/register', '/register/', '/register.html']),
+  },
+  {
+    document: '/admin/index.html',
+    aliases: new Set(['/admin', '/admin/', '/admin.html']),
+  },
+  {
+    document: '/prompts/index.html',
+    aliases: new Set(['/prompts', '/prompts/', '/prompts.html']),
+  },
+]
 
 /**
- * `/register` is a standalone document in `public/`, not a React route, so the
- * SPA fallback must not claim it. Static hosts resolve `public/register/index.html`
- * at `/register` on their own; this only teaches `vite dev` and `vite preview`
- * to do the same.
+ * Standalone documents in `public/` are not React routes, so the SPA fallback
+ * must not claim them. Static hosts resolve these on their own; this teaches
+ * `vite dev` and `vite preview` to do the same.
  */
-function serveRegisterDocument() {
+function serveStandaloneDocuments() {
   const rewrite = (req, _res, next) => {
     const url = req.url || ''
     const queryAt = url.indexOf('?')
     const pathname = queryAt === -1 ? url : url.slice(0, queryAt)
 
-    if (REGISTER_ALIASES.has(pathname)) {
-      req.url = REGISTER_DOCUMENT + (queryAt === -1 ? '' : url.slice(queryAt))
+    for (const route of STANDALONE_ROUTES) {
+      if (route.aliases.has(pathname)) {
+        req.url = route.document + (queryAt === -1 ? '' : url.slice(queryAt))
+        break
+      }
+    }
+
+    if (req.url === url && /\/prompts\/[a-z0-9-]+-prompt\/?$/.test(pathname)) {
+      const normalized = pathname.replace(/\/$/, '')
+      req.url = `${normalized}/index.html${queryAt === -1 ? '' : url.slice(queryAt)}`
     }
 
     next()
   }
 
   return {
-    name: 'serve-register-document',
-    // Middleware added here runs before Vite's internal SPA fallback.
+    name: 'serve-standalone-documents',
     configureServer: (server) => void server.middlewares.use(rewrite),
     configurePreviewServer: (server) => void server.middlewares.use(rewrite),
   }
@@ -50,7 +68,12 @@ function injectReactEntry() {
           return html
         }
 
-        return html.replace(
+        const withCta = html.replace(
+          '</body>',
+          '<script src="/framer-cta.js"></script>\n</body>',
+        )
+
+        return withCta.replace(
           '</body>',
           `<script type="module" src="${REACT_ENTRY}"></script>\n</body>`,
         )
@@ -64,7 +87,7 @@ export default defineConfig({
   // embedded Framer page visible. `/register` is excluded from that fallback by
   // serveRegisterDocument().
   appType: 'spa',
-  plugins: [react(), injectReactEntry(), serveRegisterDocument()],
+  plugins: [react(), injectReactEntry(), serveStandaloneDocuments()],
   resolve: {
     alias: {
       '@': path.resolve(rootDir, 'src'),

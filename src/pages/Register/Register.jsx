@@ -58,7 +58,7 @@ export function Register() {
               <p>By registering, you agree to receive essential event updates from Cyfernode.</p>
               <Button type="submit">{submitted ? 'Registration received' : 'Register now'} <span aria-hidden="true">↗</span></Button>
             </div>
-            {submitted && <p className={styles.success} role="status">Thanks — we’ll be in touch with your next steps.</p>}
+            {submitted && <p className={styles.success} role="status">Thanks! We'll be in touch with your next steps.</p>}
           </form>
         </section>
       </main>

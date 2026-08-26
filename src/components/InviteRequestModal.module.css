@@ -1,0 +1,127 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483646;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.dialog {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 440px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  background: #171717;
+  color: #fff;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+  padding: 1.25rem;
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.title {
+  margin: 0;
+  font: 600 1.25rem/1.2 var(--font-sans, system-ui, sans-serif);
+}
+
+.subtitle {
+  margin: 0.45rem 0 0;
+  color: rgba(255, 255, 255, 0.65);
+  font: 400 0.92rem/1.5 var(--font-sans, system-ui, sans-serif);
+}
+
+.close {
+  appearance: none;
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.form {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.label {
+  font: 600 0.82rem/1.2 var(--font-sans, system-ui, sans-serif);
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.input {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  background: #111;
+  color: #fff;
+  padding: 0.85rem 0.95rem;
+  font: 400 0.95rem/1.2 var(--font-sans, system-ui, sans-serif);
+}
+
+.input:focus {
+  outline: 2px solid rgba(255, 79, 79, 0.45);
+  outline-offset: 1px;
+}
+
+.error,
+.success {
+  margin: 0;
+  font: 500 0.86rem/1.45 var(--font-sans, system-ui, sans-serif);
+}
+
+.error {
+  color: #ff8a8a;
+}
+
+.success {
+  color: #8dffb0;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  margin-top: 0.35rem;
+}
+
+.secondary,
+.primary {
+  appearance: none;
+  border-radius: 999px;
+  padding: 0.72rem 1rem;
+  font: 600 0.9rem/1 var(--font-sans, system-ui, sans-serif);
+  cursor: pointer;
+}
+
+.secondary {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: transparent;
+  color: #fff;
+}
+
+.primary {
+  border: none;
+  background: #ff4f4f;
+  color: #fff;
+}
+
+.primary:disabled,
+.secondary:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}

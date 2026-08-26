@@ -1,0 +1,3 @@
+export const SUPABASE_URL = 'https://stjjvgnewkswzwmmzyoh.supabase.co'
+export const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0amp2Z25ld2tzd3p3bW16eW9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NTM2NDgsImV4cCI6MjEwMzMyOTY0OH0.l_vf_ovBAbMP_iIn_easi8ztLkC13SJr-JxuWtdM9ng'
+export const REQUEST_INVITE_ENDPOINT = `${SUPABASE_URL}/functions/v1/request-invite`

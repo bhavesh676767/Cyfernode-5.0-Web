@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register — Cyfernode 5.0 | Inter-School Tech Symposium</title>
-<meta name="description" content="Register for Cyfernode 5.0 — the Annual Inter-School Tech Symposium by CyferNauts at Summer Fields School, DLF Phase-1, Gurugram.">
+<title>Register - Cyfernode 5.0 | Inter-School Tech Symposium</title>
+<meta name="description" content="Register for Cyfernode 5.0 - the Annual Inter-School Tech Symposium by CyferNauts at Summer Fields School, DLF Phase-1, Gurugram.">
 <meta name="keywords" content="Cyfernode register, CyferNauts, event registration, tech symposium, Summer Fields School">
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
@@ -12,8 +12,8 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Cyfernode 5.0">
-<meta property="og:title" content="Register — Cyfernode 5.0">
-<meta property="og:description" content="Sign up for events at Cyfernode 5.0 — 25+ schools, 200+ students, Gurugram's inter-school tech symposium.">
+<meta property="og:title" content="Register - Cyfernode 5.0">
+<meta property="og:description" content="Sign up for events at Cyfernode 5.0 - 25+ schools, 200+ students, Gurugram's inter-school tech symposium.">
 <meta property="og:url" content="https://cyfernode.com/register">
 <meta property="og:image" content="https://cyfernode.com/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
 <link rel="canonical" href="https://cyfernode.com/register">
@@ -55,7 +55,7 @@
   /* Feedback */
   --danger: #c81e1e;
 
-  /* No shadows — flat white + orange */
+  /* No shadows - flat white + orange */
   --shadow-1: none;
   --shadow-2: none;
   --shadow-3: none;
@@ -461,7 +461,7 @@ html, body {
   transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Step tracker — hidden; progress bar is enough */
+/* Step tracker - hidden; progress bar is enough */
 .step-track {
   display: none;
 }
@@ -757,7 +757,7 @@ html, body {
   border-color: var(--text);
   color: var(--white);
 }
-/* One-line clip window — only one label visible at a time */
+/* One-line clip window - only one label visible at a time */
 .btn-p .btn-slide,
 .btn-p .btn-slide2,
 .btn-s .btn-slide,
@@ -1090,6 +1090,168 @@ html, body {
   filter: brightness(1.08);
 }
 
+/* Duplicate detection modal */
+.dup-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 12000;
+  background: rgba(17, 17, 20, 0.46);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.dup-backdrop.open { display: flex; }
+body.dup-open { overflow: hidden; }
+.dup-card {
+  width: min(520px, 100%);
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 24px 80px rgba(17, 17, 20, 0.16);
+  overflow: hidden;
+  animation: dupIn 0.28s ease;
+}
+@keyframes dupIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+.dup-top {
+  padding: 22px 22px 0;
+}
+.dup-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+.dup-badge.block {
+  color: #b42318;
+  background: #fef3f2;
+  border: 1px solid rgba(180, 35, 24, 0.16);
+}
+.dup-badge.confirm {
+  color: var(--orange);
+  background: var(--orange-tint);
+  border: 1px solid var(--orange-line);
+}
+.dup-title {
+  font-size: clamp(22px, 4vw, 28px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+.dup-text {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--muted-strong);
+  line-height: 1.55;
+}
+.dup-body {
+  padding: 18px 22px 0;
+}
+.dup-panel {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface2);
+  padding: 14px 16px;
+  margin-top: 14px;
+}
+.dup-panel-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.dup-code {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--orange);
+  background: var(--orange-tint);
+  border: 1px solid var(--orange-line);
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}
+.dup-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.dup-pill {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.dup-conflict {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #fff7f6;
+  border: 1px solid rgba(180, 35, 24, 0.12);
+  margin-top: 10px;
+}
+.dup-conflict-name {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.dup-conflict-meta {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted-strong);
+  line-height: 1.45;
+}
+.dup-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 22px;
+}
+.dup-btn {
+  appearance: none;
+  border: none;
+  font-family: var(--font-px);
+  font-size: 15px;
+  font-weight: 700;
+  padding: 14px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  flex: 1;
+  min-width: 140px;
+  transition: filter 0.18s, background 0.18s, border-color 0.18s;
+}
+.dup-btn-primary {
+  background: var(--orange);
+  color: var(--on-accent);
+}
+.dup-btn-primary:hover { filter: brightness(1.06); }
+.dup-btn-ghost {
+  background: var(--white);
+  color: var(--text);
+  border: 2px solid var(--border);
+}
+.dup-btn-ghost:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
 /* ── RESPONSIVENESS ───────────────────────────────────── */
 @media (max-width: 768px) {
   #exit-btn {
@@ -1105,6 +1267,24 @@ html, body {
   }
   .events-grid {
     grid-template-columns: 1fr;
+  }
+  .s1-foot {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
+  .s1-foot .btn-row {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 10px;
+  }
+  .s1-foot .btn-row .btn-p,
+  .s1-foot .btn-row .btn-s {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+    padding-inline: 16px;
   }
   .btn-row {
     flex-direction: column;
@@ -1174,7 +1354,7 @@ html, body {
     <div class="form-shell">
       <div class="ev-strip">
         <div class="ev-dot" id="ev-dot"></div>
-        <div class="ev-strip-name" id="ev-name">—</div>
+        <div class="ev-strip-name" id="ev-name">-</div>
         <div class="ev-strip-count" id="ev-count">Event 1 / 1</div>
       </div>
       <div class="step-track" id="step-track"></div>
@@ -1202,6 +1382,18 @@ html, body {
     </div>
   </div>
 
+</div>
+
+<div id="dup-backdrop" class="dup-backdrop" aria-hidden="true">
+  <div class="dup-card" role="dialog" aria-modal="true" aria-labelledby="dup-title">
+    <div class="dup-top">
+      <div class="dup-badge" id="dup-badge"></div>
+      <div class="dup-title" id="dup-title"></div>
+      <div class="dup-text" id="dup-text"></div>
+    </div>
+    <div class="dup-body" id="dup-body"></div>
+    <div class="dup-actions" id="dup-actions"></div>
+  </div>
 </div>
 
 <script>
@@ -1259,34 +1451,22 @@ function defineEvent(id, name, tag, evMode, count, eligibility) {
 }
 
 const EVENTS = [
-  defineEvent('fontastic', 'Fontastic', 'Poster Designing', 'Online', 2, '9th – 12th'),
-  defineEvent('blendered', 'Blendered', '3D Modeling', 'Online', 2, '9th – 12th'),
-  defineEvent('unscripted', 'Unscripted', 'Movie Making', 'Online', 4, '9th – 12th'),
-  defineEvent('clue-less', 'Clue-Less', 'Cyber Investigation', 'Online', 2, '9th – 12th'),
-  defineEvent('runtime-terror', 'Runtime Terror', 'Competitive Programming', 'Hybrid', 2, '11th – 12th'),
-  defineEvent('buildout', 'Buildout', 'SAAS Product Development', 'Hybrid', 4, '10th – 12th'),
-  defineEvent('breadboard', 'Breadboard', 'Hardware Engineering', 'Hybrid', 2, '9th – 12th'),
-  defineEvent('wireframe', 'Wireframe', 'UI/UX Design', 'Online', 2, '9th – 12th'),
-  defineEvent('entrepreneur-exe', 'Entreprenuer.exe', 'Innovation & Pitching', 'Hybrid', 2, '11th – 12th'),
-  defineEvent('unbranded', 'Unbranded', 'Rebranding', 'Hybrid', 3, '9th – 12th'),
+  defineEvent('fontastic', 'Fontastic', 'Poster Designing', 'Online', 2, '9th - 12th'),
+  defineEvent('blendered', 'Blendered', '3D Modeling', 'Online', 2, '9th - 12th'),
+  defineEvent('unscripted', 'Unscripted', 'Movie Making', 'Online', 4, '9th - 12th'),
+  defineEvent('clue-less', 'Clue-Less', 'Cyber Investigation', 'Online', 2, '9th - 12th'),
+  defineEvent('runtime-terror', 'Runtime Terror', 'Competitive Programming', 'Hybrid', 2, '11th - 12th'),
+  defineEvent('buildout', 'Buildout', 'SAAS Product Development', 'Hybrid', 4, '10th - 12th'),
+  defineEvent('breadboard', 'Breadboard', 'Hardware Engineering', 'Hybrid', 2, '9th - 12th'),
+  defineEvent('wireframe', 'Wireframe', 'UI/UX Design', 'Online', 2, '9th - 12th'),
+  defineEvent('entrepreneur-exe', 'Entreprenuer.exe', 'Innovation & Pitching', 'Hybrid', 2, '11th - 12th'),
+  defineEvent('unbranded', 'Unbranded', 'Rebranding', 'Hybrid', 3, '9th - 12th'),
 ];
 
-// Mapping of event IDs to their Google Apps Script endpoint URLs.
-// Entries carried over from the previous event list are marked; the rest are new
-// events that still need their own endpoint. An event with no endpoint here is
-// reported as unsent at submit time rather than silently dropped.
-const BACKEND_URLS = {
-  'fontastic': 'https://script.google.com/macros/s/AKfycbzbqvK166q1zCbrD2zcr_1qhV9UdMFjEv6xF5-P_HBMcPdC_IxXNtOVZcKZIbRELhkz/exec',      // was slop-studio
-  'blendered': 'https://script.google.com/macros/s/AKfycbzrQFM-17KXY0Y5y_lyUL0p1-dsCRXX8tzgOzsuWCBtKy4hIiNmPj79JHAwORMNhOnh/exec',      // was polyverse
-  'unscripted': 'https://script.google.com/macros/s/AKfycbyxEReUjKrgjIF3SPtltA6BRJCLnqBW1jNlOK9NjStIpQ4v1w4sOM6d3alsGFvjgOKx1A/exec',   // was take-one
-  'clue-less': '',                                                                                                                       // TODO: add endpoint
-  'runtime-terror': 'https://script.google.com/macros/s/AKfycbzAmlOWWldlmkVKw_24aY2kJWQdFu_KWnsH43jEGdOo51yXEJE2PIzWzmZ7EzOXSc31/exec', // was logic-league
-  'buildout': '',                                                                                                                        // TODO: add endpoint
-  'breadboard': '',                                                                                                                      // TODO: add endpoint
-  'wireframe': '',                                                                                                                       // TODO: add endpoint
-  'entrepreneur-exe': 'https://script.google.com/macros/s/AKfycbzIc58YTEbzpXjWjU6AKFf9biBjwjKRKqUudUCg0Z6eRwmD8LPEJsXkBebm_kk_T8G5OA/exec', // was launch-lab
-  'unbranded': 'https://script.google.com/macros/s/AKfycbz9t7plw-Hk4l2MJoWpoNHq4MhEVJLK-uHQasYlrV4RGsJBidmCt5LkSVQBYabArDho/exec'        // was rebrand-lab
-};
+// ── SUPABASE (registrations stored via Edge Function) ───
+const SUPABASE_URL = 'https://stjjvgnewkswzwmmzyoh.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0amp2Z25ld2tzd3p3bW16eW9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NTM2NDgsImV4cCI6MjEwMzMyOTY0OH0.l_vf_ovBAbMP_iIn_easi8ztLkC13SJr-JxuWtdM9ng';
+const REGISTER_ENDPOINT = `${SUPABASE_URL}/functions/v1/register`;
 
 // ── GLOBAL APPLICATION STATE ──────────────────────────
 const STORAGE_KEY = 'cyfrn5_reg_v5';
@@ -1429,7 +1609,7 @@ function clearState() {
   } catch (e) {}
 }
 
-// Temporary auto‑fill for testing – populates the current question's inputs with sample data
+// Temporary autofill for testing - populates the current question's inputs with sample data
 function autoFillCurrentEvent() {
   const ev = curEv();
   if (!ev) return;
@@ -1688,8 +1868,8 @@ function renderSteps(ev) {
 const GRADE_LABELS = { 9: '9th', 10: '10th', 11: '11th', 12: '12th' };
 
 /**
- * Eligibility is written as an inclusive range of class numbers ("9th – 12th",
- * "10th – 12th", "11th – 12th"). Every class in that range gets a grade button,
+ * Eligibility is written as an inclusive range of class numbers ("9th - 12th",
+ * "10th - 12th", "11th - 12th"). Every class in that range gets a grade button,
  * so a new range needs no code change here.
  */
 function getEligibleGrades(eligibilityStr) {
@@ -1745,7 +1925,7 @@ function renderField() {
   if (isMultiShared) {
     const note = document.createElement('div');
     note.className = 'shared-note';
-    note.textContent = 'School and teacher details are already saved — add participants for this event only.';
+    note.textContent = 'School and teacher details are already saved - add participants for this event only.';
     block.appendChild(note);
   }
   
@@ -2118,19 +2298,19 @@ function showDone() {
         <div class="summary-grid">
           <div class="summary-field">
             <div class="summary-label">School Name</div>
-            <div class="summary-val">${first.schoolName || '—'}</div>
+            <div class="summary-val">${first.schoolName || '-'}</div>
           </div>
           <div class="summary-field">
             <div class="summary-label">Teacher Incharge</div>
-            <div class="summary-val">${first.teacherIncharge.name || '—'}</div>
+            <div class="summary-val">${first.teacherIncharge.name || '-'}</div>
           </div>
           <div class="summary-field">
             <div class="summary-label">Teacher Contact</div>
-            <div class="summary-val">${forDisplay(first.teacherIncharge.phone) || '—'}</div>
+            <div class="summary-val">${forDisplay(first.teacherIncharge.phone) || '-'}</div>
           </div>
           <div class="summary-field">
             <div class="summary-label">Teacher Email</div>
-            <div class="summary-val">${first.teacherIncharge.email || '—'}</div>
+            <div class="summary-val">${first.teacherIncharge.email || '-'}</div>
           </div>
         </div>
       </div>
@@ -2145,7 +2325,7 @@ function showDone() {
       <div class="summary-grid">
         <div class="summary-field">
           <div class="summary-label">School Name</div>
-          <div class="summary-val">${evData.schoolName || '—'}</div>
+          <div class="summary-val">${evData.schoolName || '-'}</div>
         </div>
         ${evData.teamName ? `
         <div class="summary-field">
@@ -2154,11 +2334,11 @@ function showDone() {
         </div>` : ''}
         <div class="summary-field">
           <div class="summary-label">Teacher Incharge</div>
-          <div class="summary-val">${evData.teacherIncharge.name || '—'}</div>
+          <div class="summary-val">${evData.teacherIncharge.name || '-'}</div>
         </div>
         <div class="summary-field">
           <div class="summary-label">Teacher Contact</div>
-          <div class="summary-val">${forDisplay(evData.teacherIncharge.phone) || '—'}</div>
+          <div class="summary-val">${forDisplay(evData.teacherIncharge.phone) || '-'}</div>
         </div>
       </div>`}
       ${evData.teamName && isMulti ? `
@@ -2174,7 +2354,7 @@ function showDone() {
     
     evData.participants.forEach(p => {
       html += `<div class="summary-p-item">
-        <div class="p-item-name"><span>${p.name || '—'}</span> <span class="p-item-grade">${p.grade}</span></div>
+        <div class="p-item-name"><span>${p.name || '-'}</span> <span class="p-item-grade">${p.grade}</span></div>
         <div class="p-item-meta">${forDisplay(p.phone)}</div>
         <div class="p-item-meta">${p.email}</div>
       </div>`;
@@ -2218,87 +2398,190 @@ function downloadCSV() {
   el.remove();
 }
 
-async function submitData() {
-  const payload = buildExcelPayload();
+async function submitData(confirmMerge = false) {
+  const payload = { ...buildExcelPayload(), confirmMerge };
   const btn = document.getElementById('btn-sub');
   const errBox = document.getElementById('sub-err');
 
-  setSlideButton(btn, 'Sending data…');
+  setSlideButton(btn, confirmMerge ? 'Linking & submitting…' : 'Sending data…');
   btn.disabled = true;
   errBox.classList.remove('show');
   errBox.textContent = '';
+  closeDupModal();
 
-  let allSuccess = true;
-  const unsent = [];
+  try {
+    const res = await fetch(REGISTER_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'apikey': SUPABASE_ANON_KEY,
+      },
+      body: JSON.stringify(payload),
+    });
 
-  // Submit for each selected event
-  for (const id of selEvs) {
-    const scriptUrl = BACKEND_URLS[id];
+    const result = await res.json().catch(() => ({}));
 
-    const evData = payload.events.find(e => e.eventId === id);
-    if (!evData) continue;
-
-    // An event with no endpoint must never be reported as saved.
-    if (!scriptUrl) {
-      console.error('No backend endpoint configured for event:', id);
-      unsent.push(evData.eventName);
-      allSuccess = false;
-      continue;
+    if (result.code === 'PARTICIPANT_DUPLICATE') {
+      showParticipantDupModal(result);
+      setSlideButton(btn, 'Confirm & Submit →');
+      btn.disabled = false;
+      return;
     }
 
-    const postData = {
-      registrationId: payload.registrationId,
-      timestamp: payload.timestamp,
-      mode: payload.registrationMode,
-      ...evData
-    };
-
-    try {
-      await fetch(scriptUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'text/plain;charset=utf-8',
-        },
-        body: JSON.stringify(postData)
-      });
-    } catch (err) {
-      console.error('Error submitting for', id, err);
-      unsent.push(evData.eventName);
-      allSuccess = false;
+    if (result.code === 'NEEDS_CONFIRMATION') {
+      showMergeConfirmModal(result);
+      setSlideButton(btn, 'Confirm & Submit →');
+      btn.disabled = false;
+      return;
     }
-  }
 
-  if (allSuccess) {
-    setSlideButton(btn, 'Sending emails…');
-    try {
-      const emailRes = await fetch('/api/send-registration-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const emailData = await emailRes.json().catch(() => ({}));
-      if (!emailRes.ok || !emailData.ok) {
-        console.warn('Confirmation email issue:', emailData.error || emailRes.status);
-      }
-    } catch (emailErr) {
-      console.warn('Confirmation email failed (registration still saved):', emailErr);
+    if (!res.ok || !result.ok) {
+      throw new Error(result.error || `Save failed (${res.status})`);
     }
+
     setSlideButton(btn, 'Submitted ✓');
+    if (result.schoolCode) {
+      errBox.textContent = result.linkedSchool
+        ? `Registration saved and linked to school code ${result.schoolCode}.`
+        : `Registration saved. School code: ${result.schoolCode}.`;
+      errBox.classList.add('show');
+      errBox.style.color = 'var(--orange)';
+    }
     clearState();
-  } else {
-    setSlideButton(btn, 'Submission incomplete');
-    errBox.textContent = unsent.length
-      ? `Could not save: ${unsent.join(', ')}. Nothing was lost — download your details below and contact the organisers.`
+  } catch (err) {
+    console.error('Registration submit failed:', err);
+    setSlideButton(btn, 'Submission failed');
+    errBox.style.color = '';
+    errBox.textContent = err.message
+      ? `${err.message}. Nothing was lost - download your details below and try again.`
       : 'Something went wrong while saving. Download your details below and contact the organisers.';
     errBox.classList.add('show');
   }
-  
+
   setTimeout(() => {
     setSlideButton(btn, 'Confirm & Submit →');
     btn.disabled = false;
   }, 3500);
 }
+
+function closeDupModal() {
+  const backdrop = document.getElementById('dup-backdrop');
+  backdrop.classList.remove('open');
+  backdrop.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('dup-open');
+}
+
+function escHtml(s) {
+  return String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function showParticipantDupModal(result) {
+  const badge = document.getElementById('dup-badge');
+  const title = document.getElementById('dup-title');
+  const text = document.getElementById('dup-text');
+  const body = document.getElementById('dup-body');
+  const actions = document.getElementById('dup-actions');
+
+  badge.className = 'dup-badge block';
+  badge.textContent = 'Participant already registered';
+  title.textContent = 'This student is already in another event';
+  text.textContent = result.error || 'Each participant can only register for one event. We match by full name, school, and class.';
+
+  const conflicts = result.conflicts || [];
+  body.innerHTML = conflicts.slice(0, 4).map((c) => `
+    <div class="dup-conflict">
+      <div class="dup-conflict-name">${escHtml(c.participantName)}</div>
+      <div class="dup-conflict-meta">
+        ${escHtml(c.grade)} · ${escHtml(c.schoolName)}<br>
+        Already in <strong>${escHtml(c.existingEventName)}</strong>
+        ${c.newEventName && c.newEventName !== c.existingEventName ? ` · cannot also join <strong>${escHtml(c.newEventName)}</strong>` : ''}
+      </div>
+    </div>
+  `).join('');
+
+  actions.innerHTML = `
+    <button type="button" class="dup-btn dup-btn-primary" id="dup-close-block">Review my details</button>
+  `;
+  document.getElementById('dup-close-block').onclick = closeDupModal;
+
+  const backdrop = document.getElementById('dup-backdrop');
+  backdrop.classList.add('open');
+  backdrop.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('dup-open');
+}
+
+function showMergeConfirmModal(result) {
+  const badge = document.getElementById('dup-badge');
+  const title = document.getElementById('dup-title');
+  const text = document.getElementById('dup-text');
+  const body = document.getElementById('dup-body');
+  const actions = document.getElementById('dup-actions');
+
+  const school = result.schoolMatch;
+  const teacher = result.teacherMatch;
+
+  badge.className = 'dup-badge confirm';
+  badge.textContent = school ? 'Existing school found' : 'Existing teacher found';
+  title.textContent = school
+    ? 'We already have this school on file'
+    : 'Same teacher in charge detected';
+  text.textContent = school
+    ? 'Your new event registration will use the same school code and stay grouped with your previous entries.'
+    : 'This teacher is already linked to this school in our records. You can continue and add your new event under the same profile.';
+
+  let panels = '';
+  if (school) {
+    panels += `
+      <div class="dup-panel">
+        <div class="dup-panel-title">School profile</div>
+        <div class="dup-code">${escHtml(school.schoolCode)}</div>
+        <div class="dup-text" style="margin-bottom:10px">${escHtml(school.schoolName)}</div>
+        <div class="dup-list">
+          ${(school.existingEvents || []).map((ev) => `<span class="dup-pill">${escHtml(ev.eventName)}</span>`).join('')}
+        </div>
+      </div>
+    `;
+  }
+  if (teacher) {
+    panels += `
+      <div class="dup-panel">
+        <div class="dup-panel-title">Teacher in charge</div>
+        <div class="dup-text"><strong>${escHtml(teacher.teacherName)}</strong><br>${escHtml(teacher.teacherEmail)}</div>
+        ${teacher.existingEvents?.length ? `
+          <div class="dup-list" style="margin-top:10px">
+            ${teacher.existingEvents.map((ev) => `<span class="dup-pill">${escHtml(ev.eventName)}</span>`).join('')}
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }
+  body.innerHTML = panels;
+
+  actions.innerHTML = `
+    <button type="button" class="dup-btn dup-btn-ghost" id="dup-cancel-merge">Go back</button>
+    <button type="button" class="dup-btn dup-btn-primary" id="dup-confirm-merge">Link &amp; continue</button>
+  `;
+  document.getElementById('dup-cancel-merge').onclick = closeDupModal;
+  document.getElementById('dup-confirm-merge').onclick = () => submitData(true);
+
+  const backdrop = document.getElementById('dup-backdrop');
+  backdrop.classList.add('open');
+  backdrop.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('dup-open');
+}
+
+document.getElementById('dup-backdrop').addEventListener('click', (e) => {
+  if (e.target.id === 'dup-backdrop') closeDupModal();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeDupModal();
+});
 </script>
 <script src="/invite-widget.js"></script>
 </body>

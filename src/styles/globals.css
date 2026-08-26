@@ -20,12 +20,28 @@ html.is-navigating-to-register #main {
   transform: translateY(-10px);
 }
 
-.framer-1umqj66-container {
+.framer-1umqj66-container,
+.framer-13hwuku-container,
+.framer-le5629,
+.framer-5q2vr0 {
   cursor: pointer;
 }
 
 #cyfernode-react-root {
-  isolation: isolate;
+  position: relative;
+  z-index: 2;
+}
+
+html.invite-modal-open #main,
+html.social-modal-open #main {
+  pointer-events: none;
+}
+
+html.invite-modal-open #main,
+html.invite-modal-open #cyfernode-react-root,
+html.social-modal-open #main,
+html.social-modal-open #cyfernode-react-root {
+  filter: none;
 }
 
 #cyfernode-react-root[data-host="react"] {
