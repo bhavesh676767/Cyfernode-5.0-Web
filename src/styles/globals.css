@@ -11,6 +11,19 @@ body {
   margin: 0;
 }
 
+#main {
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+html.is-navigating-to-register #main {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.framer-1umqj66-container {
+  cursor: pointer;
+}
+
 #cyfernode-react-root {
   isolation: isolate;
 }

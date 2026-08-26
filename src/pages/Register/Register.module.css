@@ -1,0 +1,254 @@
+.page {
+  min-height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 4% 33%, rgba(255, 111, 61, 0.2), transparent 28rem),
+    radial-gradient(circle at 93% 10%, rgba(255, 137, 83, 0.2), transparent 25rem),
+    #efeeeb;
+  color: #161616;
+  animation: pageEnter 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.register {
+  width: min(1400px, calc(100% - clamp(2rem, 6vw, 7rem)));
+  margin: 0 auto;
+  padding: clamp(1.25rem, 3vw, 2rem) 0 clamp(4rem, 10vw, 8rem);
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  color: #646464;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 160ms ease, transform 160ms ease;
+}
+
+.backLink:hover,
+.backLink:focus-visible {
+  color: #7b0033;
+  transform: translateX(-2px);
+}
+
+.topline {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.7rem 0 1rem;
+  border-top: 2px solid #161616;
+  border-bottom: 1px solid rgba(22, 22, 22, 0.14);
+  font-family: "Geist Mono", monospace;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  padding: clamp(4.5rem, 10vw, 9rem) 0 clamp(3.5rem, 7vw, 6.5rem);
+}
+
+.eyebrow {
+  margin: 0;
+  color: #8a8a8a;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.hero .eyebrow {
+  grid-column: 1 / -1;
+  margin-bottom: 1rem;
+}
+
+h1,
+h2 {
+  margin: 0;
+  font-family: "Tusker Grotesk 2700 Bold", Impact, sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.75;
+}
+
+h1 {
+  grid-column: 1 / -1;
+  color: #7b0033;
+  font-size: clamp(4.75rem, 15.8vw, 15rem);
+  white-space: nowrap;
+}
+
+.edition {
+  display: flex;
+  align-items: end;
+  gap: 1.2rem;
+  margin-top: 0.55rem;
+  color: #740031;
+  font-family: "Tusker Grotesk 2700 Bold", Impact, sans-serif;
+  font-size: clamp(2.6rem, 6vw, 5.5rem);
+  line-height: 0.75;
+}
+
+.edition strong {
+  padding: 0.02em 0.15em 0.08em;
+  background: #ff6334;
+  color: #fff;
+  font-family: "Geist", sans-serif;
+  font-size: 0.55em;
+  font-weight: 800;
+  letter-spacing: -0.08em;
+}
+
+.intro {
+  max-width: 25ch;
+  margin: 0 0 0.25rem;
+  color: #5c5c5c;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.formSection {
+  display: grid;
+  grid-template-columns: minmax(14rem, 0.62fr) minmax(0, 1fr);
+  gap: clamp(2rem, 6vw, 7rem);
+  padding: clamp(2rem, 5vw, 4.5rem);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 18px 55px rgba(27, 16, 14, 0.08);
+}
+
+.formLead {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+h2 {
+  margin-top: 1.4rem;
+  font-size: clamp(3.6rem, 6vw, 6.25rem);
+}
+
+.formLead > p:last-child {
+  max-width: 28ch;
+  margin: auto 0 0;
+  color: #646464;
+  line-height: 1.45;
+}
+
+.formHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  color: #737373;
+  font-family: "Geist Mono", monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.4rem 1rem;
+}
+
+.fields label {
+  display: grid;
+  gap: 0.6rem;
+  color: #606060;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.fields input,
+.fields select {
+  width: 100%;
+  min-height: 3.25rem;
+  padding: 0.65rem 0;
+  border: 0;
+  border-bottom: 1px solid #b9b9b9;
+  outline: 0;
+  background: transparent;
+  color: #171717;
+  font: inherit;
+  font-size: 1rem;
+}
+
+.fields select { cursor: pointer; }
+.fields option { background: #fff; }
+.fields input::placeholder { color: #999; }
+
+.fields label:focus-within input,
+.fields label:focus-within select {
+  border-color: #ff6334;
+  box-shadow: 0 1px #ff6334;
+}
+
+.submitRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-top: 2rem;
+}
+
+.submitRow p,
+.success {
+  max-width: 36ch;
+  margin: 0;
+  color: #6d6d6d;
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.submitRow button {
+  flex: none;
+  min-width: 9.5rem;
+  border-color: #171717;
+  background: #171717;
+  transition: transform 160ms ease, background 160ms ease;
+}
+
+.submitRow button:hover {
+  transform: translateY(-2px);
+  background: #ff6334;
+}
+
+.success {
+  margin-top: 1rem;
+  color: #157a3e;
+}
+
+@media (max-width: 780px) {
+  .hero,
+  .formSection,
+  .fields { grid-template-columns: 1fr; }
+  .hero { gap: 2rem; }
+  h1 { font-size: clamp(4rem, 19vw, 7.5rem); }
+  .edition { margin-top: 0; }
+  .formSection { gap: 3rem; }
+  .formLead > p:last-child { margin-top: 1.5rem; }
+}
+
+@media (max-width: 480px) {
+  .register { width: min(100% - 2rem, 1400px); }
+  .hero { padding-top: 4rem; }
+  h1 { white-space: normal; }
+  .edition,
+  .submitRow { align-items: flex-start; flex-direction: column; }
+  .submitRow button { width: 100%; }
+}

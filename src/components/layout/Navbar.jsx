@@ -1,28 +1,30 @@
-import { NavLink } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Container } from '@/components/ui/Container'
-import { NAV_LINKS } from '@/lib/nav'
-import { cn } from '@/utils/cn'
 import styles from './Navbar.module.css'
 
 export function Navbar() {
+  const { pathname } = useLocation()
+  const isRegisterPage = pathname === '/register'
+
   return (
     <header className={styles.header}>
       <Container className={styles.inner}>
-        <NavLink to="/" className={styles.brand}>
+        <Link to="/" className={styles.brand}>
           CYFERNODE
-        </NavLink>
+        </Link>
         <nav className={styles.nav} aria-label="Primary">
-          {NAV_LINKS.map((link) => (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              className={({ isActive }) => cn(styles.link, isActive && styles.active)}
-              end={link.to === '/'}
-            >
-              {link.label}
-            </NavLink>
-          ))}
+          <Link to="/" className={styles.link}>Home</Link>
+          <a className={styles.link} href="/#events">Events</a>
+          <a className={styles.link} href="/#team">Team</a>
+          <a className={styles.link} href="/#timeline">Timeline</a>
         </nav>
+        <Link
+          to="/register"
+          className={`${styles.register} ${isRegisterPage ? styles.registerActive : ''}`}
+          aria-current={isRegisterPage ? 'page' : undefined}
+        >
+          Register <span aria-hidden="true">↗</span>
+        </Link>
       </Container>
     </header>
   )

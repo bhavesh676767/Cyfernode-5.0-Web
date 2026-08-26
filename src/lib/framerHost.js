@@ -1,11 +1,23 @@
 const FRAMER_SELECTORS = ['#main']
 
-export function isHomePath(pathname) {
-  return pathname === '/' || pathname === ''
+/**
+ * Paths React renders itself. The rest of the landing experience belongs to
+ * the Framer document, so the Framer DOM has to stay visible.
+ * Add a path here when you add a React route for it.
+ *
+ * "/register" is not one of them: it is a standalone document served from
+ * public/register/index.html and never reached through this app.
+ */
+const REACT_PATHS = []
+const REGISTER_PATH = '/register'
+const REGISTER_TRIGGER_SELECTOR = '.framer-1umqj66-container'
+
+export function isReactPath(pathname) {
+  return REACT_PATHS.includes(pathname)
 }
 
 export function syncFramerHost(pathname) {
-  const showFramer = isHomePath(pathname)
+  const showFramer = !isReactPath(pathname)
 
   for (const selector of FRAMER_SELECTORS) {
     const node = document.querySelector(selector)
@@ -40,4 +52,33 @@ export function canonicalizeIndexHtmlUrl() {
 
   const nextPath = pathname.replace(/index\.html$/, '') || '/'
   window.history.replaceState(null, '', `${nextPath}${search}${hash}`)
+}
+
+/**
+ * The registration CTA is rendered by Framer, including its responsive
+ * variants. Delegating the click from the document keeps every variant wired
+ * without modifying the exported markup.
+ *
+ * `/register` is its own document, so this is a real navigation rather than a
+ * client-side route change; the short delay lets the fade-out play first.
+ */
+export function enableRegistrationTrigger() {
+  if (window.__cyfernodeRegisterTriggerEnabled) return
+  window.__cyfernodeRegisterTriggerEnabled = true
+
+  document.addEventListener('click', (event) => {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+    if (!(event.target instanceof Element)) return
+
+    const trigger = event.target.closest(REGISTER_TRIGGER_SELECTOR)
+    if (!trigger || window.location.pathname === REGISTER_PATH) return
+
+    event.preventDefault()
+    event.stopPropagation()
+    document.documentElement.classList.add('is-navigating-to-register')
+
+    window.setTimeout(() => {
+      window.location.assign(REGISTER_PATH)
+    }, 180)
+  }, true)
 }

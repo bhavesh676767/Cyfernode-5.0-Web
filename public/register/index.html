@@ -1,0 +1,2305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register — Cyfernode 5.0 | Inter-School Tech Symposium</title>
+<meta name="description" content="Register for Cyfernode 5.0 — the Annual Inter-School Tech Symposium by CyferNauts at Summer Fields School, DLF Phase-1, Gurugram.">
+<meta name="keywords" content="Cyfernode register, CyferNauts, event registration, tech symposium, Summer Fields School">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
+<link rel="apple-touch-icon" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cyfernode 5.0">
+<meta property="og:title" content="Register — Cyfernode 5.0">
+<meta property="og:description" content="Sign up for events at Cyfernode 5.0 — 25+ schools, 200+ students, Gurugram's inter-school tech symposium.">
+<meta property="og:url" content="https://cyfernode.com/register">
+<meta property="og:image" content="https://cyfernode.com/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
+<link rel="canonical" href="https://cyfernode.com/register">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700,800,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+/* ── DESIGN SYSTEM ─────────────────────────────────────
+   Vibe: Satoshi, flat white + orange + black, minimal.
+────────────────────────────────────────────────────── */
+:root {
+  /* Surfaces */
+  --white: #ffffff;
+  --page: #ffffff;
+  --surface: #ffffff;
+  --surface2: #f7f7f8;
+  --surface3: #f1f1f3;
+
+  /* Lines */
+  --border: rgba(17, 17, 20, 0.12);
+  --border-hover: rgba(17, 17, 20, 0.35);
+
+  /* Ink */
+  --text: #111114;
+  --muted: rgba(17, 17, 20, 0.56);
+  --muted-strong: rgba(17, 17, 20, 0.72);
+  --muted2: rgba(17, 17, 20, 0.28);
+
+  /* Orange */
+  --orange: #d24500;
+  --orange-bright: #ff6b00;
+  --orange-deep: #9a3412;
+  --orange-tint: #fff4ec;
+  --orange-line: rgba(210, 69, 0, 0.32);
+  --accent: var(--orange);
+  --on-accent: #ffffff;
+
+  /* Feedback */
+  --danger: #c81e1e;
+
+  /* No shadows — flat white + orange */
+  --shadow-1: none;
+  --shadow-2: none;
+  --shadow-3: none;
+  --shadow-4: none;
+  --shadow-4-hover: none;
+
+  /* Type */
+  --font-px: 'Satoshi', 'Inter', system-ui, sans-serif;
+  --font-sans: 'Satoshi', 'Inter', system-ui, sans-serif;
+  --font-mono: 'Satoshi', 'Inter', system-ui, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100vh;
+  background: var(--page);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Custom Styled Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--surface2);
+}
+::-webkit-scrollbar-thumb {
+  background: #d5d5da;
+  border: 2px solid var(--surface2);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* ── PRELOADER ───────────────────────────────────────── */
+#preloader {
+  position: fixed; inset: 0; background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease, visibility 0.5s;
+}
+#preloader.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+.pre-inner {
+  width: min(320px, calc(100vw - 48px));
+}
+.pre-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(210, 69, 0, 0.12);
+  overflow: hidden;
+  border-radius: 999px;
+}
+.pre-fill {
+  height: 100%;
+  width: 0;
+  background: var(--orange);
+  border-radius: 999px;
+  animation: preloader-fill 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes preloader-fill {
+  to { width: 100%; }
+}
+
+/* ── HEADER / NAVIGATION ──────────────────────────────── */
+#exit-btn {
+  position: fixed; top: 28px; left: 28px; z-index: 800;
+  font-family: var(--font-px); font-size: 17px; font-weight: 800;
+  color: var(--text); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 10px;
+  transition: color 0.2s;
+}
+#exit-btn:hover {
+  color: var(--orange);
+}
+#exit-btn i {
+  font-size: 15px;
+}
+
+.autosave {
+  position: fixed; top: 26px; right: 26px; z-index: 800;
+  font-family: var(--font-sans); font-size: 16px;
+  color: var(--orange);
+  padding: 0;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.4s ease;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.autosave.show {
+  opacity: 1;
+}
+.autosave::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* APP AND TRANSITION */
+#page {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  position: relative;
+  padding: 80px 24px;
+}
+#page.show {
+  opacity: 1;
+  transform: none;
+}
+
+.screen {
+  display: none;
+  width: 100%;
+  max-width: 900px;
+  animation: screen-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.screen.active {
+  display: flex;
+  flex-direction: column;
+}
+@keyframes screen-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ── SCREEN 0: MODE SELECTION ────────────────────────── */
+.s0-top {
+  text-align: center;
+  margin-bottom: 56px;
+}
+.s0-brand {
+  display: block;
+  width: min(100%, 280px);
+  height: auto;
+  margin: 0 auto 14px;
+}
+.s0-wordmark {
+  display: block;
+  width: min(100%, 428px);
+  height: auto;
+  margin: 0 auto;
+}
+#sd .s0-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.choice-q {
+  font-family: var(--font-sans);
+  font-size: clamp(24px, 4.5vw, 36px);
+  font-weight: 800;
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 32px;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+.choice-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.choice-card {
+  background: var(--white);
+  border: 2px solid rgba(17, 17, 20, 0.14);
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
+  text-align: center;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 68px;
+}
+.choice-card:hover {
+  border-color: var(--orange);
+  background: var(--white);
+}
+@media (hover: none) {
+  .choice-card:active {
+    border-color: var(--orange);
+    background: var(--orange-tint);
+  }
+}
+.choice-title {
+  font-family: var(--font-px);
+  font-size: clamp(18px, 2.8vw, 22px);
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.choice-card:hover .choice-title {
+  color: var(--orange);
+}
+
+/* ── SCREEN 1: EVENT SELECTION ────────────────────────── */
+.s1-header {
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: 36px;
+  align-self: flex-start;
+}
+.s1-label {
+  display: none;
+}
+.s1-title {
+  font-family: var(--font-px);
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 36px;
+}
+.ev-card {
+  position: relative;
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 24px 24px 20px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-height: 0;
+  border-radius: 0;
+}
+.ev-card:hover {
+  border-color: var(--text);
+}
+@media (hover: none) {
+  .ev-card:hover {
+    border-color: var(--border);
+  }
+}
+.ev-card.sel {
+  border-color: var(--orange);
+  background: var(--white);
+}
+.ev-card.sel::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--orange);
+}
+.ev-card.sel .ev-name {
+  color: var(--text);
+}
+.ev-name {
+  font-family: var(--font-px);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.15;
+}
+.ev-tag {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--muted);
+  margin-bottom: 28px;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+.ev-meta {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted-strong);
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  align-items: center;
+  letter-spacing: -0.01em;
+}
+.ev-mode {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--orange);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+.ev-elig {
+  color: var(--muted);
+}
+.s1-foot {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.s1-count {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ── SCREEN SF: STEPPER FORM ──────────────────────────── */
+.form-shell {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.ev-strip {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 20px;
+  margin-bottom: 28px;
+  border-bottom: 2px solid var(--border);
+}
+.ev-dot {
+  display: none;
+}
+.ev-strip-name {
+  font-family: var(--font-px);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+}
+.ev-strip-count {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-left: auto;
+}
+
+/* Progress Linear Bar */
+.prog-wrap {
+  width: 100%;
+  height: 3px;
+  background: rgba(17, 17, 20, 0.08);
+  margin-bottom: 48px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.prog-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Step tracker — hidden; progress bar is enough */
+.step-track {
+  display: none;
+}
+
+/* Question Area */
+.qblock {
+  animation: qin 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes qin {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+.q-step {
+  display: none;
+}
+.q-label {
+  font-family: var(--font-sans);
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 36px;
+}
+.q-label em {
+  font-style: normal;
+  color: var(--accent);
+  font-weight: 900;
+}
+.shared-note {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--muted-strong);
+  margin: -20px 0 28px;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+}
+
+/* Input Fields */
+.q-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid rgba(17, 17, 20, 0.12);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 700;
+  padding: 14px 0;
+  outline: none;
+  transition: border-bottom-color 0.2s;
+  letter-spacing: -0.02em;
+}
+.q-input:focus {
+  border-bottom-color: var(--accent);
+}
+.q-input::placeholder {
+  color: var(--muted2);
+  font-size: clamp(20px, 3.5vw, 26px);
+  font-weight: 600;
+}
+.q-hint {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--muted-strong);
+  margin-top: 16px;
+}
+.q-err {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--danger);
+  margin-top: 16px;
+  display: none;
+}
+.q-err.show {
+  display: block;
+}
+
+/* Select option grid for participant count */
+.sel-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.sel-opt {
+  font-family: var(--font-px);
+  font-size: 18px;
+  font-weight: 800;
+  padding: 18px 32px;
+  background: var(--white);
+  border: 2px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+  border-radius: 12px;
+}
+.sel-opt:hover {
+  border-color: var(--border-hover);
+  color: var(--text);
+}
+.sel-opt.sel {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 7%, white);
+}
+
+/* Grouped Participant block */
+.p-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.p-block {
+  background: var(--white);
+  border: 2px solid var(--border);
+  padding: 32px;
+  border-radius: 18px;
+  transition: border-color 0.2s;
+}
+.p-block:hover,
+.p-block:focus-within {
+  border-color: var(--orange);
+}
+.p-head {
+  margin-bottom: 28px;
+}
+.p-idx {
+  display: none;
+}
+.p-head-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.p-title {
+  font-family: var(--font-sans);
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.p-elig {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--muted);
+}
+.p-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 14px;
+}
+.p-fields-full {
+  grid-column: span 2;
+}
+@media (max-width: 600px) {
+  .p-block {
+    padding: 22px 18px 20px;
+    border-radius: 16px;
+  }
+  .p-fields {
+    grid-template-columns: 1fr;
+  }
+  .p-fields-full {
+    grid-column: span 1;
+  }
+}
+
+.p-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.p-input-lbl {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--muted-strong);
+  letter-spacing: -0.01em;
+}
+.p-input {
+  background: var(--white);
+  border: 2px solid var(--border);
+  padding: 16px 18px;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: 500;
+  outline: none;
+  transition: border-color 0.2s, background-color 0.2s;
+  border-radius: 12px;
+}
+.p-input::placeholder {
+  color: var(--muted2);
+  font-weight: 400;
+}
+.p-input:hover {
+  border-color: var(--border-hover);
+}
+.p-input:focus {
+  border-color: var(--accent);
+  background: var(--orange-tint);
+}
+
+/* Grade Selector Horizontal Segments */
+.grade-selector {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  padding: 6px;
+  background: var(--orange-tint);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+}
+.grade-btn {
+  flex: 1;
+  text-align: center;
+  padding: 14px 12px;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  border-radius: 10px;
+  outline: none;
+}
+.grade-btn:hover {
+  color: var(--orange);
+}
+.grade-btn.sel {
+  background: var(--white);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Bottom Button Row */
+.btn-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 48px;
+  flex-wrap: wrap;
+}
+.btn-p,
+.btn-s {
+  position: relative;
+  font-family: var(--font-px);
+  font-size: 16px;
+  font-weight: 700;
+  padding: 14px 30px;
+  min-height: 48px;
+  border-radius: 2rem;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+  line-height: 1;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+.btn-p {
+  background: var(--orange);
+  color: var(--white);
+  border: 2px solid var(--orange);
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+.btn-p:hover {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--white);
+}
+.btn-p.is-disabled,
+.btn-p:disabled {
+  opacity: 0.35;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+.btn-s {
+  background: var(--white);
+  color: var(--text);
+  border: 2px solid var(--text);
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+.btn-s:hover {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--white);
+}
+/* One-line clip window — only one label visible at a time */
+.btn-p .btn-slide,
+.btn-p .btn-slide2,
+.btn-s .btn-slide,
+.btn-s .btn-slide2 {
+  display: flex;
+  height: 1em;
+  overflow: hidden;
+  pointer-events: none;
+}
+.btn-p .btn-slide2,
+.btn-s .btn-slide2 {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: max-content;
+  visibility: hidden;
+}
+.btn-p:hover .btn-slide2,
+.btn-s:hover .btn-slide2 {
+  visibility: visible;
+}
+.btn-p .btn-slide span,
+.btn-s .btn-slide span,
+.btn-p .btn-slide2 span,
+.btn-s .btn-slide2 span {
+  display: inline-block;
+  line-height: 1;
+  transition: transform 0.22s ease;
+}
+.btn-p .btn-slide span:nth-child(1),
+.btn-s .btn-slide span:nth-child(1),
+.btn-p .btn-slide2 span:nth-child(1),
+.btn-s .btn-slide2 span:nth-child(1) { transition-duration: 0.2s; }
+.btn-p .btn-slide span:nth-child(2),
+.btn-s .btn-slide span:nth-child(2),
+.btn-p .btn-slide2 span:nth-child(2),
+.btn-s .btn-slide2 span:nth-child(2) { transition-duration: 0.26s; }
+.btn-p .btn-slide span:nth-child(3),
+.btn-s .btn-slide span:nth-child(3),
+.btn-p .btn-slide2 span:nth-child(3),
+.btn-s .btn-slide2 span:nth-child(3) { transition-duration: 0.32s; }
+.btn-p .btn-slide span:nth-child(4),
+.btn-s .btn-slide span:nth-child(4),
+.btn-p .btn-slide2 span:nth-child(4),
+.btn-s .btn-slide2 span:nth-child(4) { transition-duration: 0.38s; }
+.btn-p .btn-slide span:nth-child(5),
+.btn-s .btn-slide span:nth-child(5),
+.btn-p .btn-slide2 span:nth-child(5),
+.btn-s .btn-slide2 span:nth-child(5) { transition-duration: 0.44s; }
+.btn-p .btn-slide span:nth-child(6),
+.btn-s .btn-slide span:nth-child(6),
+.btn-p .btn-slide2 span:nth-child(6),
+.btn-s .btn-slide2 span:nth-child(6) { transition-duration: 0.5s; }
+.btn-p .btn-slide span:nth-child(n+7),
+.btn-s .btn-slide span:nth-child(n+7),
+.btn-p .btn-slide2 span:nth-child(n+7),
+.btn-s .btn-slide2 span:nth-child(n+7) { transition-duration: 0.56s; }
+.btn-p .btn-slide2 span,
+.btn-s .btn-slide2 span {
+  transform: translateY(calc(-100% - 2px));
+}
+.btn-p:hover .btn-slide span,
+.btn-s:hover .btn-slide span {
+  transform: translateY(calc(100% + 2px));
+}
+.btn-p:hover .btn-slide2 span,
+.btn-s:hover .btn-slide2 span {
+  transform: translateY(0);
+}
+.btn-p.is-disabled:hover,
+.btn-p:disabled:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.btn-s.is-disabled,
+.btn-s:disabled {
+  opacity: 0.35;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+.btn-s.is-disabled:hover,
+.btn-s:disabled:hover {
+  background: var(--white);
+  border-color: var(--text);
+  color: var(--text);
+}
+.enter-tip {
+  display: none;
+}
+
+/* ── SCREEN SD: COMPLETE ──────────────────────────────── */
+#sd {
+  gap: 0;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.done-h {
+  font-family: var(--font-px);
+  font-size: clamp(36px, 7vw, 56px);
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  text-align: left;
+  width: 100%;
+  margin-bottom: 12px;
+}
+.done-sub {
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--muted-strong);
+  line-height: 1.55;
+  text-align: left;
+  width: 100%;
+  margin-bottom: 32px;
+  max-width: 52ch;
+}
+.done-tags {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 44px;
+  padding: 0;
+  border: none;
+}
+.done-tags-label {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.done-tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0;
+  line-height: 1.2;
+}
+.done-tag {
+  font-family: var(--font-px);
+  font-size: clamp(22px, 3.2vw, 30px);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+  color: var(--text);
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  display: inline;
+}
+.done-tag + .done-tag::before {
+  content: '·';
+  display: inline;
+  margin: 0 14px;
+  color: var(--muted2);
+  font-weight: 400;
+  font-size: 0.9em;
+  background: none;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  vertical-align: baseline;
+  transform: none;
+}
+.shared-summary {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.shared-summary-title {
+  font-family: var(--font-px);
+  font-size: clamp(20px, 2.8vw, 24px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 18px;
+}
+.summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 40px;
+}
+.summary-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 28px 28px 24px;
+  border-radius: 0;
+}
+.summary-card-title {
+  font-family: var(--font-px);
+  font-size: clamp(20px, 2.8vw, 26px);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 20px;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 14px;
+}
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 32px;
+  margin-bottom: 24px;
+}
+@media (max-width: 600px) {
+  .summary-grid { grid-template-columns: 1fr; }
+}
+.summary-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.summary-label {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+.summary-val {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  color: var(--text);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+.summary-p-header {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 14px;
+  letter-spacing: -0.02em;
+}
+.summary-p-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+.summary-p-item {
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 16px 18px;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.p-item-name {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  color: var(--text);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 2px;
+}
+.p-item-grade {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  color: var(--muted);
+  font-size: 13px;
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.p-item-meta {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted-strong);
+  line-height: 1.4;
+}
+.done-btns {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  width: 100%;
+}
+.btn-copy {
+  font-family: var(--font-px);
+  font-size: 17px;
+  font-weight: 800;
+  padding: 16px 28px;
+  background: var(--white);
+  color: var(--text);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-copy:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+.btn-submit {
+  font-family: var(--font-px);
+  font-size: 17px;
+  padding: 16px 28px;
+  background: var(--orange);
+  color: var(--on-accent);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: filter 0.2s;
+  font-weight: 800;
+}
+.btn-submit:hover {
+  filter: brightness(1.08);
+}
+
+/* ── RESPONSIVENESS ───────────────────────────────────── */
+@media (max-width: 768px) {
+  #exit-btn {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+  }
+  #page {
+    padding: 100px 16px 40px;
+  }
+  .choice-grid {
+    grid-template-columns: 1fr;
+  }
+  .events-grid {
+    grid-template-columns: 1fr;
+  }
+  .btn-row {
+    flex-direction: column;
+  }
+  .btn-row .btn-p, .btn-row .btn-s {
+    text-align: center;
+    width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Preloader Component -->
+<div id="preloader">
+  <div class="pre-inner">
+    <div class="pre-track"><div class="pre-fill"></div></div>
+  </div>
+</div>
+
+<!-- Back/Exit Button -->
+<a href="/" id="exit-btn" onclick="return handleExit(event)"><i class="fa-solid fa-arrow-left"></i> Exit</a>
+
+<!-- Autosave Notification Badge -->
+<div class="autosave" id="autosave">Saved</div>
+
+<!-- Primary Page Wrapper -->
+<div id="page">
+
+  <!-- S0: REGISTRATION CHOICE -->
+  <div class="screen active" id="s0">
+    <div class="s0-top">
+      <img class="s0-brand" src="/assets/CYFERNODE-5.0.svg" alt="Cyfernode 5.0" width="586" height="58">
+      <img class="s0-wordmark" src="/assets/REGISTER.svg" alt="Register" width="428" height="172">
+    </div>
+    <div style="width: 100%;">
+      <div class="choice-q">How many events are you registering for?</div>
+      <div class="choice-grid">
+        <div class="choice-card" onclick="selectMode('single')">
+          <span class="choice-title">One Event</span>
+        </div>
+        <div class="choice-card" onclick="selectMode('multi')">
+          <span class="choice-title">Multiple Events</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S1: EVENTS SELECTION GRID -->
+  <div class="screen" id="s1">
+    <div class="s1-header">
+      <div class="s1-label" id="s1-label">Select Event</div>
+      <div class="s1-title" id="s1-title">Which event are you joining?</div>
+    </div>
+    <div class="events-grid" id="ev-grid"></div>
+    <div class="s1-foot">
+      <div class="s1-count" id="s1-count"></div>
+      <div class="btn-row" style="margin-top: 0;">
+        <button class="btn-s" onclick="showScreen('s0')">← Back</button>
+        <button class="btn-p is-disabled" id="ev-confirm" disabled onclick="confirmEvents()">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SF: SEQUENTIAL QUESTIONNAIRE STEPPER -->
+  <div class="screen" id="sf">
+    <div class="form-shell">
+      <div class="ev-strip">
+        <div class="ev-dot" id="ev-dot"></div>
+        <div class="ev-strip-name" id="ev-name">—</div>
+        <div class="ev-strip-count" id="ev-count">Event 1 / 1</div>
+      </div>
+      <div class="step-track" id="step-track"></div>
+      <div class="prog-wrap"><div class="prog-fill" id="prog" style="width: 0%"></div></div>
+      <div id="q-area"></div>
+    </div>
+  </div>
+
+  <!-- SD: COMPLETED VIEW -->
+  <div class="screen" id="sd">
+    <div class="s0-eyebrow">Final review</div>
+    <div class="done-h">Registration Summary</div>
+    <div class="done-sub">Review your registration details across all selected events below, then submit to confirm your entry.</div>
+    <div class="done-tags" id="done-tags"></div>
+    <div class="summary-list" id="summary-out"></div>
+    
+    <div class="done-btns" style="margin-bottom: 24px;">
+      <button class="btn-p" id="btn-sub" onclick="submitData()">Confirm & Submit →</button>
+    </div>
+    <div class="q-err" id="sub-err" role="alert"></div>
+    <div class="done-btns">
+      <button class="btn-s" onclick="downloadJSON()">Download JSON</button>
+      <button class="btn-s" onclick="downloadCSV()">Download CSV</button>
+      <button class="btn-s" onclick="goHome()">↺ Restart</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── EVENTS CONFIGURATION DATABASE ──────────────────────
+// School + teacher are shared across multi-event registrations.
+// Only participant details are collected per event.
+const EV_ACCENT = '#d24500';
+const EV_ACCENT_SOFT = '#fff4ec';
+
+const SHARED_KEYS = ['school', 'tName', 'tPhone', 'tEmail'];
+
+const SHARED_FIELDS = [
+  { k: 'school', label: 'What is the name of your <em>school</em>?', type: 'text', ph: 'e.g. Summer Fields School' },
+  { k: 'tName', label: 'What is the <em>teacher incharge\'s</em> name?', type: 'text', ph: 'e.g. Dr. Anjali Mehta' },
+  { k: 'tPhone', label: 'What is the teacher\'s <em>phone number</em>?', type: 'tel', ph: 'e.g. +91 98765 43210' },
+  { k: 'tEmail', label: 'What is the teacher\'s <em>email address</em>?', type: 'email', ph: 'e.g. teacher@school.edu' },
+];
+
+function participantsField(count, eligibility, eventName) {
+  const label = eventName
+    ? `Enter <em>participant details</em> for ${eventName}.`
+    : 'Enter <em>participant details</em>.';
+  return {
+    k: 'participants',
+    label,
+    type: 'participants',
+    count,
+    elig: eligibility,
+  };
+}
+
+/** Field list for the current event. Multi-event: school/teacher once on first event. */
+function getFields(ev) {
+  if (!ev) return [];
+  const isMulti = mode === 'multi' && selEvs.length > 1;
+  const p = participantsField(ev.min, ev.eligibility, isMulti ? ev.name : null);
+  if (!isMulti) {
+    return [SHARED_FIELDS[0], p, ...SHARED_FIELDS.slice(1)];
+  }
+  if (evIdx === 0) {
+    return [...SHARED_FIELDS, p];
+  }
+  return [p];
+}
+
+function defineEvent(id, name, tag, evMode, count, eligibility) {
+  return {
+    id, name, tag, eligibility,
+    mode: evMode,
+    accent: EV_ACCENT,
+    secondaryAccent: EV_ACCENT_SOFT,
+    min: count,
+    max: count,
+  };
+}
+
+const EVENTS = [
+  defineEvent('fontastic', 'Fontastic', 'Poster Designing', 'Online', 2, '9th – 12th'),
+  defineEvent('blendered', 'Blendered', '3D Modeling', 'Online', 2, '9th – 12th'),
+  defineEvent('unscripted', 'Unscripted', 'Movie Making', 'Online', 4, '9th – 12th'),
+  defineEvent('clue-less', 'Clue-Less', 'Cyber Investigation', 'Online', 2, '9th – 12th'),
+  defineEvent('runtime-terror', 'Runtime Terror', 'Competitive Programming', 'Hybrid', 2, '11th – 12th'),
+  defineEvent('buildout', 'Buildout', 'SAAS Product Development', 'Hybrid', 4, '10th – 12th'),
+  defineEvent('breadboard', 'Breadboard', 'Hardware Engineering', 'Hybrid', 2, '9th – 12th'),
+  defineEvent('wireframe', 'Wireframe', 'UI/UX Design', 'Online', 2, '9th – 12th'),
+  defineEvent('entrepreneur-exe', 'Entreprenuer.exe', 'Innovation & Pitching', 'Hybrid', 2, '11th – 12th'),
+  defineEvent('unbranded', 'Unbranded', 'Rebranding', 'Hybrid', 3, '9th – 12th'),
+];
+
+// Mapping of event IDs to their Google Apps Script endpoint URLs.
+// Entries carried over from the previous event list are marked; the rest are new
+// events that still need their own endpoint. An event with no endpoint here is
+// reported as unsent at submit time rather than silently dropped.
+const BACKEND_URLS = {
+  'fontastic': 'https://script.google.com/macros/s/AKfycbzbqvK166q1zCbrD2zcr_1qhV9UdMFjEv6xF5-P_HBMcPdC_IxXNtOVZcKZIbRELhkz/exec',      // was slop-studio
+  'blendered': 'https://script.google.com/macros/s/AKfycbzrQFM-17KXY0Y5y_lyUL0p1-dsCRXX8tzgOzsuWCBtKy4hIiNmPj79JHAwORMNhOnh/exec',      // was polyverse
+  'unscripted': 'https://script.google.com/macros/s/AKfycbyxEReUjKrgjIF3SPtltA6BRJCLnqBW1jNlOK9NjStIpQ4v1w4sOM6d3alsGFvjgOKx1A/exec',   // was take-one
+  'clue-less': '',                                                                                                                       // TODO: add endpoint
+  'runtime-terror': 'https://script.google.com/macros/s/AKfycbzAmlOWWldlmkVKw_24aY2kJWQdFu_KWnsH43jEGdOo51yXEJE2PIzWzmZ7EzOXSc31/exec', // was logic-league
+  'buildout': '',                                                                                                                        // TODO: add endpoint
+  'breadboard': '',                                                                                                                      // TODO: add endpoint
+  'wireframe': '',                                                                                                                       // TODO: add endpoint
+  'entrepreneur-exe': 'https://script.google.com/macros/s/AKfycbzIc58YTEbzpXjWjU6AKFf9biBjwjKRKqUudUCg0Z6eRwmD8LPEJsXkBebm_kk_T8G5OA/exec', // was launch-lab
+  'unbranded': 'https://script.google.com/macros/s/AKfycbz9t7plw-Hk4l2MJoWpoNHq4MhEVJLK-uHQasYlrV4RGsJBidmCt5LkSVQBYabArDho/exec'        // was rebrand-lab
+};
+
+// ── GLOBAL APPLICATION STATE ──────────────────────────
+const STORAGE_KEY = 'cyfrn5_reg_v5';
+let mode = null;          // 'single' or 'multi'
+let selEvs = [];         // Selected event IDs
+let evIdx = 0;           // Current active event index in form
+let fIdx = 0;            // Current active field index
+let data = {};           // Registration details compiled by event ID
+let shared = {};         // School + teacher (once for multi-event)
+let dynPCount = {};      // Dynamic participant counts selected by event ID
+
+function setSlideButton(btn, label) {
+  btn.innerHTML = '';
+  const slide1 = document.createElement('span');
+  slide1.className = 'btn-slide';
+  const slide2 = document.createElement('span');
+  slide2.className = 'btn-slide2';
+
+  [...label].forEach((char) => {
+    const display = char === ' ' ? '\u00a0' : char;
+    const s1 = document.createElement('span');
+    s1.textContent = display;
+    slide1.appendChild(s1);
+
+    const s2 = document.createElement('span');
+    s2.textContent = display;
+    slide2.appendChild(s2);
+  });
+
+  btn.appendChild(slide1);
+  btn.appendChild(slide2);
+}
+
+function initSlideButtons(root = document) {
+  root.querySelectorAll('.btn-p, .btn-s').forEach(btn => {
+    if (btn.querySelector('.btn-slide')) return;
+    const label = btn.textContent.trim();
+    if (label) setSlideButton(btn, label);
+  });
+}
+
+// Hides preloader and fades page in
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    // Attempt state hydration
+    const hasCachedState = loadState();
+    
+    // Hide loading preloader
+    const preloader = document.getElementById('preloader');
+    preloader.classList.add('hidden');
+    
+    // Display primary page content
+    const page = document.getElementById('page');
+    page.classList.add('show');
+    
+    initSlideButtons();
+
+    if (hasCachedState) {
+      if (mode) {
+        buildGrid();
+        if (selEvs.length > 0) {
+          if (evIdx >= selEvs.length) {
+            showDone();
+          } else {
+            startEvent();
+          }
+        } else {
+          showScreen('s1');
+        }
+      }
+    }
+  }, 900);
+});
+
+// Caches state to localStorage and fires visual saved feedback
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      mode, selEvs, evIdx, fIdx, data, shared, dynPCount
+    }));
+  } catch (err) {
+    console.error('Failed to cache registration state:', err);
+  }
+  const autosave = document.getElementById('autosave');
+  autosave.style.setProperty('--accent', curAccentColor());
+  autosave.classList.add('show');
+  clearTimeout(autosave._timer);
+  autosave._timer = setTimeout(() => {
+    autosave.classList.remove('show');
+  }, 1200);
+}
+
+// Loads cached state from localStorage
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return false;
+    const parsed = JSON.parse(raw);
+    if (!parsed || !parsed.mode) return false;
+
+    // Saved state can predate a change to the event list, so drop any event that
+    // no longer exists rather than resuming into an event that can't render.
+    const known = (parsed.selEvs || []).filter(id => EVENTS.some(e => e.id === id));
+    if (!known.length) return false;
+
+    mode = parsed.mode;
+    selEvs = known;
+    evIdx = Math.min(parsed.evIdx || 0, known.length - 1);
+    fIdx = parsed.fIdx || 0;
+    data = parsed.data || {};
+    shared = parsed.shared || {};
+    // Recover shared fields from first event if older saves lack `shared`
+    if (!Object.keys(shared).length && selEvs[0] && data[selEvs[0]]) {
+      SHARED_KEYS.forEach(k => {
+        if (data[selEvs[0]][k]) shared[k] = data[selEvs[0]][k];
+      });
+    }
+    dynPCount = parsed.dynPCount || {};
+
+    // Multi-event resumes can carry an old step index from the per-event flow.
+    if (mode === 'multi' && selEvs.length > 1) {
+      const ev = EVENTS.find(e => e.id === selEvs[evIdx]);
+      if (ev) {
+        const maxIdx = getFields(ev).length - 1;
+        if (fIdx > maxIdx) fIdx = maxIdx;
+      }
+    }
+
+    return true;
+  } catch (err) {
+    console.error('Failed to parse cached state:', err);
+    return false;
+  }
+}
+
+// Resets/clears cached state
+function clearState() {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch (e) {}
+}
+
+// Temporary auto‑fill for testing – populates the current question's inputs with sample data
+function autoFillCurrentEvent() {
+  const ev = curEv();
+  if (!ev) return;
+  const f = getFields(ev)[fIdx];
+  if (!f) return;
+
+  if (f.type === 'text' || f.type === 'email' || f.type === 'tel') {
+    const input = document.getElementById('main-input');
+    if (input) {
+      if (f.type === 'email') input.value = 'test@example.com';
+      else if (f.type === 'tel') input.value = '+91 9999999999';
+      else input.value = 'Test Data';
+    }
+  } else if (f.type === 'select') {
+    const tiles = document.querySelectorAll('.sel-opt');
+    if (tiles.length > 0) tiles[0].click();
+  } else if (f.type === 'participants') {
+    const pContainer = document.querySelector('.p-container');
+    if (pContainer) {
+      const inputs = pContainer.querySelectorAll('input');
+      inputs.forEach(inp => {
+        const pf = inp.dataset.pf;
+        if (pf === 'name') inp.value = 'Test Participant';
+        if (pf === 'phone') inp.value = '+91 9999999999';
+        if (pf === 'email') inp.value = 'participant@example.com';
+      });
+      const gradeSels = pContainer.querySelectorAll('.grade-selector');
+      gradeSels.forEach(gs => {
+        const btn = gs.querySelector('.grade-btn');
+        if (btn) btn.click();
+      });
+    }
+  }
+}
+
+// Navigation wrapper
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) {
+    el.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+  
+  // Set exit back link properly
+  const exitBtn = document.getElementById('exit-btn');
+  if (id === 's0') {
+    exitBtn.style.display = 'inline-flex';
+  } else {
+    exitBtn.style.display = 'none'; // Back handles internal traversal
+  }
+}
+
+// Retreives active event accent color
+function curAccentColor() {
+  if (document.querySelector('.screen.active')?.id === 'sf') {
+    const ev = curEv();
+    if (ev) return ev.accent;
+  }
+  return 'var(--orange)';
+}
+
+function updateThemeAccent(color) {
+  document.documentElement.style.setProperty('--accent', color);
+}
+
+// Handle Exit link
+function handleExit(e) {
+  clearState();
+  return true;
+}
+
+// Stepper Back Traversal
+function goBack() {
+  const active = document.querySelector('.screen.active')?.id;
+  if (active === 's1') {
+    showScreen('s0');
+  } else if (active === 'sf') {
+    if (fIdx > 0) {
+      fIdx--;
+      renderField();
+    } else if (evIdx > 0) {
+      evIdx--;
+      const ev = curEv();
+      fIdx = getFields(ev).length - 1;
+      startEvent();
+    } else {
+      showScreen('s1');
+    }
+  }
+}
+
+function goHome() {
+  mode = null;
+  selEvs = [];
+  evIdx = 0;
+  fIdx = 0;
+  data = {};
+  shared = {};
+  dynPCount = {};
+  clearState();
+  updateThemeAccent('var(--orange)');
+  showScreen('s0');
+}
+
+// ── S0: CHOOSE MODE ───────────────────────────────────
+function selectMode(selectedMode) {
+  mode = selectedMode;
+  buildGrid();
+  
+  const label = document.getElementById('s1-label');
+  const title = document.getElementById('s1-title');
+  if (mode === 'single') {
+    label.textContent = 'Select Event';
+    title.textContent = 'Which event are you joining?';
+  } else {
+    label.textContent = 'Select Events';
+    title.textContent = 'Choose all events you want to join';
+  }
+  saveState();
+  showScreen('s1');
+}
+
+// ── S1: EVENTS SELECTION SELECTION ────────────────────
+function buildGrid() {
+  const grid = document.getElementById('ev-grid');
+  grid.innerHTML = '';
+  
+  EVENTS.forEach(ev => {
+    const card = document.createElement('div');
+    card.className = 'ev-card';
+    card.dataset.id = ev.id;
+    card.style.setProperty('--ev-accent', ev.accent);
+    
+    const isSelected = selEvs.includes(ev.id);
+    if (isSelected) {
+      card.classList.add('sel');
+    }
+    
+    card.innerHTML = `
+      <div class="ev-name">${ev.name}</div>
+      <div class="ev-tag">${ev.tag}</div>
+      <div class="ev-meta">
+        <span class="ev-mode">${ev.mode}</span>
+        <span class="ev-elig">${ev.eligibility} · ${ev.max} members</span>
+      </div>
+    `;
+    
+    card.addEventListener('click', () => toggleEvent(ev.id, card));
+    grid.appendChild(card);
+  });
+  
+  updateConfirmBtn();
+}
+
+function toggleEvent(id, card) {
+  if (mode === 'single') {
+    document.querySelectorAll('.ev-card.sel').forEach(c => c.classList.remove('sel'));
+    card.classList.add('sel');
+    selEvs = [id];
+  } else {
+    card.classList.toggle('sel');
+    if (card.classList.contains('sel')) {
+      if (!selEvs.includes(id)) {
+        selEvs.push(id);
+      }
+    } else {
+      selEvs = selEvs.filter(eid => eid !== id);
+    }
+  }
+  saveState();
+  updateConfirmBtn();
+}
+
+function updateConfirmBtn() {
+  const count = selEvs.length;
+  const btn = document.getElementById('ev-confirm');
+  const countText = document.getElementById('s1-count');
+  
+  if (count > 0) {
+    btn.classList.remove('is-disabled');
+    btn.disabled = false;
+    countText.textContent = `${count} Event${count > 1 ? 's' : ''} Selected`;
+  } else {
+    btn.classList.add('is-disabled');
+    btn.disabled = true;
+    countText.textContent = '';
+  }
+}
+
+function confirmEvents() {
+  if (selEvs.length === 0) return;
+  evIdx = 0;
+  fIdx = 0;
+  
+  // Clean empty containers for selected events
+  const cleanedData = {};
+  selEvs.forEach(id => {
+    cleanedData[id] = data[id] || {};
+  });
+  data = cleanedData;
+
+  // Reuse school/teacher if the user already entered them on a prior pass.
+  shared = {};
+  const firstId = selEvs[0];
+  if (firstId && data[firstId]) {
+    SHARED_KEYS.forEach(k => {
+      if (data[firstId][k]) shared[k] = data[firstId][k];
+    });
+  }
+  
+  saveState();
+  startEvent();
+}
+
+// ── SF: STEPPER FORM CONTROLLER ───────────────────────
+function curEv() {
+  return EVENTS.find(e => e.id === selEvs[evIdx]);
+}
+
+function startEvent() {
+  const ev = curEv();
+  if (!ev) {
+    showDone();
+    return;
+  }
+  
+  updateThemeAccent(ev.accent);
+  
+  document.getElementById('ev-dot').style.background = ev.accent;
+  document.getElementById('ev-name').textContent = ev.name;
+  document.getElementById('ev-count').textContent = `Event ${evIdx + 1} / ${selEvs.length}`;
+  
+  renderField();
+  showScreen('sf');
+}
+
+function renderSteps(ev) {
+  const container = document.getElementById('step-track');
+  container.innerHTML = '';
+  
+  const total = getFields(ev).length;
+  for (let i = 0; i < total; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'sdot' + (i < fIdx ? ' done' : i === fIdx ? ' cur' : '');
+    container.appendChild(dot);
+    
+    if (i < total - 1) {
+      const line = document.createElement('div');
+      line.className = 'sline' + (i < fIdx ? ' done' : '');
+      container.appendChild(line);
+    }
+  }
+}
+
+const GRADE_LABELS = { 9: '9th', 10: '10th', 11: '11th', 12: '12th' };
+
+/**
+ * Eligibility is written as an inclusive range of class numbers ("9th – 12th",
+ * "10th – 12th", "11th – 12th"). Every class in that range gets a grade button,
+ * so a new range needs no code change here.
+ */
+function getEligibleGrades(eligibilityStr) {
+  const classes = String(eligibilityStr || '')
+    .match(/\d+/g)
+    ?.map(Number)
+    .filter(n => n >= 9 && n <= 12) ?? [];
+
+  if (!classes.length) return ['9th', '10th', '11th', '12th'];
+
+  const grades = [];
+  for (let g = Math.min(...classes); g <= Math.max(...classes); g++) {
+    grades.push(GRADE_LABELS[g]);
+  }
+  return grades;
+}
+
+function renderField() {
+  const ev = curEv();
+  if (!ev) return;
+  
+  if (!data[ev.id]) data[ev.id] = {};
+  
+  const fields = getFields(ev);
+  if (fIdx >= fields.length) {
+    fIdx = Math.max(0, fields.length - 1);
+  }
+  const f = fields[fIdx];
+  
+  if (!f) {
+    advanceEvent();
+    return;
+  }
+  
+  // Update progress bars
+  const percent = Math.round((fIdx / fields.length) * 100);
+  document.getElementById('prog').style.width = percent + '%';
+  renderSteps(ev);
+  
+  const area = document.getElementById('q-area');
+  area.innerHTML = '';
+  
+  const block = document.createElement('div');
+  block.className = 'qblock';
+  
+  // Big Label
+  const label = document.createElement('div');
+  label.className = 'q-label';
+  label.innerHTML = f.label;
+  block.appendChild(label);
+
+  const isMultiShared = mode === 'multi' && selEvs.length > 1 && evIdx > 0;
+  if (isMultiShared) {
+    const note = document.createElement('div');
+    note.className = 'shared-note';
+    note.textContent = 'School and teacher details are already saved — add participants for this event only.';
+    block.appendChild(note);
+  }
+  
+  // Dynamic Error Block
+  const errBlock = document.createElement('div');
+  errBlock.className = 'q-err';
+  errBlock.id = 'qerr';
+  
+  const cachedVal = SHARED_KEYS.includes(f.k)
+    ? (shared[f.k] ?? data[ev.id][f.k])
+    : data[ev.id][f.k];
+  let getInputValue;
+  
+  // Form Field Type Factory
+  if (f.type === 'text' || f.type === 'tel' || f.type === 'email') {
+    const input = document.createElement('input');
+    input.type = f.type === 'email' ? 'email' : f.type === 'tel' ? 'tel' : 'text';
+    input.className = 'q-input';
+    input.placeholder = f.ph || '';
+    input.id = 'main-input';
+    
+    if (cachedVal) {
+      input.value = cachedVal;
+    }
+    
+    block.appendChild(input);
+    block.appendChild(errBlock);
+    
+    if (f.hint) {
+      const hint = document.createElement('div');
+      hint.className = 'q-hint';
+      hint.textContent = f.hint;
+      block.appendChild(hint);
+    }
+    
+    getInputValue = () => {
+      const val = input.value.trim();
+      if (!val) return { err: 'This field is required.' };
+      if (f.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+        return { err: 'Please enter a valid email address.' };
+      }
+      if (f.type === 'tel' && val.replace(/\D/g, '').length < 8) {
+        return { err: 'Please enter a valid phone number.' };
+      }
+      return { val: val };
+    };
+    
+    // Auto focus
+    setTimeout(() => input.focus(), 80);
+    
+    // Bind enter key
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        nextButton.click();
+      }
+    });
+    
+  } else if (f.type === 'select') {
+    const row = document.createElement('div');
+    row.className = 'sel-row';
+    
+    f.opts.forEach(opt => {
+      const tile = document.createElement('div');
+      tile.className = 'sel-opt';
+      tile.textContent = opt;
+      
+      if (cachedVal === opt) {
+        tile.classList.add('sel');
+      }
+      
+      tile.addEventListener('click', () => {
+        row.querySelectorAll('.sel-opt').forEach(t => t.classList.remove('sel'));
+        tile.classList.add('sel');
+      });
+      row.appendChild(tile);
+    });
+    
+    block.appendChild(row);
+    block.appendChild(errBlock);
+    
+    if (f.hint) {
+      const hint = document.createElement('div');
+      hint.className = 'q-hint';
+      hint.textContent = f.hint;
+      block.appendChild(hint);
+    }
+    
+    getInputValue = () => {
+      const activeTile = row.querySelector('.sel-opt.sel');
+      if (!activeTile) return { err: 'Please select an option.' };
+      const val = activeTile.textContent.trim();
+      
+      if (f.k === 'pCount') {
+        dynPCount[ev.id] = parseInt(val);
+      }
+      return { val: val };
+    };
+    
+  } else if (f.type === 'participants') {
+    const count = f.count === 'dyn' ? (dynPCount[ev.id] || ev.min) : f.count;
+    const participantList = cachedVal || [];
+    const pContainer = document.createElement('div');
+    pContainer.className = 'p-container';
+    
+    for (let i = 0; i < count; i++) {
+      const pBlock = document.createElement('div');
+      pBlock.className = 'p-block';
+      
+      const pHead = document.createElement('div');
+      pHead.className = 'p-head';
+      pHead.innerHTML = `
+        <div class="p-head-copy">
+          <div class="p-title">Participant ${i + 1}</div>
+          <div class="p-elig">${f.elig || ev.eligibility}</div>
+        </div>
+      `;
+      pBlock.appendChild(pHead);
+      
+      const pFields = document.createElement('div');
+      pFields.className = 'p-fields';
+      
+      // Name (Full width)
+      const nameWrap = document.createElement('div');
+      nameWrap.className = 'p-input-wrap p-fields-full';
+      nameWrap.innerHTML = `
+        <label class="p-input-lbl">Full Name</label>
+        <input type="text" class="p-input" data-pi="${i}" data-pf="name" placeholder="Enter full name">
+      `;
+      if (participantList[i]?.name) {
+        nameWrap.querySelector('input').value = participantList[i].name;
+      }
+      pFields.appendChild(nameWrap);
+      
+      // Phone
+      const phoneWrap = document.createElement('div');
+      phoneWrap.className = 'p-input-wrap';
+      phoneWrap.innerHTML = `
+        <label class="p-input-lbl">Phone Number</label>
+        <input type="tel" class="p-input" data-pi="${i}" data-pf="phone" placeholder="+91 XXXXX XXXXX">
+      `;
+      if (participantList[i]?.phone) {
+        phoneWrap.querySelector('input').value = participantList[i].phone;
+      }
+      pFields.appendChild(phoneWrap);
+      
+      // Email
+      const emailWrap = document.createElement('div');
+      emailWrap.className = 'p-input-wrap';
+      emailWrap.innerHTML = `
+        <label class="p-input-lbl">Email Address</label>
+        <input type="email" class="p-input" data-pi="${i}" data-pf="email" placeholder="student@school.com">
+      `;
+      if (participantList[i]?.email) {
+        emailWrap.querySelector('input').value = participantList[i].email;
+      }
+      pFields.appendChild(emailWrap);
+      
+      // Grade Segmented Control
+      const gradeWrap = document.createElement('div');
+      gradeWrap.className = 'p-input-wrap p-fields-full';
+      gradeWrap.innerHTML = `
+        <label class="p-input-lbl">Grade / Class</label>
+      `;
+      
+      const gradeSel = document.createElement('div');
+      gradeSel.className = 'grade-selector';
+      gradeSel.dataset.pi = i;
+      
+      const eligibleGrades = getEligibleGrades(f.elig || ev.eligibility);
+      let selectedGrade = participantList[i]?.grade || '';
+      
+      eligibleGrades.forEach(grade => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'grade-btn' + (selectedGrade === grade ? ' sel' : '');
+        btn.textContent = grade;
+        btn.dataset.grade = grade;
+        btn.addEventListener('click', () => {
+          gradeSel.querySelectorAll('.grade-btn').forEach(b => b.classList.remove('sel'));
+          btn.classList.add('sel');
+        });
+        gradeSel.appendChild(btn);
+      });
+      
+      gradeWrap.appendChild(gradeSel);
+      pFields.appendChild(gradeWrap);
+      
+      pBlock.appendChild(pFields);
+      pContainer.appendChild(pBlock);
+    }
+    
+    block.appendChild(pContainer);
+    block.appendChild(errBlock);
+    
+    getInputValue = () => {
+      const list = [];
+      for (let i = 0; i < count; i++) {
+        const name = pContainer.querySelector(`[data-pi="${i}"][data-pf="name"]`).value.trim();
+        const phone = pContainer.querySelector(`[data-pi="${i}"][data-pf="phone"]`).value.trim();
+        const email = pContainer.querySelector(`[data-pi="${i}"][data-pf="email"]`).value.trim();
+        
+        const selectedGradeBtn = pContainer.querySelector(`.grade-selector[data-pi="${i}"] .grade-btn.sel`);
+        const grade = selectedGradeBtn ? selectedGradeBtn.dataset.grade : '';
+        
+        if (!name || !phone || !email || !grade) {
+          return { err: `Please fill in all details and select a grade for Participant ${i + 1}.` };
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          return { err: `Participant ${i + 1} email is invalid.` };
+        }
+        if (phone.replace(/\D/g, '').length < 8) {
+          return { err: `Participant ${i + 1} phone number is invalid.` };
+        }
+        
+        list.push({ name, phone, email, grade });
+      }
+      return { val: list };
+    };
+  }
+  
+  // Footer Action Buttons
+  const btnRow = document.createElement('div');
+  btnRow.className = 'btn-row';
+  
+  const isLastField = fIdx === fields.length - 1;
+  const isLastEvent = evIdx === selEvs.length - 1;
+  
+  const backBtn = document.createElement('button');
+  backBtn.className = 'btn-s';
+  backBtn.type = 'button';
+  setSlideButton(backBtn, '← Back');
+  backBtn.addEventListener('click', goBack);
+  btnRow.appendChild(backBtn);
+
+  const testBtn = document.createElement('button');
+  testBtn.className = 'btn-s';
+  testBtn.type = 'button';
+  setSlideButton(testBtn, 'Auto-fill');
+  testBtn.addEventListener('click', autoFillCurrentEvent);
+  btnRow.appendChild(testBtn);
+  
+  const nextButton = document.createElement('button');
+  nextButton.className = 'btn-p';
+  nextButton.type = 'button';
+  setSlideButton(
+    nextButton,
+    isLastField ? (isLastEvent ? 'Finish' : 'Next event →') : 'Continue →'
+  );
+  
+  nextButton.addEventListener('click', () => {
+    const result = getInputValue();
+    if (result.err) {
+      const err = document.getElementById('qerr');
+      err.textContent = result.err;
+      err.classList.add('show');
+      return;
+    }
+    
+    // Save: shared school/teacher once; participants per event
+    if (SHARED_KEYS.includes(f.k)) {
+      shared[f.k] = result.val;
+      selEvs.forEach(id => {
+        if (!data[id]) data[id] = {};
+        data[id][f.k] = result.val;
+      });
+    } else {
+      data[ev.id][f.k] = result.val;
+    }
+    saveState();
+    
+    fIdx++;
+    if (fIdx >= fields.length) {
+      advanceEvent();
+    } else {
+      renderField();
+    }
+  });
+  btnRow.appendChild(nextButton);
+  block.appendChild(btnRow);
+  
+  area.appendChild(block);
+  window.scrollTo(0, 0);
+}
+
+function advanceEvent() {
+  evIdx++;
+  if (evIdx >= selEvs.length) {
+    showDone();
+  } else {
+    fIdx = 0;
+    saveState();
+    startEvent();
+  }
+}
+
+// ── SD: COMPLETE & PAYLOAD VIEW ─────────────────────
+function buildExcelPayload() {
+  return {
+    registrationId: `CYFRN5_${Date.now()}`,
+    timestamp: new Date().toISOString(),
+    registrationMode: mode,
+    events: selEvs.map(id => {
+      const ev = EVENTS.find(e => e.id === id);
+      const d = data[id] || {};
+      
+      const payload = {
+        eventId: ev.id,
+        eventName: ev.name,
+        eventCategory: ev.tag,
+        eventMode: ev.mode,
+        schoolName: shared.school || d.school || '',
+        teamName: d.teamName || null,
+        participants: (d.participants || []).map((p, i) => ({
+          no: i + 1,
+          name: p.name,
+          phone: p.phone ? "'" + p.phone : '',
+          email: p.email,
+          grade: p.grade
+        })),
+        teacherIncharge: {
+          name: shared.tName || d.tName || '',
+          phone: (shared.tPhone || d.tPhone) ? "'" + String(shared.tPhone || d.tPhone).replace(/^'/, '') : '',
+          email: shared.tEmail || d.tEmail || ''
+        }
+      };
+      return payload;
+    })
+  };
+}
+
+function showDone() {
+  updateThemeAccent('var(--orange)');
+
+  // Phone numbers carry a leading apostrophe so spreadsheets keep them as text.
+  // That belongs to the export, not to the screen.
+  const forDisplay = (v) => String(v || '').replace(/^'/, '');
+
+  const tagsContainer = document.getElementById('done-tags');
+  tagsContainer.innerHTML = '';
+
+  const tagsLabel = document.createElement('div');
+  tagsLabel.className = 'done-tags-label';
+  tagsLabel.textContent = `${selEvs.length} event${selEvs.length > 1 ? 's' : ''} selected`;
+  tagsContainer.appendChild(tagsLabel);
+
+  const tagsList = document.createElement('div');
+  tagsList.className = 'done-tags-list';
+
+  selEvs.forEach(id => {
+    const ev = EVENTS.find(e => e.id === id);
+    const tag = document.createElement('span');
+    tag.className = 'done-tag';
+    tag.textContent = ev.name;
+    tagsList.appendChild(tag);
+  });
+
+  tagsContainer.appendChild(tagsList);
+  
+  const payload = buildExcelPayload();
+  const summaryOut = document.getElementById('summary-out');
+  summaryOut.innerHTML = '';
+
+  const isMulti = mode === 'multi' && payload.events.length > 1;
+  const first = payload.events[0];
+
+  if (isMulti && first) {
+    summaryOut.innerHTML += `
+      <div class="shared-summary">
+        <div class="shared-summary-title">School &amp; teacher</div>
+        <div class="summary-grid">
+          <div class="summary-field">
+            <div class="summary-label">School Name</div>
+            <div class="summary-val">${first.schoolName || '—'}</div>
+          </div>
+          <div class="summary-field">
+            <div class="summary-label">Teacher Incharge</div>
+            <div class="summary-val">${first.teacherIncharge.name || '—'}</div>
+          </div>
+          <div class="summary-field">
+            <div class="summary-label">Teacher Contact</div>
+            <div class="summary-val">${forDisplay(first.teacherIncharge.phone) || '—'}</div>
+          </div>
+          <div class="summary-field">
+            <div class="summary-label">Teacher Email</div>
+            <div class="summary-val">${first.teacherIncharge.email || '—'}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  
+  payload.events.forEach(evData => {
+    const ev = EVENTS.find(e => e.id === evData.eventId);
+    let html = `<div class="summary-card" style="--ev-accent: ${ev ? ev.accent : 'var(--orange)'}">
+      <div class="summary-card-title">${evData.eventName}</div>
+      ${isMulti ? '' : `
+      <div class="summary-grid">
+        <div class="summary-field">
+          <div class="summary-label">School Name</div>
+          <div class="summary-val">${evData.schoolName || '—'}</div>
+        </div>
+        ${evData.teamName ? `
+        <div class="summary-field">
+          <div class="summary-label">Team Name</div>
+          <div class="summary-val">${evData.teamName}</div>
+        </div>` : ''}
+        <div class="summary-field">
+          <div class="summary-label">Teacher Incharge</div>
+          <div class="summary-val">${evData.teacherIncharge.name || '—'}</div>
+        </div>
+        <div class="summary-field">
+          <div class="summary-label">Teacher Contact</div>
+          <div class="summary-val">${forDisplay(evData.teacherIncharge.phone) || '—'}</div>
+        </div>
+      </div>`}
+      ${evData.teamName && isMulti ? `
+      <div class="summary-grid">
+        <div class="summary-field">
+          <div class="summary-label">Team Name</div>
+          <div class="summary-val">${evData.teamName}</div>
+        </div>
+      </div>` : ''}
+      <div class="summary-p-header">Participant Details</div>
+      <div class="summary-p-list">
+    `;
+    
+    evData.participants.forEach(p => {
+      html += `<div class="summary-p-item">
+        <div class="p-item-name"><span>${p.name || '—'}</span> <span class="p-item-grade">${p.grade}</span></div>
+        <div class="p-item-meta">${forDisplay(p.phone)}</div>
+        <div class="p-item-meta">${p.email}</div>
+      </div>`;
+    });
+    
+    html += `</div></div>`;
+    summaryOut.innerHTML += html;
+  });
+  
+  showScreen('sd');
+  initSlideButtons(document.getElementById('sd'));
+}
+
+function downloadJSON() {
+  const payload = buildExcelPayload();
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(payload, null, 2));
+  const el = document.createElement('a');
+  el.setAttribute("href", dataStr);
+  el.setAttribute("download", "registration_data.json");
+  document.body.appendChild(el);
+  el.click();
+  el.remove();
+}
+
+function downloadCSV() {
+  const payload = buildExcelPayload();
+  let csv = 'Event,School,Team Name,Teacher Name,Teacher Phone,Teacher Email,Participant No,Participant Name,Participant Phone,Participant Email,Participant Grade\n';
+  
+  payload.events.forEach(ev => {
+    ev.participants.forEach(p => {
+      csv += `"${ev.eventName}","${ev.schoolName}","${ev.teamName || ''}","${ev.teacherIncharge.name}","${ev.teacherIncharge.phone}","${ev.teacherIncharge.email}","${p.no}","${p.name}","${p.phone}","${p.email}","${p.grade}"\n`;
+    });
+  });
+  
+  const dataStr = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
+  const el = document.createElement('a');
+  el.setAttribute("href", dataStr);
+  el.setAttribute("download", "registration_data.csv");
+  document.body.appendChild(el);
+  el.click();
+  el.remove();
+}
+
+async function submitData() {
+  const payload = buildExcelPayload();
+  const btn = document.getElementById('btn-sub');
+  const errBox = document.getElementById('sub-err');
+
+  setSlideButton(btn, 'Sending data…');
+  btn.disabled = true;
+  errBox.classList.remove('show');
+  errBox.textContent = '';
+
+  let allSuccess = true;
+  const unsent = [];
+
+  // Submit for each selected event
+  for (const id of selEvs) {
+    const scriptUrl = BACKEND_URLS[id];
+
+    const evData = payload.events.find(e => e.eventId === id);
+    if (!evData) continue;
+
+    // An event with no endpoint must never be reported as saved.
+    if (!scriptUrl) {
+      console.error('No backend endpoint configured for event:', id);
+      unsent.push(evData.eventName);
+      allSuccess = false;
+      continue;
+    }
+
+    const postData = {
+      registrationId: payload.registrationId,
+      timestamp: payload.timestamp,
+      mode: payload.registrationMode,
+      ...evData
+    };
+
+    try {
+      await fetch(scriptUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8',
+        },
+        body: JSON.stringify(postData)
+      });
+    } catch (err) {
+      console.error('Error submitting for', id, err);
+      unsent.push(evData.eventName);
+      allSuccess = false;
+    }
+  }
+
+  if (allSuccess) {
+    setSlideButton(btn, 'Sending emails…');
+    try {
+      const emailRes = await fetch('/api/send-registration-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const emailData = await emailRes.json().catch(() => ({}));
+      if (!emailRes.ok || !emailData.ok) {
+        console.warn('Confirmation email issue:', emailData.error || emailRes.status);
+      }
+    } catch (emailErr) {
+      console.warn('Confirmation email failed (registration still saved):', emailErr);
+    }
+    setSlideButton(btn, 'Submitted ✓');
+    clearState();
+  } else {
+    setSlideButton(btn, 'Submission incomplete');
+    errBox.textContent = unsent.length
+      ? `Could not save: ${unsent.join(', ')}. Nothing was lost — download your details below and contact the organisers.`
+      : 'Something went wrong while saving. Download your details below and contact the organisers.';
+    errBox.classList.add('show');
+  }
+  
+  setTimeout(() => {
+    setSlideButton(btn, 'Confirm & Submit →');
+    btn.disabled = false;
+  }, 3500);
+}
+</script>
+<script src="/invite-widget.js"></script>
+</body>
+</html>
