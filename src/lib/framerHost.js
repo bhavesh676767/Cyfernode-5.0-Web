@@ -55,6 +55,16 @@ export function canonicalizeIndexHtmlUrl() {
   window.history.replaceState(null, '', `${nextPath}${search}${hash}`)
 }
 
+export function cleanupNavigationState() {
+  document.documentElement.classList.remove('is-navigating-to-register')
+}
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('pageshow', cleanupNavigationState)
+  window.addEventListener('popstate', cleanupNavigationState)
+  cleanupNavigationState()
+}
+
 /**
  * The registration CTA is rendered by Framer, including its responsive
  * variants. Delegating the click from the document keeps every variant wired
@@ -81,6 +91,7 @@ export function enableRegistrationTrigger() {
     window.setTimeout(() => {
       window.location.assign(REGISTER_PATH)
     }, 180)
+    window.setTimeout(cleanupNavigationState, 1500)
   }, true)
 }
 

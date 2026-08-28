@@ -18,6 +18,30 @@
 
   var SOCIALS_SELECTORS = ['.framer-5q2vr0', '[data-framer-appear-id="5q2vr0"]']
 
+  var TEAM_SELECTORS = ['.framer-1o95l5b', '[data-framer-appear-id="1o95l5b"]', 'a[href*="team"]']
+
+  var BROCHURE_PATH = '/CyferNode_5.0_Official_Event_Brochure_2026.pdf'
+
+
+
+  // Handle direct navigation to /team or /team/
+
+  var pathname = window.location.pathname.replace(/\/$/, '')
+
+  if (pathname === '/team') {
+
+    try {
+
+      sessionStorage.setItem('cyfernode_autoclick_team', 'true')
+
+    } catch (e) {}
+
+    window.location.replace('/?action=click-team')
+
+    return
+
+  }
+
 
 
   function normalizeLabel(value) {
@@ -55,6 +79,22 @@
 
 
     return letters.join('').toLowerCase()
+
+  }
+
+
+
+  function isHomeMenuItem(el) {
+
+    if (!(el instanceof Element)) return false
+
+    var title = getMenuItemTitle(el)
+
+    if (title === 'home' || title.indexOf('home') !== -1) return true
+
+    var text = normalizeLabel(el.textContent)
+
+    return text.indexOf('home') === 0 || text.indexOf('home 01') === 0 || text.indexOf('01 home') !== -1
 
   }
 
@@ -104,11 +144,51 @@
 
 
 
-  function socialsTrigger(el) {
+  function isTeamMenuItem(el) {
+
+    if (!(el instanceof Element)) return false
+
+    var title = getMenuItemTitle(el)
+
+    if (title === 'team' || title.indexOf('team') !== -1) return true
+
+
+
+    for (var i = 0; i < TEAM_SELECTORS.length; i += 1) {
+
+      if (el.matches(TEAM_SELECTORS[i])) return true
+
+    }
+
+
+
+    var text = normalizeLabel(el.textContent)
+
+    return text.indexOf('team') !== -1
+
+  }
+
+
+
+  function homeTrigger(el) {
 
     if (!(el instanceof Element)) return null
 
+    var menuItem = el.closest('[data-framer-name="Menu Item"]')
 
+    if (menuItem && isHomeMenuItem(menuItem)) return menuItem
+
+    if (isHomeMenuItem(el)) return el
+
+    return null
+
+  }
+
+
+
+  function socialsTrigger(el) {
+
+    if (!(el instanceof Element)) return null
 
     var menuItem = el.closest('[data-framer-name="Menu Item"]')
 
@@ -125,6 +205,34 @@
     }
 
 
+
+    return null
+
+  }
+
+
+
+  function teamTrigger(el) {
+
+    if (!(el instanceof Element)) return null
+
+    var menuItem = el.closest('[data-framer-name="Menu Item"]')
+
+    if (menuItem && isTeamMenuItem(menuItem)) return menuItem
+
+
+
+    for (var i = 0; i < TEAM_SELECTORS.length; i += 1) {
+
+      var match = el.closest(TEAM_SELECTORS[i])
+
+      if (match) return match
+
+    }
+
+
+
+    if (isTeamMenuItem(el)) return el
 
     return null
 
@@ -202,6 +310,22 @@
 
 
 
+  function brochureTrigger(el) {
+
+    if (!(el instanceof Element)) return null
+
+    var button = el.closest('[data-framer-name="Scaling Button"], [data-framer-name="Fluid Button"], a, button') || el
+
+    var label = normalizeLabel(button.textContent)
+
+    if (label.indexOf('brochure') !== -1) return button
+
+    return null
+
+  }
+
+
+
   function promptsTrigger(el) {
 
     if (!(el instanceof Element)) return null
@@ -230,6 +354,38 @@
 
 
 
+  function navigateToHome() {
+
+    if (window.location.pathname === '/' || window.location.pathname === '') {
+
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+
+    } else {
+
+      window.location.assign('/')
+
+    }
+
+  }
+
+
+
+  function cleanupNavigationState() {
+
+    document.documentElement.classList.remove('is-navigating-to-register')
+
+  }
+
+
+
+  window.addEventListener('pageshow', cleanupNavigationState)
+
+  window.addEventListener('popstate', cleanupNavigationState)
+
+  cleanupNavigationState()
+
+
+
   function navigateToRegister() {
 
     if (window.location.pathname === REGISTER_PATH) return
@@ -242,6 +398,8 @@
 
     }, 180)
 
+    window.setTimeout(cleanupNavigationState, 1500)
+
   }
 
 
@@ -251,6 +409,122 @@
     if (window.location.pathname === PROMPTS_PATH) return
 
     window.location.assign(PROMPTS_PATH)
+
+  }
+
+
+
+  function findTeamButtonOrSection() {
+
+    var items = document.querySelectorAll('[data-framer-name="Menu Item"]')
+
+    for (var i = 0; i < items.length; i += 1) {
+
+      if (isTeamMenuItem(items[i])) return items[i]
+
+    }
+
+    for (var j = 0; j < TEAM_SELECTORS.length; j += 1) {
+
+      var match = document.querySelector(TEAM_SELECTORS[j])
+
+      if (match) return match
+
+    }
+
+    return document.querySelector('[data-framer-name="Team"], #team')
+
+  }
+
+
+
+  function triggerTeamAction() {
+
+    if (window.location.pathname !== '/' && window.location.pathname !== '') {
+
+      try {
+
+        sessionStorage.setItem('cyfernode_autoclick_team', 'true')
+
+      } catch (e) {}
+
+      window.location.assign('/?action=click-team')
+
+      return
+
+    }
+
+
+
+    var attempts = 0
+
+    function attempt() {
+
+      attempts += 1
+
+      var target = findTeamButtonOrSection()
+
+      if (target) {
+
+        if (target.getAttribute('data-framer-name') === 'Menu Item' || target.matches('.framer-1o95l5b')) {
+
+          target.click()
+
+        } else if (typeof target.scrollIntoView === 'function') {
+
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+        }
+
+      } else if (attempts < 25) {
+
+        setTimeout(attempt, 150)
+
+      }
+
+    }
+
+    attempt()
+
+  }
+
+
+
+  function checkAutoClickTeam() {
+
+    var shouldClick = false
+
+    if (window.location.search.indexOf('action=click-team') !== -1) {
+
+      shouldClick = true
+
+      try {
+
+        history.replaceState(null, '', window.location.pathname)
+
+      } catch (e) {}
+
+    }
+
+    try {
+
+      if (sessionStorage.getItem('cyfernode_autoclick_team') === 'true') {
+
+        shouldClick = true
+
+        sessionStorage.removeItem('cyfernode_autoclick_team')
+
+      }
+
+    } catch (e) {}
+
+
+
+    if (shouldClick) {
+
+      triggerTeamAction()
+
+    }
 
   }
 
@@ -382,6 +656,20 @@
 
 
 
+    if (brochureTrigger(event.target)) {
+
+      event.preventDefault()
+
+      event.stopPropagation()
+
+      window.open(BROCHURE_PATH, '_blank', 'noopener,noreferrer')
+
+      return
+
+    }
+
+
+
     if (inviteTrigger(event.target)) {
 
       event.preventDefault()
@@ -403,6 +691,34 @@
       event.stopPropagation()
 
       window.dispatchEvent(new CustomEvent('cyfernode:open-socials-modal'))
+
+      return
+
+    }
+
+
+
+    if (homeTrigger(event.target)) {
+
+      event.preventDefault()
+
+      event.stopPropagation()
+
+      navigateToHome()
+
+      return
+
+    }
+
+
+
+    if (teamTrigger(event.target)) {
+
+      event.preventDefault()
+
+      event.stopPropagation()
+
+      triggerTeamAction()
 
       return
 
@@ -442,6 +758,10 @@
 
     wireLinks()
 
+    checkAutoClickTeam()
+
+
+
     new MutationObserver(wireLinks).observe(document.documentElement, {
 
       childList: true,
@@ -465,5 +785,4 @@
   }
 
 })()
-
 
