@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prompt - Cyfernode 5.0</title>
-<meta name="description" content="Event prompt for Cyfernode 5.0.">
+<meta name="description" content="Clue-Less: a 10-level linear cryptic hunt. Solve puzzles, riddles, and ciphers with no hints. Cyfernode 5.0 cyber investigation event.">
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
@@ -65,7 +65,7 @@ html, body {
 }
 
 .panel {
-  width: min(100%, 640px);
+  width: min(100%, 720px);
 }
 
 .head {
@@ -98,10 +98,106 @@ html, body {
   margin-top: 14px;
 }
 
+.prompt-body h2 {
+  margin-top: 32px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.level-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.level-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 15px 18px;
+  border: 1.5px solid rgba(17, 17, 20, 0.12);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--text);
+  font-family: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.level-card:hover {
+  border-color: rgba(17, 17, 20, 0.22);
+}
+
+.level-card.is-locked {
+  opacity: 0.42;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.level-card.is-locked:hover {
+  border-color: rgba(17, 17, 20, 0.12);
+}
+
+.level-card.is-complete .level-status {
+  color: rgba(17, 17, 20, 0.45);
+}
+
+.level-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.level-num {
+  flex-shrink: 0;
+  width: 22px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.level-name {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.level-card.is-final .level-name {
+  letter-spacing: 0.14em;
+}
+
+.level-status {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+
 .not-found {
   color: var(--muted);
   font-size: 15px;
   font-weight: 600;
+}
+
+@media (max-width: 520px) {
+  .level-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 768px) {
@@ -127,7 +223,10 @@ html, body {
       <h1 class="title" id="prompt-title"></h1>
     </header>
     <div class="prompt-body" id="prompt-body">
-      <p>The full event prompt will be published here soon.</p>
+      <p>Clue-Less is a 10-level linear cryptic hunt. Teams race to solve a sequence of raw puzzles, riddles, and hidden ciphers with no hints provided. Progress is tracked on a live public leaderboard. The first team to clear all 10 puzzles wins, or the team furthest ahead when the timer expires.</p>
+
+      <h2>Levels</h2>
+      <div class="level-grid" id="level-grid" aria-label="10 hunt levels"></div>
     </div>
   </article>
 
@@ -138,24 +237,77 @@ html, body {
 </main>
 
 <script src="/prompts/events.js"></script>
-<script>
-(function () {
-  const slug = location.pathname.replace(/\/$/, '').split('/').pop() || ''
-  const event = window.getCyfernodeEventByPromptSlug(slug)
-  const panel = document.getElementById('prompt-panel')
-  const notFound = document.getElementById('prompt-not-found')
+<script type="module">
+import { isLevelUnlocked, loadProgress } from '/clue-less/lib/state.js'
 
-  if (!event) {
-    document.title = 'Prompt not found - Cyfernode 5.0'
-    notFound.hidden = false
-    return
-  }
+const PROMPT_BASE = '/prompts/clue-less-prompt'
 
+const LEVELS = [
+  { id: 'void', num: '01', name: 'Void', href: `${PROMPT_BASE}/void` },
+  { id: 'echo', num: '02', name: 'Echo', href: `${PROMPT_BASE}/echo` },
+  { id: 'mirror', num: '03', name: 'Mirror', href: `${PROMPT_BASE}/mirror` },
+  { id: 'deceit', num: '04', name: 'Deceit', href: `${PROMPT_BASE}/deceit` },
+  { id: 'context', num: '05', name: 'Context', href: `${PROMPT_BASE}/context` },
+  { id: 'rabbit', num: '06', name: 'Rabbit', href: `${PROMPT_BASE}/rabbit` },
+  { id: 'shift', num: '07', name: 'Shift', href: `${PROMPT_BASE}/shift` },
+  { id: 'absence', num: '08', name: 'Absence', href: `${PROMPT_BASE}/absence` },
+  { id: 'trace', num: '09', name: 'Trace', href: `${PROMPT_BASE}/trace` },
+  { id: 'clue-less', num: '10', name: 'Clue Less', href: `${PROMPT_BASE}/finale` },
+]
+
+function isLevelComplete(levelId) {
+  return loadProgress().completed.includes(levelId)
+}
+
+function renderLevels() {
+  const grid = document.getElementById('level-grid')
+  if (!grid) return
+
+  const progress = loadProgress()
+
+  grid.innerHTML = LEVELS.map(function (level, index) {
+    const unlocked = isLevelUnlocked(progress, level.id)
+    const complete = progress.completed.includes(level.id)
+    const isFinal = index === LEVELS.length - 1
+    const status = complete ? 'Done' : unlocked ? 'Open' : 'Locked'
+    const classes = [
+      'level-card',
+      isFinal ? 'is-final' : '',
+      complete ? 'is-complete' : '',
+      unlocked ? '' : 'is-locked',
+    ].filter(Boolean).join(' ')
+
+    const inner = [
+      '<span class="level-meta">',
+      `<span class="level-num">${level.num}</span>`,
+      `<span class="level-name">${level.name}</span>`,
+      '</span>',
+      `<span class="level-status">${status}</span>`,
+    ].join('')
+
+    if (unlocked) {
+      return `<a class="${classes}" href="${level.href}">${inner}</a>`
+    }
+
+    return `<button type="button" class="${classes}" disabled>${inner}</button>`
+  }).join('')
+}
+
+const slug = location.pathname.replace(/\/$/, '').split('/').pop() || ''
+const event = window.getCyfernodeEventByPromptSlug(slug)
+const panel = document.getElementById('prompt-panel')
+const notFound = document.getElementById('prompt-not-found')
+
+if (!event) {
+  document.title = 'Prompt not found - Cyfernode 5.0'
+  notFound.hidden = false
+} else {
   document.title = `${event.name} Prompt - Cyfernode 5.0`
   document.getElementById('prompt-category').textContent = event.category
   document.getElementById('prompt-title').textContent = event.name
   panel.hidden = false
-})()
+  renderLevels()
+}
 </script>
 </body>
 </html>

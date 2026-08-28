@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { SUPABASE_ANON_KEY, REQUEST_INVITE_ENDPOINT } from '@/lib/supabasePublic'
+import { lockPageScroll } from '@/lib/scrollLock'
 import styles from './InviteRequestModal.module.css'
 
 const OPEN_EVENT = 'cyfernode:open-invite-modal'
@@ -53,9 +54,7 @@ export function InviteRequestModal() {
   useEffect(() => {
     if (!open) return undefined
 
-    const previousOverflow = document.body.style.overflow
-    document.documentElement.classList.add('invite-modal-open')
-    document.body.style.overflow = 'hidden'
+    const unlock = lockPageScroll('invite-modal-open')
     window.setTimeout(() => inputRef.current?.focus(), 0)
 
     const onKeyDown = (event) => {
@@ -64,8 +63,7 @@ export function InviteRequestModal() {
 
     window.addEventListener('keydown', onKeyDown)
     return () => {
-      document.documentElement.classList.remove('invite-modal-open')
-      document.body.style.overflow = previousOverflow
+      unlock()
       window.removeEventListener('keydown', onKeyDown)
     }
   }, [open])

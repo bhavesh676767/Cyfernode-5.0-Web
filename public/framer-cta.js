@@ -176,7 +176,27 @@
 
     if (!(el instanceof Element)) return null
 
-    return el.closest(INVITE_CONTAINER)
+
+
+    var container = el.closest(INVITE_CONTAINER)
+
+    if (container) return container.querySelector('a, button') || container
+
+
+
+    var button = framerButton(el)
+
+    if (!button) return null
+
+
+
+    var label = normalizeLabel(button.textContent)
+
+    if (label === 'request invite' || label === 'request invite request invite') return button
+
+
+
+    return null
 
   }
 
@@ -314,6 +334,32 @@
 
 
 
+  function wireInviteLinks() {
+
+    document.querySelectorAll(INVITE_CONTAINER + ' a[data-framer-name="Scaling Button"]').forEach(function (link) {
+
+      link.setAttribute('href', '#invite')
+
+    })
+
+
+
+    document.querySelectorAll('[data-framer-name="Scaling Button"], [data-framer-name="Fluid Button"]').forEach(function (link) {
+
+      var label = normalizeLabel(link.textContent)
+
+      if (label === 'request invite' || label === 'request invite request invite') {
+
+        link.setAttribute('href', '#invite')
+
+      }
+
+    })
+
+  }
+
+
+
   function wireLinks() {
 
     wireRegisterLinks()
@@ -321,6 +367,8 @@
     wirePromptsLinks()
 
     wireSocialsLinks()
+
+    wireInviteLinks()
 
   }
 

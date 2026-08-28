@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prompt - Cyfernode 5.0</title>
-<meta name="description" content="Event prompt for Cyfernode 5.0.">
+<title>Runtime Terror Prompt - Cyfernode 5.0</title>
+<meta name="description" content="Runtime Terror prompt: Competitive Programming event. Cyfernode 5.0.">
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
@@ -65,7 +65,7 @@ html, body {
 }
 
 .panel {
-  width: min(100%, 640px);
+  width: min(100%, 720px);
 }
 
 .head {
@@ -98,10 +98,333 @@ html, body {
   margin-top: 14px;
 }
 
-.not-found {
+.prompt-body h2 {
+  margin-top: 28px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--muted);
-  font-size: 15px;
+}
+
+.prompt-body ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.prompt-body li + li {
+  margin-top: 8px;
+}
+
+.prompt-quote {
+  margin-top: 18px;
+  padding-left: 14px;
+  border-left: 2px solid var(--orange);
   font-weight: 600;
+  color: var(--text);
+}
+
+.criteria-table {
+  width: 100%;
+  margin-top: 12px;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.criteria-table th,
+.criteria-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(17, 17, 20, 0.1);
+}
+
+.criteria-table th {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.start-btn-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--text);
+  color: #fff;
+  border: none;
+  padding: 14px 28px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.start-btn-action:hover {
+  background: var(--orange);
+}
+
+.start-btn-action:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Quiz UI Container & Elements */
+#quiz-container {
+  display: none;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.quiz-shell {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  min-height: 100vh;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+
+.quiz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(17, 17, 20, 0.1);
+  margin-bottom: 24px;
+}
+
+.quiz-event-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.q-count {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--text);
+}
+
+.timer-wrap { text-align: right; }
+
+.timer-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.timer {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--orange);
+  font-variant-numeric: tabular-nums;
+}
+
+.progress-wrap {
+  height: 2px;
+  background: rgba(17, 17, 20, 0.08);
+  margin-bottom: 32px;
+}
+
+.progress-bar {
+  height: 2px;
+  background: var(--orange);
+  transition: width 0.3s ease;
+}
+
+.question-card {
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  transform: translateY(6px);
+  display: none;
+}
+
+.question-card.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.q-text {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.65;
+  color: var(--text);
+  margin-bottom: 24px;
+  white-space: pre-wrap;
+  font-family: var(--font-sans);
+  background: #f8f8f9;
+  border-left: 2px solid var(--orange);
+  padding: 18px 22px;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.option-label {
+  display: flex;
+  align-items: center;
+  padding: 14px 18px;
+  background: #fff;
+  border: 1px solid rgba(17, 17, 20, 0.12);
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(17, 17, 20, 0.85);
+  gap: 14px;
+}
+
+.option-label:hover {
+  border-left-color: var(--orange);
+  color: var(--text);
+}
+
+.option-label input[type="radio"] {
+  accent-color: var(--orange);
+  flex-shrink: 0;
+}
+
+.option-label.selected {
+  border-left-color: var(--orange);
+  background: #fffaf7;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 28px;
+  border-top: 1px solid rgba(17, 17, 20, 0.1);
+  margin-top: 36px;
+}
+
+.btn-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--text);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-nav:hover { background: #000; }
+.btn-nav.accent { background: var(--orange); }
+.btn-nav.accent:hover { background: #b53b00; }
+.btn-nav.success { background: #0a7a0a; }
+
+/* Modals */
+#penalty-modal, #result-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 40px;
+  max-width: 480px;
+  width: calc(100% - 40px);
+  text-align: left;
+  border-left: 3px solid #c0392b;
+}
+
+.modal-tag {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #c0392b;
+  margin-bottom: 12px;
+}
+
+.modal-content h2 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.modal-content p {
+  font-size: 15px;
+  color: rgba(17, 17, 20, 0.8);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.lockout-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 20px;
+  margin-bottom: 4px;
+}
+
+.lockout-display {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--orange);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 24px;
+  line-height: 1;
+}
+
+.result-content { border-left-color: #0a7a0a; }
+.result-content .modal-tag { color: #0a7a0a; }
+
+.score-display {
+  font-size: 72px;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: var(--text);
+  margin: 20px 0 4px;
+}
+
+.score-display sub {
+  font-size: 32px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.score-sub {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
 }
 
 @media (max-width: 768px) {
@@ -110,7 +433,6 @@ html, body {
     top: 24px;
     left: 24px;
   }
-
   .page {
     padding: 100px 16px 40px;
   }
@@ -120,41 +442,721 @@ html, body {
 <body>
 <a href="/prompts" id="exit-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
 
-<main class="page">
-  <article class="panel" id="prompt-panel" hidden>
+<!-- Landing Page -->
+<main class="page" id="landing-page">
+  <article class="panel" id="prompt-panel">
     <header class="head">
-      <p class="eyebrow" id="prompt-category"></p>
-      <h1 class="title" id="prompt-title"></h1>
+      <p class="eyebrow" id="prompt-category">COMPETITIVE PROGRAMMING</p>
+      <h1 class="title" id="prompt-title">Runtime Terror</h1>
     </header>
-    <div class="prompt-body" id="prompt-body">
-      <p>The full event prompt will be published here soon.</p>
+
+    <div class="prompt-body">
+      <h2>Event Details</h2>
+      <ul>
+        <li><strong>Date &amp; Time:</strong> Friday, 25 September 2026 — <strong>10:00 AM sharp</strong> to 11:30 AM IST.</li>
+        <li><strong>Google Meet Link:</strong> <a href="https://meet.google.com/xaf-ttwv-rys" target="_blank" style="color: var(--orange); font-weight: 600; text-decoration: underline;">meet.google.com/xaf-ttwv-rys</a></li>
+        <li><strong>Camera Requirement:</strong> Videos must be turned on throughout the session. No exceptions.</li>
+        <li><strong>Internet Connection:</strong> Ensure a stable internet connection before joining. Disconnections or connectivity issues are the participant's responsibility and will not be entertained.</li>
+        <li><strong>Display Name:</strong> Set your name in the meeting to your <strong>school code</strong> before joining. Names not matching the school code will be unidentifiable.</li>
+        <li><strong>Single Device:</strong> Both participants of a team must join from one singular device only.</li>
+      </ul>
+
+      <h2>Prelim Quiz Rules &amp; Guidelines</h2>
+      <ul>
+        <li><strong>One Attempt Only:</strong> This quiz can only be taken once per device.</li>
+        <li><strong>No Extensions:</strong> Disable all browser extensions before starting. Extensions detected will block access.</li>
+        <li><strong>Full Screen Required:</strong> The quiz enters full-screen mode on start. Do not exit via F11 or any other means.</li>
+        <li><strong>No Tab Switching or Minimizing:</strong> Any loss of focus (switching tabs, minimizing, or window switching) is detected instantly.</li>
+        <li><strong>Lockout Penalties:</strong> Each violation locks your quiz for a fixed period while your main timer keeps running:
+          <table class="criteria-table" style="margin-top: 10px; margin-bottom: 12px;">
+            <thead>
+              <tr>
+                <th scope="col">Offense</th>
+                <th scope="col">1st</th>
+                <th scope="col">2nd</th>
+                <th scope="col">3rd</th>
+                <th scope="col">4th</th>
+                <th scope="col">5th</th>
+                <th scope="col">6th+</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Lockout Duration</td>
+                <td>1 min</td>
+                <td>2 min</td>
+                <td>4 min</td>
+                <td>8 min</td>
+                <td>10 min</td>
+                <td>15 min</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        <li><strong>Format:</strong> 30 multiple-choice questions. Total time limit: <strong>45 minutes</strong>.</li>
+      </ul>
+
+      <div id="ext-warning" class="prompt-quote" style="border-left-color: #c0392b; display: none;">
+        Browser extensions detected. Please disable all extensions and refresh the page to start.
+      </div>
+
+      <div id="lock-warning" class="prompt-quote" style="display: none;">
+        Quiz is currently locked. It will unlock on <strong>25 September 2026 at 10:15 AM IST</strong>.<br>
+        <span id="lock-countdown" style="font-size: 14px; font-weight: 500; color: var(--muted); margin-top: 4px; display: inline-block;"></span>
+      </div>
+
+      <div style="margin-top: 32px;">
+        <button class="start-btn-action" id="start-btn">Start Prelim Quiz <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+
+      <p id="taken-msg" style="display:none; color: #c0392b; font-weight: 700; margin-top: 20px;">
+        You have already completed the quiz on this device.
+      </p>
     </div>
   </article>
-
-  <div class="panel not-found" id="prompt-not-found" hidden>
-    <p>Prompt not found.</p>
-    <p><a href="/prompts">Return to prompts</a></p>
-  </div>
 </main>
 
+<!-- Quiz Interface -->
+<div id="quiz-container">
+  <div class="quiz-shell">
+    <div>
+      <div class="quiz-header">
+        <div>
+          <div class="quiz-event-label">Runtime Terror — Prelim Round</div>
+          <div class="q-count">Question <span id="current-q">1</span> <span style="color:var(--muted); font-weight:500; font-size:18px;">/ 30</span></div>
+        </div>
+        <div class="timer-wrap">
+          <div class="timer-label">Time Remaining</div>
+          <div class="timer" id="timer-display">45:00</div>
+        </div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progress-bar" style="width:3.33%"></div>
+      </div>
+    </div>
+
+    <div id="questions-wrapper"></div>
+
+    <div class="controls">
+      <button class="btn-nav" id="prev-btn" style="visibility:hidden;"><i class="fa-solid fa-arrow-left"></i> Previous</button>
+      <button class="btn-nav accent" id="next-btn">Next <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- Penalty Modal -->
+<div id="penalty-modal">
+  <div class="modal-content">
+    <div class="modal-tag"><i class="fa-solid fa-triangle-exclamation"></i> Violation Detected</div>
+    <h2>Quiz Locked</h2>
+    <p id="penalty-text">You switched tabs or exited full-screen.</p>
+    <div class="lockout-label">Lockout Time Remaining</div>
+    <div class="lockout-display" id="lockout-timer">00:00</div>
+    <button class="btn-nav" id="resume-btn" disabled style="width:100%; justify-content:center;">Acknowledge &amp; Resume</button>
+  </div>
+</div>
+
+<!-- Result Modal -->
+<div id="result-modal">
+  <div class="modal-content result-content">
+    <div class="modal-tag"><i class="fa-solid fa-check"></i> Quiz Complete</div>
+    <h2>Your Score</h2>
+    <div class="score-display"><span id="score-val">0</span><sub>/30</sub></div>
+    <p class="score-sub">Prelim Round — Runtime Terror</p>
+    <button class="btn-nav success" onclick="location.href='/prompts'" style="width:100%; justify-content:center;">Return Home <i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<script>
+// --- Quiz Data ---
+const quizData = [
+  {
+    q: "1. What is the primary purpose of a for loop in Python?",
+    opts: [
+      "To execute a block of code only if a condition is true.",
+      "To iterate over a sequence (like a list, tuple, string, or range) or other iterable objects.",
+      "To define a function that can be called multiple times.",
+      "To handle exceptions and errors in a program."
+    ],
+    ans: 1
+  },
+  {
+    q: "2. Find the output\n\nfor i in range(1, 5):\n    print(i, end=' ')",
+    opts: ["0 1 2 3 4", "1 2 3 4", "1 2 3 4 5", "0 1 2 3"],
+    ans: 1
+  },
+  {
+    q: "3. What will this program print?\n\nx = 8\n\nif x > 10:\n    print('A')\nelif x > 5:\n    print('B')\nelse:\n    print('C')",
+    opts: ["A", "B", "C", "Nothing"],
+    ans: 1
+  },
+  {
+    q: "4. Find Output\n\ndef square(x):\n    return x * x\n\nprint(square(4))",
+    opts: ["4", "8", "16", "square(4)"],
+    ans: 2
+  },
+  {
+    q: "5. What does it mean that strings in Python are 'immutable'?",
+    opts: [
+      "Their characters can be changed, but their length cannot.",
+      "They cannot be assigned to new variables.",
+      "Once created, their content cannot be changed.",
+      "They can only contain ASCII characters."
+    ],
+    ans: 2
+  },
+  {
+    q: "6. One of the main benefits of using modules in Python is:",
+    opts: [
+      "They make your code run faster.",
+      "They allow you to reuse code across different programs.",
+      "They automatically fix errors in your code.",
+      "They reduce the amount of memory your program uses."
+    ],
+    ans: 1
+  },
+  {
+    q: "7. When you iterate directly over a dictionary using a for loop (e.g., for key in my_dict:), what do you get in each iteration?",
+    opts: ["The items (as dict_items object)", "The values", "Key-value pairs (as tuples)", "The keys"],
+    ans: 3
+  },
+  {
+    q: "8. What is the purpose of the pass statement in Python?",
+    opts: [
+      "It is used to create an infinite loop.",
+      "It is a null operation; nothing happens when it executes.",
+      "It terminates the program immediately.",
+      "It skips the next iteration of a loop."
+    ],
+    ans: 1
+  },
+  {
+    q: "9. Which list comprehension correctly filters a list numbers to include only even numbers?",
+    opts: [
+      "[x for x in numbers if x % 2 == 0]",
+      "[x if x % 2 == 0 for x in numbers]",
+      "[x for x in numbers else x % 2 == 0]",
+      "[x where x % 2 == 0 in numbers]"
+    ],
+    ans: 0
+  },
+  {
+    q: "10. What is the final output for\n\nfor i in range(3):\n    pass\n\nprint(i)",
+    opts: ["2", "3", "NameError: name 'i' is not defined", "Undefined"],
+    ans: 0
+  },
+  {
+    q: "11. You have a list of strings words = ['hello', 'world', 'python']. How would you join them into a single string 'hello-world-python'?",
+    opts: ["'-'.join(words)", "words.join('-')", "words.connect('-')", "'-'.concatenate(words)"],
+    ans: 0
+  },
+  {
+    q: "12. What does the following Python code do?\ncount = 0\nwhile count < 5:\n   print('Count:', count)\n   count += 1\n   if count == 3:\n       continue\n   print('After Continue')",
+    opts: [
+      "Prints numbers 0 to 4 without skipping anything",
+      "Enters an infinite loop",
+      "Prints Count: 0 to 4 and skips 'After Continue' when count is 3",
+      "Syntax Error"
+    ],
+    ans: 2
+  },
+  {
+    q: "13. Find the output of the following program:\na = ['Python', 'Java', 'C++', 'Go']\nb = a\nc = a[:]\nb[0] = 'Code'\nc[1] = 'Quiz'\ncount = 0\n\nfor x in (a, b, c):\n    if x[0] == 'Code':\n        count += 1\n    if x[1] == 'Quiz':\n        count += 10\n\nprint(count)",
+    opts: ["4", "5", "11", "12"],
+    ans: 3
+  },
+  {
+    q: "14. Which of the following describes a 'race condition'?",
+    opts: [
+      "A situation where multiple threads are competing for CPU time to perform calculations.",
+      "An error that occurs when a thread attempts to access a resource locked by another thread.",
+      "A bug where the behavior depends on unpredictable timing of threads accessing a shared resource.",
+      "A feature of Python’s threading module ensuring threads run in order."
+    ],
+    ans: 2
+  },
+  {
+    q: "15. What does the following Python code do?\nx = 1\nwhile x < 6:\n    if x == 4:\n        x += 1\n        continue  \n    print(x, end=' ')\n    x += 1",
+    opts: [
+      "Prints numbers in the range [1, 6) with a skip for 4.",
+      "Prints numbers in the range [1, 6] without a skip.",
+      "Raises a SyntaxError.",
+      "Enters into an infinite loop."
+    ],
+    ans: 0
+  },
+  {
+    q: "16. What is the output of the following variable assignment?\nx = 75\ndef myfunc():\n    x = x + 1\n    print(x)\n\nmyfunc()\nprint(x)",
+    opts: ["Error (UnboundLocalError)", "76", "1", "None"],
+    ans: 0
+  },
+  {
+    q: "17. Class vs. Instance Variable Overriding\nclass Developer:\n    skills = []\n\ndev1 = Developer()\ndev2 = Developer()\n\ndev1.skills.append('Python')\ndev2.skills = ['Java']\n\nprint(dev1.skills, dev2.skills, Developer.skills)",
+    opts: [
+      "['Python'] ['Java'] ['Python']",
+      "['Python', 'Java'] ['Java'] ['Python', 'Java']",
+      "['Python'] ['Java'] []",
+      "['Python'] ['Java'] ['Python', 'Java']"
+    ],
+    ans: 0
+  },
+  {
+    q: "18. Generator Expression Consumption\ngen = (x for x in range(3))\n\nprint(list(gen))\nprint(list(gen))",
+    opts: [
+      "[0, 1, 2] followed by [0, 1, 2]",
+      "[0, 1, 2] followed by []",
+      "[0, 1, 2] followed by None",
+      "Error: Generator object is not iterable"
+    ],
+    ans: 1
+  },
+  {
+    q: "19. Exception Handling else & finally Blocks\ndef check_val(x):\n    try:\n        return x / 2\n    except ZeroDivisionError:\n        return 'Error'\n    else:\n        return 'Success'\n    finally:\n        return 'Done'\n\nprint(check_val(4))",
+    opts: ["2.0", "'Success'", "'Done'", "2.0 followed by 'Done'"],
+    ans: 2
+  },
+  {
+    q: "20. What is the main purpose of __init__() in a Python class?",
+    opts: [
+      "To destroy an object",
+      "To create a loop",
+      "To initialize an object's attributes when it is created",
+      "To import a class"
+    ],
+    ans: 2
+  },
+  {
+    q: "21. In Python's descriptor protocol, what is the defining characteristic of a 'data descriptor'?",
+    opts: [
+      "It implements both the __get__ and __set__ dunder methods.",
+      "It only implements the __get__ method.",
+      "It can only be used on class methods and static methods.",
+      "It prevents the object from being garbage collected."
+    ],
+    ans: 0
+  },
+  {
+    q: "22. What is the formal definition of a Metaclass in Python?",
+    opts: [
+      "An abstract base class preventing instantiation.",
+      "A special class decorator used to optimize execution speed.",
+      "The class of a class; an object whose instances are themselves class objects.",
+      "A module that manages CPython memory allocation."
+    ],
+    ans: 2
+  },
+  {
+    q: "23. What is the technical definition of Late Binding in Python closures?",
+    opts: [
+      "Inner functions evaluate local variables when defined.",
+      "Variables used in inner functions are looked up at the time the function is called.",
+      "Closure variables are automatically converted to immutable constants.",
+      "Inner functions bind variables to global scope directly."
+    ],
+    ans: 1
+  },
+  {
+    q: "24. What is the formal difference between a standard Iterator and a Generator object in Python?",
+    opts: [
+      "An iterator processes parallel, generator synchronous.",
+      "A generator is a specialized iterator created via a function with 'yield'.",
+      "An iterator can be traversed infinitely, generator is limited.",
+      "A generator allocates all returned values at once."
+    ],
+    ans: 1
+  },
+  {
+    q: "25. If a custom class implements __eq__ but does NOT explicitly implement __hash__, which is true?",
+    opts: [
+      "Instances are treated as unhashable automatically (by raising exception initially).",
+      "Python sets the __hash__ method to None, making instances unhashable.",
+      "Instances can be used as dict keys.",
+      "Python automatically derives a hash from attributes."
+    ],
+    ans: 1
+  },
+  {
+    q: "26. Given a diamond inheritance: D(B,C) where B(A) and C(A). What is MRO of D?",
+    opts: [
+      "D, C, B, A, object",
+      "D, A, B, C, object",
+      "D, B, A, C, object",
+      "D, B, C, A, object"
+    ],
+    ans: 3
+  },
+  {
+    q: "27. What happens when the following is executed?\nd = {'a': 1, 'b': 2}\nfor k in d:\n    d['c'] = 3",
+    opts: [
+      "Loop runs exactly once and terminates.",
+      "Loop runs indefinitely.",
+      "RuntimeError: dictionary changed size during iteration.",
+      "TypeError."
+    ],
+    ans: 2
+  },
+  {
+    q: "28. Output of:\nx = 10\ndef outer():\n    x = 20\n    def inner():\n        nonlocal x\n        x = 30\n        print(x)\n    inner()\n    print(x)\nouter()\nprint(x)",
+    opts: ["30, 30, 10", "30, 20, 10", "20, 20, 30", "30, 30, 30"],
+    ans: 0
+  },
+  {
+    q: "29. What will be the output?\ndef test():\n    try:\n        return 1\n    finally:\n        return 2\n\nprint(test())",
+    opts: ["1", "2", "3", "Error"],
+    ans: 1
+  },
+  {
+    q: "30. What will be printed?\nx = [1, 2, 3]\nprint(x == [1, 2, 3])\nprint(x is [1, 2, 3])",
+    opts: [
+      "True\nTrue",
+      "False\nFalse",
+      "True\nFalse",
+      "False\nTrue"
+    ],
+    ans: 2
+  }
+];
+
+// State
+let currentQuestionIndex = 0;
+let userAnswers = new Array(quizData.length).fill(null);
+let timeRemaining = 45 * 60; // 45 minutes
+let timerInterval;
+
+// Penalty State
+let cheatCount = 0;
+let isPenaltyActive = false;
+let lockoutTimeRemaining = 0;
+let lockoutInterval;
+
+// DOM Elements
+const landingPage = document.getElementById('landing-page');
+const startBtn = document.getElementById('start-btn');
+const takenMsg = document.getElementById('taken-msg');
+const quizContainer = document.getElementById('quiz-container');
+const wrapper = document.getElementById('questions-wrapper');
+const timerDisplay = document.getElementById('timer-display');
+const currentQSpan = document.getElementById('current-q');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+const exitBtn = document.getElementById('exit-btn');
+const penaltyModal = document.getElementById('penalty-modal');
+const penaltyText = document.getElementById('penalty-text');
+const lockoutTimerDisplay = document.getElementById('lockout-timer');
+const resumeBtn = document.getElementById('resume-btn');
+const resultModal = document.getElementById('result-modal');
+const scoreVal = document.getElementById('score-val');
+const extWarning = document.getElementById('ext-warning');
+const lockWarning = document.getElementById('lock-warning');
+const lockCountdown = document.getElementById('lock-countdown');
+const UNLOCK_TIME = new Date('2026-09-25T10:15:00+05:30').getTime();
+
+function checkDateLock() {
+  const now = Date.now();
+  if (now < UNLOCK_TIME) {
+    startBtn.disabled = true;
+    startBtn.style.opacity = '0.5';
+    startBtn.style.cursor = 'not-allowed';
+    lockWarning.style.display = 'block';
+    
+    const diff = UNLOCK_TIME - now;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const mins = Math.floor((diff / (1000 * 60)) % 60);
+    const secs = Math.floor((diff / 1000) % 60);
+    
+    lockCountdown.textContent = `Time remaining until unlock: ${days}d ${hours}h ${mins}m ${secs}s`;
+    return true;
+  } else {
+    lockWarning.style.display = 'none';
+    if (!detectExtensions()) {
+      startBtn.disabled = false;
+      startBtn.style.opacity = '1';
+      startBtn.style.cursor = 'pointer';
+    }
+    return false;
+  }
+}
+
+// Basic Extension Detection (Heuristic)
+function detectExtensions() {
+  let suspected = false;
+  
+  if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__ || window.__REDUX_DEVTOOLS_EXTENSION__) suspected = true;
+  if (document.documentElement.hasAttribute('data-darkreader-mode') || 
+      document.body.hasAttribute('data-new-gr-c-s-check-loaded')) {
+    suspected = true;
+  }
+  
+  return suspected;
+}
+
+if (detectExtensions()) {
+  startBtn.disabled = true;
+  startBtn.style.opacity = '0.5';
+  extWarning.style.display = 'block';
+}
+
+if (checkDateLock()) {
+  setInterval(checkDateLock, 1000);
+}
+
+// Check if taken (Disabled for testing)
+// if (localStorage.getItem('runtimeTerror_completed')) {
+//   startBtn.disabled = true;
+//   startBtn.style.display = 'none';
+//   takenMsg.style.display = 'block';
+//   extWarning.style.display = 'none';
+// }
+
+startBtn.addEventListener('click', async () => {
+  try {
+    if (document.documentElement.requestFullscreen) {
+      await document.documentElement.requestFullscreen();
+    }
+    startQuiz();
+  } catch (err) {
+    alert("Full screen is required to start the quiz. Please ensure your browser allows full-screen requests.");
+  }
+});
+
+function startQuiz() {
+  landingPage.style.display = 'none';
+  exitBtn.style.display = 'none';
+  quizContainer.style.display = 'block';
+  
+  renderQuestions();
+  showQuestion(0);
+  
+  timerInterval = setInterval(updateMainTimer, 1000);
+  
+  document.addEventListener('visibilitychange', handleCheat);
+  window.addEventListener('blur', handleCheat);
+  document.addEventListener('fullscreenchange', checkFullscreen);
+}
+
+function renderQuestions() {
+  quizData.forEach((q, index) => {
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = `q-card-${index}`;
+    
+    const text = document.createElement('div');
+    text.className = 'q-text';
+    text.textContent = q.q;
+    card.appendChild(text);
+    
+    const optionsDiv = document.createElement('div');
+    optionsDiv.className = 'options';
+    
+    q.opts.forEach((optText, optIndex) => {
+      const lbl = document.createElement('label');
+      lbl.className = 'option-label';
+      
+      const inp = document.createElement('input');
+      inp.type = 'radio';
+      inp.name = `q${index}`;
+      inp.value = optIndex;
+      inp.addEventListener('change', () => {
+        if(isPenaltyActive) return;
+        userAnswers[index] = optIndex;
+        Array.from(optionsDiv.querySelectorAll('.option-label')).forEach(l => l.classList.remove('selected'));
+        lbl.classList.add('selected');
+      });
+      
+      lbl.appendChild(inp);
+      lbl.appendChild(document.createTextNode(optText));
+      optionsDiv.appendChild(lbl);
+    });
+    
+    card.appendChild(optionsDiv);
+    wrapper.appendChild(card);
+  });
+}
+
+function showQuestion(index) {
+  const cards = document.querySelectorAll('.question-card');
+  const currentCard = document.querySelector('.question-card.active');
+  
+  const fadeInNewCard = () => {
+    if(cards[index]) {
+      cards[index].style.display = 'block';
+      void cards[index].offsetWidth;
+      cards[index].classList.add('active');
+    }
+  };
+
+  if (currentCard && currentCard !== cards[index]) {
+    currentCard.classList.remove('active');
+    setTimeout(() => {
+      currentCard.style.display = 'none';
+      fadeInNewCard();
+    }, 200);
+  } else {
+    fadeInNewCard();
+  }
+
+  currentQSpan.textContent = index + 1;
+
+  const progressBar = document.getElementById('progress-bar');
+  if (progressBar) progressBar.style.width = `${((index + 1) / quizData.length) * 100}%`;
+
+  prevBtn.style.visibility = index === 0 ? 'hidden' : 'visible';
+
+  if (index === quizData.length - 1) {
+    nextBtn.innerHTML = 'Submit <i class="fa-solid fa-check"></i>';
+    nextBtn.classList.remove('accent');
+    nextBtn.classList.add('success');
+  } else {
+    nextBtn.innerHTML = 'Next <i class="fa-solid fa-arrow-right"></i>';
+    nextBtn.classList.add('accent');
+    nextBtn.classList.remove('success');
+  }
+}
+
+prevBtn.addEventListener('click', () => {
+  if (isPenaltyActive) return;
+  if (currentQuestionIndex > 0) {
+    currentQuestionIndex--;
+    showQuestion(currentQuestionIndex);
+  }
+});
+
+nextBtn.addEventListener('click', () => {
+  if (isPenaltyActive) return;
+  if (currentQuestionIndex < quizData.length - 1) {
+    currentQuestionIndex++;
+    showQuestion(currentQuestionIndex);
+  } else {
+    endQuiz();
+  }
+});
+
+function updateMainTimer() {
+  timeRemaining--;
+  if(timeRemaining <= 0) {
+    endQuiz();
+  }
+  
+  const m = Math.floor(Math.max(0, timeRemaining) / 60).toString().padStart(2, '0');
+  const s = (Math.max(0, timeRemaining) % 60).toString().padStart(2, '0');
+  timerDisplay.textContent = `${m}:${s}`;
+}
+
+function handleCheat() {
+  if(document.visibilityState === 'hidden' || !document.hasFocus()) {
+    triggerPenalty("You switched tabs or minimized the window.");
+  }
+}
+
+function checkFullscreen() {
+  if (!document.fullscreenElement) {
+    triggerPenalty("You exited full-screen mode.");
+  }
+}
+
+function triggerPenalty(reasonText) {
+  if (isPenaltyActive || timeRemaining <= 0) return;
+  isPenaltyActive = true;
+  cheatCount++;
+  
+  quizContainer.style.opacity = '0.3';
+  quizContainer.style.pointerEvents = 'none';
+  
+  let penaltyMins = 0;
+  if(cheatCount === 1) penaltyMins = 1;
+  else if(cheatCount === 2) penaltyMins = 2;
+  else if(cheatCount === 3) penaltyMins = 4;
+  else if(cheatCount === 4) penaltyMins = 8;
+  else if(cheatCount === 5) penaltyMins = 10;
+  else penaltyMins = 15;
+  
+  lockoutTimeRemaining = penaltyMins * 60;
+  
+  penaltyText.innerHTML = `${reasonText}<br><br><strong>Penalty Lockout: ${penaltyMins} Minutes</strong><br>Your quiz timer is still running in the background. You must wait for the lockout timer to expire to acknowledge and continue.`;
+  resumeBtn.disabled = true;
+  resumeBtn.style.background = '#555';
+  updateLockoutTimerUI();
+  
+  penaltyModal.style.display = 'flex';
+  
+  lockoutInterval = setInterval(updateLockoutTimer, 1000);
+}
+
+function updateLockoutTimer() {
+  lockoutTimeRemaining--;
+  updateLockoutTimerUI();
+  
+  if (lockoutTimeRemaining <= 0) {
+    clearInterval(lockoutInterval);
+    resumeBtn.disabled = false;
+    resumeBtn.style.background = 'var(--text)';
+  }
+}
+
+function updateLockoutTimerUI() {
+  const m = Math.floor(Math.max(0, lockoutTimeRemaining) / 60).toString().padStart(2, '0');
+  const s = (Math.max(0, lockoutTimeRemaining) % 60).toString().padStart(2, '0');
+  lockoutTimerDisplay.textContent = `${m}:${s}`;
+}
+
+resumeBtn.addEventListener('click', async () => {
+  if (lockoutTimeRemaining > 0) return;
+  
+  try {
+    if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+      await document.documentElement.requestFullscreen();
+    }
+  } catch(e) {}
+  
+  penaltyModal.style.display = 'none';
+  
+  quizContainer.style.opacity = '1';
+  quizContainer.style.pointerEvents = 'auto';
+  
+  setTimeout(() => {
+    isPenaltyActive = false;
+  }, 1000);
+});
+
+function endQuiz() {
+  clearInterval(timerInterval);
+  if (lockoutInterval) clearInterval(lockoutInterval);
+  
+  document.removeEventListener('visibilitychange', handleCheat);
+  window.removeEventListener('blur', handleCheat);
+  document.removeEventListener('fullscreenchange', checkFullscreen);
+  
+  if (document.fullscreenElement) {
+    document.exitFullscreen().catch(err => {});
+  }
+  
+  let score = 0;
+  userAnswers.forEach((ans, i) => {
+    if (ans === quizData[i].ans) score++;
+  });
+  
+  // localStorage.setItem('runtimeTerror_completed', 'true');
+  
+  scoreVal.textContent = score;
+  penaltyModal.style.display = 'none';
+  quizContainer.style.display = 'none';
+  resultModal.style.display = 'flex';
+}
+</script>
 <script src="/prompts/events.js"></script>
 <script>
 (function () {
   const slug = location.pathname.replace(/\/$/, '').split('/').pop() || ''
   const event = window.getCyfernodeEventByPromptSlug(slug)
-  const panel = document.getElementById('prompt-panel')
-  const notFound = document.getElementById('prompt-not-found')
 
-  if (!event) {
-    document.title = 'Prompt not found - Cyfernode 5.0'
-    notFound.hidden = false
-    return
+  if (event) {
+    document.title = `${event.name} Prompt - Cyfernode 5.0`
+    const cat = document.getElementById('prompt-category')
+    const tit = document.getElementById('prompt-title')
+    if (cat) cat.textContent = event.category.toUpperCase()
+    if (tit) tit.textContent = event.name
   }
-
-  document.title = `${event.name} Prompt - Cyfernode 5.0`
-  document.getElementById('prompt-category').textContent = event.category
-  document.getElementById('prompt-title').textContent = event.name
-  panel.hidden = false
 })()
 </script>
 </body>

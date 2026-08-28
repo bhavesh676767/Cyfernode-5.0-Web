@@ -86,6 +86,10 @@ html, body {
   scroll-behavior: smooth;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 /* Custom Styled Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -1105,6 +1109,7 @@ html, body {
 }
 .dup-backdrop.open { display: flex; }
 body.dup-open { overflow: hidden; }
+html.dup-open { overflow: hidden; }
 .dup-card {
   width: min(520px, 100%);
   background: var(--white);
@@ -2298,19 +2303,19 @@ function showDone() {
         <div class="summary-grid">
           <div class="summary-field">
             <div class="summary-label">School Name</div>
-            <div class="summary-val">${first.schoolName || '-'}</div>
+            <div class="summary-val">${escHtml(first.schoolName || '-')}</div>
           </div>
           <div class="summary-field">
             <div class="summary-label">Teacher Incharge</div>
-            <div class="summary-val">${first.teacherIncharge.name || '-'}</div>
+            <div class="summary-val">${escHtml(first.teacherIncharge.name || '-')}</div>
           </div>
           <div class="summary-field">
             <div class="summary-label">Teacher Contact</div>
-            <div class="summary-val">${forDisplay(first.teacherIncharge.phone) || '-'}</div>
+            <div class="summary-val">${escHtml(forDisplay(first.teacherIncharge.phone) || '-')}</div>
           </div>
           <div class="summary-field">
             <div class="summary-label">Teacher Email</div>
-            <div class="summary-val">${first.teacherIncharge.email || '-'}</div>
+            <div class="summary-val">${escHtml(first.teacherIncharge.email || '-')}</div>
           </div>
         </div>
       </div>
@@ -2320,32 +2325,32 @@ function showDone() {
   payload.events.forEach(evData => {
     const ev = EVENTS.find(e => e.id === evData.eventId);
     let html = `<div class="summary-card" style="--ev-accent: ${ev ? ev.accent : 'var(--orange)'}">
-      <div class="summary-card-title">${evData.eventName}</div>
+      <div class="summary-card-title">${escHtml(evData.eventName)}</div>
       ${isMulti ? '' : `
       <div class="summary-grid">
         <div class="summary-field">
           <div class="summary-label">School Name</div>
-          <div class="summary-val">${evData.schoolName || '-'}</div>
+          <div class="summary-val">${escHtml(evData.schoolName || '-')}</div>
         </div>
         ${evData.teamName ? `
         <div class="summary-field">
           <div class="summary-label">Team Name</div>
-          <div class="summary-val">${evData.teamName}</div>
+          <div class="summary-val">${escHtml(evData.teamName)}</div>
         </div>` : ''}
         <div class="summary-field">
           <div class="summary-label">Teacher Incharge</div>
-          <div class="summary-val">${evData.teacherIncharge.name || '-'}</div>
+          <div class="summary-val">${escHtml(evData.teacherIncharge.name || '-')}</div>
         </div>
         <div class="summary-field">
           <div class="summary-label">Teacher Contact</div>
-          <div class="summary-val">${forDisplay(evData.teacherIncharge.phone) || '-'}</div>
+          <div class="summary-val">${escHtml(forDisplay(evData.teacherIncharge.phone) || '-')}</div>
         </div>
       </div>`}
       ${evData.teamName && isMulti ? `
       <div class="summary-grid">
         <div class="summary-field">
           <div class="summary-label">Team Name</div>
-          <div class="summary-val">${evData.teamName}</div>
+          <div class="summary-val">${escHtml(evData.teamName)}</div>
         </div>
       </div>` : ''}
       <div class="summary-p-header">Participant Details</div>
@@ -2354,9 +2359,9 @@ function showDone() {
     
     evData.participants.forEach(p => {
       html += `<div class="summary-p-item">
-        <div class="p-item-name"><span>${p.name || '-'}</span> <span class="p-item-grade">${p.grade}</span></div>
-        <div class="p-item-meta">${forDisplay(p.phone)}</div>
-        <div class="p-item-meta">${p.email}</div>
+        <div class="p-item-name"><span>${escHtml(p.name || '-')}</span> <span class="p-item-grade">${escHtml(p.grade)}</span></div>
+        <div class="p-item-meta">${escHtml(forDisplay(p.phone))}</div>
+        <div class="p-item-meta">${escHtml(p.email)}</div>
       </div>`;
     });
     
@@ -2465,11 +2470,16 @@ async function submitData(confirmMerge = false) {
   }, 3500);
 }
 
+function setDupScrollLock(locked) {
+  document.documentElement.classList.toggle('dup-open', locked);
+  document.body.classList.toggle('dup-open', locked);
+}
+
 function closeDupModal() {
   const backdrop = document.getElementById('dup-backdrop');
   backdrop.classList.remove('open');
   backdrop.setAttribute('aria-hidden', 'true');
-  document.body.classList.remove('dup-open');
+  setDupScrollLock(false);
 }
 
 function escHtml(s) {
@@ -2512,7 +2522,7 @@ function showParticipantDupModal(result) {
   const backdrop = document.getElementById('dup-backdrop');
   backdrop.classList.add('open');
   backdrop.setAttribute('aria-hidden', 'false');
-  document.body.classList.add('dup-open');
+  setDupScrollLock(true);
 }
 
 function showMergeConfirmModal(result) {
@@ -2572,7 +2582,7 @@ function showMergeConfirmModal(result) {
   const backdrop = document.getElementById('dup-backdrop');
   backdrop.classList.add('open');
   backdrop.setAttribute('aria-hidden', 'false');
-  document.body.classList.add('dup-open');
+  setDupScrollLock(true);
 }
 
 document.getElementById('dup-backdrop').addEventListener('click', (e) => {

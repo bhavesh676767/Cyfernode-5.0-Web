@@ -1,19 +1,18 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.1'
+import { corsHeaders } from '../_shared/cors.ts'
+import { checkRateLimit, recordRateLimitAttempt } from '../_shared/rateLimit.ts'
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
+const ALLOW_HEADERS = 'authorization, x-client-info, apikey, content-type'
 
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000
 const RATE_LIMIT_MAX = 5
 const MAX_BODY_BYTES = 2_000
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-function json(body: Record<string, unknown>, status = 200) {
+function json(req: Request, body: Record<string, unknown>, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    headers: { ...corsHeaders(req, ALLOW_HEADERS), 'Content-Type': 'application/json' },
   })
 }
 
@@ -26,7 +25,8 @@ function getClientIp(req: Request) {
 }
 
 async function hashIp(ip: string) {
-  const salt = Deno.env.get('RATE_LIMIT_SALT') ?? 'cyfernode-invite-v1'
+  const salt = Deno.env.get('RATE_LIMIT_SALT')
+  if (!salt) throw new Error('RATE_LIMIT_SALT is not configured')
   const data = new TextEncoder().encode(`${salt}:${ip}`)
   const hash = await crypto.subtle.digest('SHA-256', data)
   return Array.from(new Uint8Array(hash)).map((b) => b.toString(16).padStart(2, '0')).join('')
@@ -38,58 +38,52 @@ function normalizeEmail(value: unknown) {
   return email
 }
 
-async function checkRateLimit(supabase: ReturnType<typeof createClient>, ipHash: string) {
-  const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW_MS).toISOString()
-  const { count, error } = await supabase
-    .from('registration_rate_limits')
-    .select('*', { count: 'exact', head: true })
-    .eq('ip_hash', `invite:${ipHash}`)
-    .gte('attempted_at', windowStart)
-
-  if (error) return { allowed: true }
-  return { allowed: (count ?? 0) < RATE_LIMIT_MAX }
-}
-
-async function recordAttempt(supabase: ReturnType<typeof createClient>, ipHash: string) {
-  await supabase.from('registration_rate_limits').insert({ ip_hash: `invite:${ipHash}` })
-}
-
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+    return new Response('ok', { headers: corsHeaders(req, ALLOW_HEADERS) })
   }
 
   if (req.method !== 'POST') {
-    return json({ ok: false, error: 'Method not allowed' }, 405)
+    return json(req, { ok: false, error: 'Method not allowed' }, 405)
   }
 
   try {
     const rawBody = await req.text()
     if (rawBody.length > MAX_BODY_BYTES) {
-      return json({ ok: false, error: 'Request too large' }, 413)
+      return json(req, { ok: false, error: 'Request too large' }, 413)
     }
 
     const body = rawBody ? JSON.parse(rawBody) : {}
     const email = normalizeEmail(body.email ?? body.schoolEmail)
     if (!email) {
-      return json({ ok: false, error: 'Enter a valid school email address' }, 400)
+      return json(req, { ok: false, error: 'Enter a valid school email address' }, 400)
     }
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')
     const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
     if (!supabaseUrl || !serviceRoleKey) {
-      return json({ ok: false, error: 'Server configuration error' }, 500)
+      return json(req, { ok: false, error: 'Server configuration error' }, 500)
     }
 
     const supabase = createClient(supabaseUrl, serviceRoleKey)
     const ipHash = await hashIp(getClientIp(req))
-    const rate = await checkRateLimit(supabase, ipHash)
+    const rate = await checkRateLimit(
+      supabase,
+      'invite',
+      ipHash,
+      RATE_LIMIT_WINDOW_MS,
+      RATE_LIMIT_MAX,
+    )
 
     if (!rate.allowed) {
-      return json({ ok: false, error: 'Too many requests. Try again later.' }, 429)
+      const status = rate.failedClosed ? 503 : 429
+      const message = rate.failedClosed
+        ? 'Rate limiting unavailable. Try again later.'
+        : 'Too many requests. Try again later.'
+      return json(req, { ok: false, error: message }, status)
     }
 
-    await recordAttempt(supabase, ipHash)
+    await recordRateLimitAttempt(supabase, 'invite', ipHash)
 
     const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
     const { data: recent, error: recentError } = await supabase
@@ -101,11 +95,11 @@ Deno.serve(async (req) => {
 
     if (recentError) {
       console.error('request-invite recent check:', recentError)
-      return json({ ok: false, error: 'Could not submit request' }, 500)
+      return json(req, { ok: false, error: 'Could not submit request' }, 500)
     }
 
     if (recent?.length) {
-      return json({ ok: true, duplicate: true, message: 'We already received a request from this email recently.' })
+      return json(req, { ok: true, duplicate: true, message: 'We already received a request from this email recently.' })
     }
 
     const { error: insertError } = await supabase
@@ -114,12 +108,12 @@ Deno.serve(async (req) => {
 
     if (insertError) {
       console.error('request-invite insert:', insertError)
-      return json({ ok: false, error: 'Could not submit request' }, 500)
+      return json(req, { ok: false, error: 'Could not submit request' }, 500)
     }
 
-    return json({ ok: true, message: 'Invite request received. We will contact your school soon.' })
+    return json(req, { ok: true, message: 'Invite request received. We will contact your school soon.' })
   } catch (err) {
     console.error('request-invite error:', err)
-    return json({ ok: false, error: 'Unexpected server error' }, 500)
+    return json(req, { ok: false, error: 'Unexpected server error' }, 500)
   }
 })

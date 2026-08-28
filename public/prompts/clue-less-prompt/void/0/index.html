@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>0</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/clue-less/void.css">
+</head>
+<body class="void-terminal">
+<!-- 23:17:04 -->
+
+<p style="display:none">19 9 18 18 9 14 7</p>
+
+<div id="nothing" aria-hidden="true">
+  <span>V</span>
+  <span>O</span>
+  <span>I</span>
+  <span>D</span>
+</div>
+
+<style>
+#nothing {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+#nothing span {
+  position: absolute;
+  left: 0;
+}
+
+#nothing span:nth-child(1) { top: 22px; }
+#nothing span:nth-child(2) { top: 15px; }
+#nothing span:nth-child(3) { top: 9px; }
+#nothing span:nth-child(4) { top: 4px; }
+</style>
+
+<main class="void-terminal-panel" aria-label="User record">
+  <div class="void-row"><span class="void-label">User</span><span class="void-value">UNKNOWN</span></div>
+  <div class="void-row"><span class="void-label">Searches</span><span class="void-value">0</span></div>
+  <div class="void-row"><span class="void-label">Clues</span><span class="void-value">0</span></div>
+  <div class="void-row"><span class="void-label">Answers</span><span class="void-value">0</span></div>
+
+  <hr class="void-divider">
+
+  <div class="void-row">
+    <span class="void-label">Status</span>
+    <span class="void-value void-status">EMPTY</span>
+  </div>
+
+  <div class="void-row" style="margin-top:22px">
+    <span class="void-label">Last visitor</span>
+    <span class="void-value" id="last-visitor-time" tabindex="0">23:17:04</span>
+  </div>
+
+  <form class="void-form" id="answer-form" hidden>
+    <label for="answer">Submit what you found</label>
+    <div class="void-form-row">
+      <input type="text" id="answer" name="answer" autocomplete="off" spellcheck="false" aria-describedby="submit-error">
+      <button type="submit">Send</button>
+    </div>
+    <p class="void-form-error" id="submit-error" aria-live="polite"></p>
+  </form>
+</main>
+
+<div class="void-complete" id="complete" hidden role="dialog" aria-modal="true" aria-labelledby="complete-title">
+  <div class="void-complete-box">
+    <h2 id="complete-title">VOID</h2>
+    <p>NOTHING IS CORRECT.</p>
+    <p>BUT YOU ARE.</p>
+    <p>LEVEL COMPLETE.</p>
+    <a class="void-continue" href="/prompts/clue-less-prompt/echo" id="continue-btn">CONTINUE</a>
+  </div>
+</div>
+
+<script type="module" src="/clue-less/void-zero.js"></script>
+</body>
+</html>

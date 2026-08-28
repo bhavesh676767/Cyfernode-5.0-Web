@@ -43,6 +43,7 @@ html, body {
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
 }
+html { scrollbar-gutter: stable; }
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
@@ -661,6 +662,7 @@ body:not(.view-team) .event-tabs { display: flex; }
   margin-bottom: 4px;
   letter-spacing: -0.02em;
 }
+#invite-empty.hidden { display: none; }
 #empty-hint { display: block; font-size: 13px; }
 .reg-list { display: flex; flex-direction: column; gap: 10px; }
 .reg-card {
@@ -1326,7 +1328,8 @@ body:not(.layout-sheet) .sheet-toolbar { display: none; }
   justify-content: center;
 }
 .sheet-lightbox.open { display: flex; }
-body.sheet-lightbox-open { overflow: hidden; }
+body.sheet-lightbox-open,
+html.sheet-lightbox-open { overflow: hidden; }
 .sheet-lightbox-box {
   width: min(96vw, 1480px);
   height: min(92vh, 920px);
@@ -1862,7 +1865,8 @@ body.view-team .core-admin-actions { display: none !important; }
   justify-content: center;
 }
 .edit-backdrop.open { display: flex; }
-body.edit-open { overflow: hidden; }
+body.edit-open,
+html.edit-open { overflow: hidden; }
 .edit-box {
   width: min(96vw, 560px);
   max-height: min(92vh, 820px);
@@ -2410,8 +2414,14 @@ const EVENT_MAX = {
 
 const GRADES = ['9th', '10th', '11th', '12th'];
 
+function setPageScrollLock(className, locked) {
+  document.documentElement.classList.toggle(className, locked);
+  document.body.classList.toggle(className, locked);
+}
+
 let allRegs = [];
 let allInvites = [];
+let teamEventCounts = {};
 let dashTab = 'registrations';
 let adminSession = { role: 'core', password: '' };
 let selectedEventId = EVENTS[0].id;
@@ -3708,7 +3718,7 @@ function openSheetLightbox() {
 
   lightbox.classList.add('open');
   lightbox.setAttribute('aria-hidden', 'false');
-  document.body.classList.add('sheet-lightbox-open');
+  setPageScrollLock('sheet-lightbox-open', true);
   document.getElementById('sheet-lightbox-close').focus();
 }
 
@@ -3727,7 +3737,7 @@ function closeSheetLightbox() {
   if (!lightbox.classList.contains('open')) return;
   lightbox.classList.remove('open');
   lightbox.setAttribute('aria-hidden', 'true');
-  document.body.classList.remove('sheet-lightbox-open');
+  setPageScrollLock('sheet-lightbox-open', false);
   document.getElementById('sheet-lightbox-head').innerHTML = '';
   document.getElementById('sheet-lightbox-body').innerHTML = '';
 }
@@ -4169,7 +4179,12 @@ function schoolCodesForReg(reg) {
   return codes.length ? codes.join(' · ') : '-';
 }
 
-async function fetchRegistrations(session) {
+async function fetchRegistrations(session, options = {}) {
+  const body = { role: session.role };
+  if (session.role === 'team') {
+    body.eventId = options.eventId || selectedEventId;
+  }
+
   let res;
   try {
     res = await fetch(ADMIN_ENDPOINT, {
@@ -4181,11 +4196,17 @@ async function fetchRegistrations(session) {
         'x-admin-password': session.password,
         'x-admin-role': session.role,
       },
-      body: JSON.stringify({ password: session.password, role: session.role }),
+      body: JSON.stringify(body),
     });
-  } catch {
+  } catch (error) {
+    const origin = window.location.origin
+    const isLocal = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
+    const hint = isLocal
+      ? ` Open admin at http://localhost:5173/admin (not a network IP). If you use Vite preview, use port 4173.`
+      : ' Check your connection and that admin-list is deployed to Supabase.'
     throw new Error(
-      'Could not reach the admin API. The admin-list Edge Function may not be deployed yet - see deploy steps in the Supabase dashboard or run: npx supabase functions deploy admin-list',
+      `Could not reach the admin API.${hint} Deploy with: npx supabase functions deploy admin-list`,
+      { cause: error },
     );
   }
 
@@ -4202,6 +4223,7 @@ async function fetchRegistrations(session) {
   return {
     registrations: data.registrations || [],
     inviteRequests: data.invite_requests || [],
+    eventCounts: data.event_counts || {},
   };
 }
 
@@ -4222,7 +4244,6 @@ async function adminMutate(action, payload = {}) {
         'x-admin-role': adminSession.role,
       },
       body: JSON.stringify({
-        password: adminSession.password,
         role: adminSession.role,
         action,
         ...payload,
@@ -4263,7 +4284,7 @@ function closeEditModal() {
   const backdrop = document.getElementById('edit-backdrop');
   backdrop.classList.remove('open');
   backdrop.setAttribute('aria-hidden', 'true');
-  document.body.classList.remove('edit-open');
+  setPageScrollLock('edit-open', false);
   document.getElementById('edit-err').classList.remove('show');
 }
 
@@ -4363,7 +4384,7 @@ function openEditModal(regDbId, eventRegId) {
   const backdrop = document.getElementById('edit-backdrop');
   backdrop.classList.add('open');
   backdrop.setAttribute('aria-hidden', 'false');
-  document.body.classList.add('edit-open');
+  setPageScrollLock('edit-open', true);
   document.getElementById('edit-school').focus();
 }
 
@@ -4713,16 +4734,19 @@ function applyFilter() {
   }
 }
 
-async function loadDashboard() {
+async function loadDashboard(options = {}) {
   const loading = document.getElementById('loading');
   const errBox = document.getElementById('dash-err');
   loading.classList.add('show');
   errBox.classList.remove('show');
 
   try {
-    const data = await fetchRegistrations(adminSession);
+    const data = await fetchRegistrations(adminSession, options);
     allRegs = data.registrations;
     allInvites = data.inviteRequests;
+    if (adminSession.role === 'team') {
+      teamEventCounts = data.eventCounts || {};
+    }
     lastRefreshedAt = new Date().toISOString();
     updateLastSync();
     updateInviteTabCount();
@@ -4752,6 +4776,9 @@ function initEventTabs() {
 }
 
 function countForEvent(eventId) {
+  if (adminSession.role === 'team') {
+    return teamEventCounts[eventId] ?? 0;
+  }
   return teamRowsForEvent(eventId).length;
 }
 
@@ -4919,11 +4946,11 @@ function renderEventTabs() {
       </button>`;
     }).join('');
     tabs.querySelectorAll('.event-tab').forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', async () => {
         selectedEventId = btn.dataset.eventId;
         renderEventTabs();
         updateResetFiltersBtn();
-        applyFilter();
+        await loadDashboard({ eventId: selectedEventId });
       });
     });
     return;

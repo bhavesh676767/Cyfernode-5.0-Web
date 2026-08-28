@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prompt - Cyfernode 5.0</title>
-<meta name="description" content="Event prompt for Cyfernode 5.0.">
+<meta name="description" content="Breadboard prompt: What if a system could detect where water is being wasted and respond? Cyfernode 5.0 hardware design event.">
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
@@ -65,7 +65,7 @@ html, body {
 }
 
 .panel {
-  width: min(100%, 640px);
+  width: min(100%, 720px);
 }
 
 .head {
@@ -98,6 +98,69 @@ html, body {
   margin-top: 14px;
 }
 
+.prompt-body h2 {
+  margin-top: 28px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.prompt-body ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.prompt-body li + li {
+  margin-top: 8px;
+}
+
+.prompt-lead {
+  font-size: clamp(1.35rem, 3.5vw, 1.65rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+  color: var(--text);
+}
+
+.prompt-quote {
+  margin-top: 18px;
+  padding-left: 14px;
+  border-left: 2px solid var(--orange);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.criteria-table {
+  width: 100%;
+  margin-top: 12px;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.criteria-table th,
+.criteria-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(17, 17, 20, 0.1);
+}
+
+.criteria-table th {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.criteria-table td:last-child {
+  width: 88px;
+  font-weight: 700;
+  color: var(--text);
+}
+
 .not-found {
   color: var(--muted);
   font-size: 15px;
@@ -127,7 +190,54 @@ html, body {
       <h1 class="title" id="prompt-title"></h1>
     </header>
     <div class="prompt-body" id="prompt-body">
-      <p>The full event prompt will be published here soon.</p>
+      <p class="prompt-lead">WHAT IF… A System Could Detect Where Water Is Being Wasted, and Respond?</p>
+
+      <p>Imagine a system that doesn't simply monitor water usage, but can identify where water is being unnecessarily lost, understand why it is happening, and respond accordingly.</p>
+
+      <p>Design and build a hardware-based solution that can detect water wastage, determine its possible cause, and take an appropriate action. Your system could respond to situations such as leaks, overflowing tanks, unnecessary flow, or abnormal water consumption.</p>
+
+      <p>Use sensors, electronics, embedded systems, and creative engineering to turn this idea into a working prototype. The goal is not just to detect a problem, but to demonstrate how your system can intelligently respond to it.</p>
+
+      <p>Your prototype should make the viewer ask:</p>
+
+      <p class="prompt-quote">“What if water could tell us exactly where it was being wasted, and stop it?”</p>
+
+      <h2>Deliverables</h2>
+      <ul>
+        <li><strong>Pitch Deck:</strong> A concise presentation explaining the problem, concept, system design, and proposed solution.</li>
+        <li><strong>Demo Video:</strong> A 2-minute video demonstrating the working prototype and its response to water wastage.</li>
+        <li><strong>Source Code:</strong> Complete and original source code used in the project.</li>
+        <li>All submitted files must remain accessible to the organisers until the evaluation process is complete.</li>
+        <li>Follow all specified submission formats, naming conventions, and deadlines.</li>
+      </ul>
+
+      <h2>Judging Criteria</h2>
+      <table class="criteria-table">
+        <thead>
+          <tr>
+            <th scope="col">Criteria</th>
+            <th scope="col">Weightage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Innovation &amp; Originality</td>
+            <td>30%</td>
+          </tr>
+          <tr>
+            <td>Technical Execution</td>
+            <td>25%</td>
+          </tr>
+          <tr>
+            <td>Problem Solving &amp; Functionality</td>
+            <td>25%</td>
+          </tr>
+          <tr>
+            <td>Impact &amp; Practicality</td>
+            <td>20%</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </article>
 

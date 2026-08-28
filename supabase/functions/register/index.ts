@@ -1,10 +1,9 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.1'
+import { corsHeaders } from '../_shared/cors.ts'
+import { checkRateLimit, recordRateLimitAttempt } from '../_shared/rateLimit.ts'
 import { sendRegistrationEmails, type EmailEvent, type RegistrationEmailContext } from './emails.ts'
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
+const ALLOW_HEADERS = 'authorization, x-client-info, apikey, content-type'
 
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000
 const RATE_LIMIT_MAX = 6
@@ -42,10 +41,15 @@ function trimStr(value: unknown, maxLen: number) {
   return s
 }
 
-function json(body: Record<string, unknown>, status = 200, extraHeaders: Record<string, string> = {}) {
+function json(
+  req: Request,
+  body: Record<string, unknown>,
+  status = 200,
+  extraHeaders: Record<string, string> = {},
+) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { ...corsHeaders, 'Content-Type': 'application/json', ...extraHeaders },
+    headers: { ...corsHeaders(req, ALLOW_HEADERS), 'Content-Type': 'application/json', ...extraHeaders },
   })
 }
 
@@ -58,7 +62,8 @@ function getClientIp(req: Request) {
 }
 
 async function hashIp(ip: string) {
-  const salt = Deno.env.get('RATE_LIMIT_SALT') ?? 'cyfernode-reg-v1'
+  const salt = Deno.env.get('RATE_LIMIT_SALT')
+  if (!salt) throw new Error('RATE_LIMIT_SALT is not configured')
   const data = new TextEncoder().encode(`${salt}:${ip}`)
   const hash = await crypto.subtle.digest('SHA-256', data)
   return Array.from(new Uint8Array(hash)).map((b) => b.toString(16).padStart(2, '0')).join('')
@@ -211,37 +216,6 @@ function validatePayload(payload: unknown): { ok: true; data: RegistrationPayloa
       confirmMerge: p.confirmMerge === true,
     },
   }
-}
-
-async function checkRateLimit(
-  supabase: ReturnType<typeof createClient>,
-  ipHash: string,
-) {
-  const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW_MS).toISOString()
-
-  const { count, error } = await supabase
-    .from('registration_rate_limits')
-    .select('*', { count: 'exact', head: true })
-    .eq('ip_hash', ipHash)
-    .gte('attempted_at', windowStart)
-
-  if (error) {
-    console.error('rate limit check:', error)
-    return { allowed: true }
-  }
-
-  return { allowed: (count ?? 0) < RATE_LIMIT_MAX }
-}
-
-async function recordAttempt(
-  supabase: ReturnType<typeof createClient>,
-  ipHash: string,
-) {
-  const { error } = await supabase
-    .from('registration_rate_limits')
-    .insert({ ip_hash: ipHash })
-
-  if (error) console.error('rate limit record:', error)
 }
 
 function normalizeSchoolKey(name: string) {
@@ -539,51 +513,62 @@ type RegistrationPayload = {
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+    return new Response('ok', { headers: corsHeaders(req, ALLOW_HEADERS) })
   }
 
   if (req.method !== 'POST') {
-    return json({ ok: false, error: 'Method not allowed' }, 405)
+    return json(req, { ok: false, error: 'Method not allowed' }, 405)
   }
 
   try {
     const rawBody = await req.text()
     if (rawBody.length > MAX_BODY_BYTES) {
-      return json({ ok: false, error: 'Payload too large' }, 413)
+      return json(req, { ok: false, error: 'Payload too large' }, 413)
     }
 
     let payload: unknown
     try {
       payload = JSON.parse(rawBody)
     } catch {
-      return json({ ok: false, error: 'Invalid JSON' }, 400)
+      return json(req, { ok: false, error: 'Invalid JSON' }, 400)
     }
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')
     const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
 
     if (!supabaseUrl || !serviceRoleKey) {
-      return json({ ok: false, error: 'Server configuration error' }, 500)
+      return json(req, { ok: false, error: 'Server configuration error' }, 500)
     }
 
     const supabase = createClient(supabaseUrl, serviceRoleKey)
 
     const ipHash = await hashIp(getClientIp(req))
-    const rate = await checkRateLimit(supabase, ipHash)
+    const rate = await checkRateLimit(
+      supabase,
+      'reg',
+      ipHash,
+      RATE_LIMIT_WINDOW_MS,
+      RATE_LIMIT_MAX,
+    )
 
     if (!rate.allowed) {
+      const status = rate.failedClosed ? 503 : 429
+      const message = rate.failedClosed
+        ? 'Rate limiting unavailable. Try again later.'
+        : 'Too many registration attempts. Please try again later.'
       return json(
-        { ok: false, error: 'Too many registration attempts. Please try again later.' },
-        429,
-        { 'Retry-After': String(Math.ceil(RATE_LIMIT_WINDOW_MS / 1000)) },
+        req,
+        { ok: false, error: message },
+        status,
+        status === 429 ? { 'Retry-After': String(Math.ceil(RATE_LIMIT_WINDOW_MS / 1000)) } : {},
       )
     }
 
-    await recordAttempt(supabase, ipHash)
+    await recordRateLimitAttempt(supabase, 'reg', ipHash)
 
     const validated = validatePayload(payload)
     if (!validated.ok) {
-      return json({ ok: false, error: validated.error }, 400)
+      return json(req, { ok: false, error: validated.error }, 400)
     }
 
     const data = validated.data
@@ -591,7 +576,7 @@ Deno.serve(async (req) => {
     const duplicateAnalysis = await analyzeDuplicates(supabase, data)
 
     if (duplicateAnalysis.participantConflicts.length) {
-      return json({
+      return json(req, {
         ok: false,
         code: 'PARTICIPANT_DUPLICATE',
         error: participantConflictMessage(duplicateAnalysis.participantConflicts),
@@ -601,7 +586,7 @@ Deno.serve(async (req) => {
 
     const needsConfirmation = duplicateAnalysis.schoolMatch || duplicateAnalysis.teacherMatch
     if (needsConfirmation && !data.confirmMerge) {
-      return json({
+      return json(req, {
         ok: false,
         code: 'NEEDS_CONFIRMATION',
         error: 'We found an existing school or teacher profile for this registration.',
@@ -621,10 +606,10 @@ Deno.serve(async (req) => {
 
     if (regErr) {
       if (regErr.code === '23505') {
-        return json({ ok: false, error: 'This registration was already submitted' }, 409)
+        return json(req, { ok: false, error: 'This registration was already submitted' }, 409)
       }
       console.error('registrations insert:', regErr)
-      return json({ ok: false, error: 'Could not save registration' }, 500)
+      return json(req, { ok: false, error: 'Could not save registration' }, 500)
     }
 
     let assignedSchoolCode: string | null = null
@@ -665,7 +650,7 @@ Deno.serve(async (req) => {
 
       if (evErr) {
         console.error('event_registrations insert:', evErr)
-        return json({ ok: false, error: 'Could not save registration' }, 500)
+        return json(req, { ok: false, error: 'Could not save registration' }, 500)
       }
 
       const rows = ev.participants.map((p) => ({
@@ -680,7 +665,7 @@ Deno.serve(async (req) => {
       const { error: pErr } = await supabase.from('participants').insert(rows)
       if (pErr) {
         console.error('participants insert:', pErr)
-        return json({ ok: false, error: 'Could not save registration' }, 500)
+        return json(req, { ok: false, error: 'Could not save registration' }, 500)
       }
     }
 
@@ -709,7 +694,7 @@ Deno.serve(async (req) => {
       console.error('registration emails error:', err)
     }
 
-    return json({
+    return json(req, {
       ok: true,
       registrationId: data.registrationId,
       schoolCode: assignedSchoolCode,
@@ -719,6 +704,6 @@ Deno.serve(async (req) => {
     })
   } catch (err) {
     console.error('register function error:', err)
-    return json({ ok: false, error: 'Unexpected server error' }, 500)
+    return json(req, { ok: false, error: 'Unexpected server error' }, 500)
   }
 })

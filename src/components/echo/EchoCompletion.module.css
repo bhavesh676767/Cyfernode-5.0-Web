@@ -1,0 +1,29 @@
+.box {
+  text-align: center;
+  padding: 32px 16px;
+}
+
+.title {
+  font-family: 'Satoshi', system-ui, sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+  margin-bottom: 10px;
+}
+
+.status {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: rgba(232, 230, 225, 0.55);
+  margin-bottom: 24px;
+}
+
+.continue {
+  display: inline-block;
+  padding: 10px 22px;
+  border: 1px solid rgba(232, 230, 225, 0.3);
+  color: #e8e6e1;
+  text-decoration: none;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+}

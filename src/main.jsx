@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import { App } from '@/App'
 import { blockFramerBadge } from '@/lib/blockFramerBadge'
 import { canonicalizeIndexHtmlUrl, enableRegistrationTrigger, enableInviteRequestTrigger, ensureReactRoot } from '@/lib/framerHost'
@@ -17,5 +18,6 @@ createRoot(ensureReactRoot()).render(
     <App />
     <InviteRequestModal />
     <SocialsModal />
+    <SpeedInsights />
   </StrictMode>,
 )

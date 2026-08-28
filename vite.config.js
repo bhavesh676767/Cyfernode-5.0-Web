@@ -44,6 +44,15 @@ function serveStandaloneDocuments() {
       req.url = `${normalized}/index.html${queryAt === -1 ? '' : url.slice(queryAt)}`
     }
 
+    if (
+      req.url === url
+      && !pathname.includes('.')
+      && /^\/prompts\/[a-z0-9-]+-prompt\/[^/]+(\/[^/]+)?\/?$/.test(pathname)
+    ) {
+      const normalized = pathname.replace(/\/$/, '')
+      req.url = `${normalized}/index.html${queryAt === -1 ? '' : url.slice(queryAt)}`
+    }
+
     next()
   }
 
@@ -68,7 +77,14 @@ function injectReactEntry() {
           return html
         }
 
-        const withCta = html.replace(
+        const withScrollGutter = html.includes('scrollbar-gutter')
+          ? html
+          : html.replace(
+              '<head>',
+              '<head>\n\t<style id="cyfernode-scroll-gutter">html{scrollbar-gutter:stable}</style>',
+            )
+
+        const withCta = withScrollGutter.replace(
           '</body>',
           '<script src="/framer-cta.js"></script>\n</body>',
         )
@@ -82,12 +98,41 @@ function injectReactEntry() {
   }
 }
 
+function serveSecurityHeaders() {
+  const headers = {
+    'X-Frame-Options': 'DENY',
+    'X-Content-Type-Options': 'nosniff',
+    'Referrer-Policy': 'strict-origin-when-cross-origin',
+    'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+  }
+
+  return {
+    name: 'serve-security-headers',
+    configureServer: (server) => {
+      server.middlewares.use((_req, res, next) => {
+        for (const [key, value] of Object.entries(headers)) {
+          res.setHeader(key, value)
+        }
+        next()
+      })
+    },
+    configurePreviewServer: (server) => {
+      server.middlewares.use((_req, res, next) => {
+        for (const [key, value] of Object.entries(headers)) {
+          res.setHeader(key, value)
+        }
+        next()
+      })
+    },
+  }
+}
+
 export default defineConfig({
   // The landing document is a single-page host: unmatched React routes leave the
   // embedded Framer page visible. `/register` is excluded from that fallback by
   // serveRegisterDocument().
   appType: 'spa',
-  plugins: [react(), injectReactEntry(), serveStandaloneDocuments()],
+  plugins: [react(), injectReactEntry(), serveStandaloneDocuments(), serveSecurityHeaders()],
   resolve: {
     alias: {
       '@': path.resolve(rootDir, 'src'),
@@ -95,5 +140,8 @@ export default defineConfig({
   },
   server: {
     port: Number(process.env.PORT) || 5173,
+  },
+  test: {
+    include: ['tests/**/*.test.js'],
   },
 })

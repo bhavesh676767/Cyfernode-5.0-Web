@@ -7,6 +7,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   margin: 0;
 }
@@ -27,13 +31,18 @@ html.is-navigating-to-register #main {
   cursor: pointer;
 }
 
+html.invite-modal-open #main {
+  z-index: 0;
+}
+
 #cyfernode-react-root {
   position: relative;
   z-index: 2;
 }
 
 html.invite-modal-open #main,
-html.social-modal-open #main {
+html.social-modal-open #main,
+html.mobile-nav-open #main {
   pointer-events: none;
 }
 

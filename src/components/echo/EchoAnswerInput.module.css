@@ -1,0 +1,61 @@
+.form {
+  display: grid;
+  gap: 12px;
+}
+
+.label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(232, 230, 225, 0.45);
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(232, 230, 225, 0.18);
+  background: #111318;
+  color: #e8e6e1;
+  font: inherit;
+}
+
+.input:focus-visible {
+  outline: 1px solid rgba(232, 230, 225, 0.4);
+}
+
+.submit {
+  padding: 10px 16px;
+  border: 1px solid rgba(232, 230, 225, 0.22);
+  background: transparent;
+  color: #e8e6e1;
+  font: inherit;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+}
+
+.submit:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.message {
+  min-height: 1.4em;
+  font-size: 11px;
+  color: rgba(232, 230, 225, 0.55);
+  white-space: pre-line;
+}
+
+.intermediate {
+  color: rgba(232, 230, 225, 0.72);
+}
+
+.error {
+  color: rgba(210, 69, 0, 0.85);
+}

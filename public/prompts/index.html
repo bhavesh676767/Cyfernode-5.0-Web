@@ -33,6 +33,10 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 #exit-btn {
   position: fixed;
   top: 28px;
@@ -61,7 +65,7 @@ html, body {
   min-height: 100vh;
   display: grid;
   place-items: center;
-  padding: 100px 24px 56px;
+  padding: 80px 24px 56px;
 }
 
 .panel {
@@ -72,7 +76,7 @@ html, body {
 
 .head {
   text-align: center;
-  margin-bottom: 36px;
+  margin-bottom: 28px;
   width: 100%;
 }
 
@@ -90,6 +94,72 @@ html, body {
   margin: 0 auto;
 }
 
+/* Countdown Timer */
+.countdown-section {
+  margin-bottom: 32px;
+  text-align: center;
+  padding: 18px 20px;
+  background: #fafafa;
+  border: 1px solid rgba(17, 17, 20, 0.08);
+}
+
+.countdown-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.timer-grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.timer-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timer-val {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.timer-unit-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.timer-colon {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--orange);
+  margin-bottom: 14px;
+}
+
+.unlocked-badge {
+  display: none;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #0a7a0a;
+}
+
+/* File List */
 .file-list {
   list-style: none;
   width: 100%;
@@ -114,7 +184,7 @@ html, body {
   line-height: 1.3;
   letter-spacing: -0.01em;
   text-decoration: none;
-  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+  transition: opacity 0.2s ease, color 0.15s ease, text-decoration-color 0.15s ease;
 }
 
 .file-link:hover {
@@ -122,6 +192,18 @@ html, body {
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
+}
+
+.file-link.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+  user-select: none;
+}
+
+.file-link.disabled:hover {
+  color: var(--text);
+  text-decoration: none;
 }
 
 .file-link:focus-visible {
@@ -140,6 +222,12 @@ html, body {
 
 .file-link:hover .file-icon {
   color: var(--orange);
+}
+
+.lock-icon-tag {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--muted);
 }
 
 @media (max-width: 768px) {
@@ -165,6 +253,34 @@ html, body {
       <img class="s0-wordmark" src="/assets/PROMPTS.svg" alt="Prompts" width="428" height="172">
     </header>
 
+    <div class="countdown-section" id="countdown-section">
+      <div class="countdown-label" id="countdown-label">Prompts Unlock In</div>
+      <div class="timer-grid" id="timer-grid">
+        <div class="timer-unit">
+          <span class="timer-val" id="timer-days">00</span>
+          <span class="timer-unit-label">Days</span>
+        </div>
+        <span class="timer-colon">:</span>
+        <div class="timer-unit">
+          <span class="timer-val" id="timer-hours">00</span>
+          <span class="timer-unit-label">Hours</span>
+        </div>
+        <span class="timer-colon">:</span>
+        <div class="timer-unit">
+          <span class="timer-val" id="timer-mins">00</span>
+          <span class="timer-unit-label">Mins</span>
+        </div>
+        <span class="timer-colon">:</span>
+        <div class="timer-unit">
+          <span class="timer-val" id="timer-secs">00</span>
+          <span class="timer-unit-label">Secs</span>
+        </div>
+      </div>
+      <div class="unlocked-badge" id="unlocked-badge">
+        <i class="fa-solid fa-lock-open" style="margin-right: 6px;"></i> Prompts are now accessible
+      </div>
+    </div>
+
     <ul class="file-list" id="file-list"></ul>
   </div>
 </main>
@@ -182,14 +298,62 @@ function promptHref(event) {
   return `/prompts/${event.id}-prompt`;
 }
 
-document.getElementById('file-list').innerHTML = window.CYFERNODE_EVENTS.map((event) => `
-  <li>
-    <a class="file-link" href="${promptHref(event)}" title="${event.category}">
-      ${FILE_ICON}
-      <span>${event.name}</span>
-    </a>
-  </li>
-`).join('');
+// 25th September 2026 - 00:00 AM IST
+const PROMPT_UNLOCK_TIME = new Date('2026-09-25T00:00:00+05:30').getTime();
+
+const timerDays = document.getElementById('timer-days');
+const timerHours = document.getElementById('timer-hours');
+const timerMins = document.getElementById('timer-mins');
+const timerSecs = document.getElementById('timer-secs');
+const timerGrid = document.getElementById('timer-grid');
+const countdownLabel = document.getElementById('countdown-label');
+const unlockedBadge = document.getElementById('unlocked-badge');
+
+function renderFileList(isLocked) {
+  document.getElementById('file-list').innerHTML = window.CYFERNODE_EVENTS.map((event) => `
+    <li>
+      <a class="file-link ${isLocked ? 'disabled' : ''}" href="${isLocked ? 'javascript:void(0)' : promptHref(event)}" title="${isLocked ? 'Locked until 25 Sep 2026, 00:00 AM' : event.category}">
+        ${FILE_ICON}
+        <span>${event.name}</span>
+        ${isLocked ? '<i class="fa-solid fa-lock lock-icon-tag"></i>' : ''}
+      </a>
+    </li>
+  `).join('');
+}
+
+let isCurrentlyLocked = true;
+renderFileList(true);
+
+function updateCountdown() {
+  const now = Date.now();
+  const diff = PROMPT_UNLOCK_TIME - now;
+
+  if (diff <= 0) {
+    if (isCurrentlyLocked) {
+      isCurrentlyLocked = false;
+      renderFileList(false);
+      timerGrid.style.display = 'none';
+      countdownLabel.style.display = 'none';
+      unlockedBadge.style.display = 'block';
+    }
+    return;
+  }
+
+  isCurrentlyLocked = true;
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const mins = Math.floor((diff / (1000 * 60)) % 60);
+  const secs = Math.floor((diff / 1000) % 60);
+
+  timerDays.textContent = String(days).padStart(2, '0');
+  timerHours.textContent = String(hours).padStart(2, '0');
+  timerMins.textContent = String(mins).padStart(2, '0');
+  timerSecs.textContent = String(secs).padStart(2, '0');
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
 </script>
 </body>
 </html>
