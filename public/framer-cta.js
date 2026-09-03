@@ -75,45 +75,21 @@
 
 
   function isPromptsMenuItem(el) {
-
     if (!(el instanceof Element)) return false
-
-    if (getMenuItemTitle(el) === 'prompts') return true
-
-
-
-    for (var i = 0; i < PROMPTS_SELECTORS.length; i += 1) {
-
-      if (el.matches(PROMPTS_SELECTORS[i])) return true
-
-    }
-
-
-
-    return false
-
+    if (el.matches('.framer-le5629') || el.matches('[data-framer-appear-id="le5629"]')) return true
+    var title = getMenuItemTitle(el)
+    if (title === 'prompts' || title.indexOf('prompts') !== -1) return true
+    var text = normalizeLabel(el.textContent)
+    return text.indexOf('prompts') === 0 || text.indexOf('prompts 02') === 0 || text.indexOf('02 prompts') !== -1
   }
 
-
-
   function isSocialsMenuItem(el) {
-
     if (!(el instanceof Element)) return false
-
-    if (getMenuItemTitle(el) === 'socials') return true
-
-
-
-    for (var i = 0; i < SOCIALS_SELECTORS.length; i += 1) {
-
-      if (el.matches(SOCIALS_SELECTORS[i])) return true
-
-    }
-
-
-
-    return false
-
+    if (el.matches('.framer-5q2vr0') || el.matches('[data-framer-appear-id="5q2vr0"]')) return true
+    var title = getMenuItemTitle(el)
+    if (title === 'socials' || title.indexOf('socials') !== -1) return true
+    var text = normalizeLabel(el.textContent)
+    return text.indexOf('socials') === 0 || text.indexOf('socials 03') === 0 || text.indexOf('03 socials') !== -1
   }
 
 
@@ -521,229 +497,122 @@
 
 
   function wireRegisterLinks() {
-
-    document.querySelectorAll(REGISTER_CONTAINER + ' a[data-framer-name="Scaling Button"]').forEach(function (link) {
-
+    document.querySelectorAll(REGISTER_CONTAINER + ' a, ' + REGISTER_CONTAINER + ' [data-framer-name="Scaling Button"]').forEach(function (link) {
       link.setAttribute('href', REGISTER_PATH)
-
     })
-
-
 
     document.querySelectorAll('[data-framer-name="Scaling Button"], [data-framer-name="Fluid Button"]').forEach(function (link) {
-
       var label = normalizeLabel(link.textContent)
-
       if (label === 'register' || label === 'register register') {
-
         link.setAttribute('href', REGISTER_PATH)
-
       }
-
     })
-
   }
-
-
 
   function wirePromptsLinks() {
-
     document.querySelectorAll('[data-framer-name="Menu Item"]').forEach(function (link) {
-
       if (!isPromptsMenuItem(link)) return
-
       link.setAttribute('href', PROMPTS_PATH)
-
     })
-
-
 
     PROMPTS_SELECTORS.forEach(function (selector) {
-
       document.querySelectorAll(selector).forEach(function (link) {
-
         link.setAttribute('href', PROMPTS_PATH)
-
       })
-
     })
-
   }
-
-
 
   function wireSocialsLinks() {
-
     document.querySelectorAll('[data-framer-name="Menu Item"]').forEach(function (link) {
-
       if (!isSocialsMenuItem(link)) return
-
-      link.setAttribute('href', '#socials')
-
+      link.setAttribute('href', '/#socials')
     })
-
-
 
     SOCIALS_SELECTORS.forEach(function (selector) {
-
       document.querySelectorAll(selector).forEach(function (link) {
-
-        link.setAttribute('href', '#socials')
-
+        link.setAttribute('href', '/#socials')
       })
-
     })
-
   }
-
-
 
   function wireInviteLinks() {
-
-    document.querySelectorAll(INVITE_CONTAINER + ' a[data-framer-name="Scaling Button"]').forEach(function (link) {
-
+    document.querySelectorAll(INVITE_CONTAINER + ' a, ' + INVITE_CONTAINER + ' [data-framer-name="Scaling Button"]').forEach(function (link) {
       link.setAttribute('href', '#invite')
-
     })
-
-
 
     document.querySelectorAll('[data-framer-name="Scaling Button"], [data-framer-name="Fluid Button"]').forEach(function (link) {
-
       var label = normalizeLabel(link.textContent)
-
       if (label === 'request invite' || label === 'request invite request invite') {
-
         link.setAttribute('href', '#invite')
-
       }
-
     })
-
   }
-
-
 
   function wireLinks() {
-
     wireHomeLinks()
-
     wireTeamLinks()
-
     wireRegisterLinks()
-
     wirePromptsLinks()
-
     wireSocialsLinks()
-
     wireInviteLinks()
-
   }
 
-
-
   document.addEventListener('click', function (event) {
-
     if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
-
     if (!(event.target instanceof Element)) return
 
-
-
     if (brochureTrigger(event.target)) {
-
       event.preventDefault()
-
       event.stopPropagation()
-
       window.open(BROCHURE_PATH, '_blank', 'noopener,noreferrer')
-
       return
-
     }
-
-
 
     if (inviteTrigger(event.target)) {
-
       event.preventDefault()
-
       event.stopPropagation()
-
       window.dispatchEvent(new CustomEvent('cyfernode:open-invite-modal'))
-
       return
-
     }
-
-
 
     if (socialsTrigger(event.target)) {
-
       event.preventDefault()
-
       event.stopPropagation()
-
-      window.dispatchEvent(new CustomEvent('cyfernode:open-socials-modal'))
-
+      if (window.location.pathname === '/' || window.location.pathname === '') {
+        window.dispatchEvent(new CustomEvent('cyfernode:open-socials-modal'))
+      } else {
+        window.location.assign('/#socials')
+      }
       return
-
     }
-
-
 
     if (homeTrigger(event.target)) {
-
       event.preventDefault()
-
       event.stopPropagation()
-
       navigateToHome()
-
       return
-
     }
-
-
 
     if (teamTrigger(event.target)) {
-
       event.preventDefault()
-
       event.stopPropagation()
-
       navigateToTeam()
-
       return
-
     }
-
-
 
     if (promptsTrigger(event.target)) {
-
       event.preventDefault()
-
       event.stopPropagation()
-
       navigateToPrompts()
-
       return
-
     }
-
-
 
     if (registerTrigger(event.target)) {
-
       event.preventDefault()
-
       event.stopPropagation()
-
       navigateToRegister()
-
+      return
     }
-
   }, true)
 
 

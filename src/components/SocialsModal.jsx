@@ -20,6 +20,14 @@ export function SocialsModal() {
   useEffect(() => {
     const onOpen = () => setOpen(true)
     window.addEventListener(OPEN_EVENT, onOpen)
+
+    if (window.location.hash === '#socials' || window.location.search.indexOf('action=socials') !== -1) {
+      setOpen(true)
+      try {
+        window.history.replaceState(null, '', window.location.pathname)
+      } catch (e) {}
+    }
+
     return () => window.removeEventListener(OPEN_EVENT, onOpen)
   }, [])
 
