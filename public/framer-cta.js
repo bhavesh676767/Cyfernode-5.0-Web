@@ -7,40 +7,14 @@
 
 
   var REGISTER_PATH = '/register'
-
   var PROMPTS_PATH = '/prompts'
-
+  var TEAM_PATH = '/team'
   var REGISTER_CONTAINER = '.framer-1umqj66-container'
-
   var INVITE_CONTAINER = '.framer-13hwuku-container'
-
   var PROMPTS_SELECTORS = ['.framer-le5629', '[data-framer-appear-id="le5629"]']
-
   var SOCIALS_SELECTORS = ['.framer-5q2vr0', '[data-framer-appear-id="5q2vr0"]']
-
-  var TEAM_SELECTORS = ['.framer-1o95l5b', '[data-framer-appear-id="1o95l5b"]', 'a[href*="team"]']
-
+  var TEAM_SELECTORS = ['.framer-1o95l5b', '[data-framer-appear-id="1o95l5b"]']
   var BROCHURE_PATH = '/CyferNode_5.0_Official_Event_Brochure_2026.pdf'
-
-
-
-  // Handle direct navigation to /team or /team/
-
-  var pathname = window.location.pathname.replace(/\/$/, '')
-
-  if (pathname === '/team') {
-
-    try {
-
-      sessionStorage.setItem('cyfernode_autoclick_team', 'true')
-
-    } catch (e) {}
-
-    window.location.replace('/?action=click-team')
-
-    return
-
-  }
 
 
 
@@ -148,23 +122,15 @@
 
     if (!(el instanceof Element)) return false
 
+    if (el.matches('.framer-1o95l5b') || el.matches('[data-framer-appear-id="1o95l5b"]')) return true
+
     var title = getMenuItemTitle(el)
 
     if (title === 'team' || title.indexOf('team') !== -1) return true
 
-
-
-    for (var i = 0; i < TEAM_SELECTORS.length; i += 1) {
-
-      if (el.matches(TEAM_SELECTORS[i])) return true
-
-    }
-
-
-
     var text = normalizeLabel(el.textContent)
 
-    return text.indexOf('team') !== -1
+    return text.indexOf('team') === 0 || text.indexOf('team 04') === 0 || text.indexOf('04 team') !== -1
 
   }
 
@@ -179,6 +145,16 @@
     if (menuItem && isHomeMenuItem(menuItem)) return menuItem
 
     if (isHomeMenuItem(el)) return el
+
+    var button = framerButton(el)
+
+    if (button) {
+
+      var label = normalizeLabel(button.textContent)
+
+      if (label === 'home' || label === 'home home') return button
+
+    }
 
     return null
 
@@ -233,6 +209,46 @@
 
 
     if (isTeamMenuItem(el)) return el
+
+    var container = el.closest('.framer-vwn2k8-container')
+
+    if (container) return container.querySelector('a, button') || container
+
+    var button = framerButton(el)
+
+    if (button) {
+
+      var label = normalizeLabel(button.textContent)
+
+      if (label === 'our team' || label === 'our team our team' || label === 'team' || label === 'team team' || label.indexOf('our team') !== -1) {
+
+        return button
+
+      }
+
+    }
+
+    var link = el.closest('a')
+
+    if (link) {
+
+      var href = link.getAttribute('href') || ''
+
+      if (href === '/team' || href === './team' || href === '/team/' || href === './team/') {
+
+        return link
+
+      }
+
+      var linkText = normalizeLabel(link.textContent)
+
+      if (linkText === 'team' || linkText === 'our team' || linkText === 'our team our team') {
+
+        return link
+
+      }
+
+    }
 
     return null
 
@@ -414,117 +430,91 @@
 
 
 
-  function findTeamButtonOrSection() {
+  function navigateToTeam() {
 
-    var items = document.querySelectorAll('[data-framer-name="Menu Item"]')
+    if (window.location.pathname === TEAM_PATH || window.location.pathname === TEAM_PATH + '/') {
 
-    for (var i = 0; i < items.length; i += 1) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
 
-      if (isTeamMenuItem(items[i])) return items[i]
+    } else {
 
-    }
-
-    for (var j = 0; j < TEAM_SELECTORS.length; j += 1) {
-
-      var match = document.querySelector(TEAM_SELECTORS[j])
-
-      if (match) return match
+      window.location.assign(TEAM_PATH)
 
     }
-
-    return document.querySelector('[data-framer-name="Team"], #team')
 
   }
 
 
 
-  function triggerTeamAction() {
+  function wireHomeLinks() {
 
-    if (window.location.pathname !== '/' && window.location.pathname !== '') {
+    document.querySelectorAll('[data-framer-name="Menu Item"]').forEach(function (link) {
 
-      try {
+      if (!isHomeMenuItem(link)) return
 
-        sessionStorage.setItem('cyfernode_autoclick_team', 'true')
+      link.setAttribute('href', '/')
 
-      } catch (e) {}
+    })
 
-      window.location.assign('/?action=click-team')
+    document.querySelectorAll('[data-framer-name="Scaling Button"], [data-framer-name="Fluid Button"]').forEach(function (link) {
 
-      return
+      var label = normalizeLabel(link.textContent)
 
-    }
+      if (label === 'home' || label === 'home home') {
 
-
-
-    var attempts = 0
-
-    function attempt() {
-
-      attempts += 1
-
-      var target = findTeamButtonOrSection()
-
-      if (target) {
-
-        if (target.getAttribute('data-framer-name') === 'Menu Item' || target.matches('.framer-1o95l5b')) {
-
-          target.click()
-
-        } else if (typeof target.scrollIntoView === 'function') {
-
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
-        }
-
-      } else if (attempts < 25) {
-
-        setTimeout(attempt, 150)
+        link.setAttribute('href', '/')
 
       }
 
-    }
-
-    attempt()
+    })
 
   }
 
 
 
-  function checkAutoClickTeam() {
+  function wireTeamLinks() {
 
-    var shouldClick = false
+    document.querySelectorAll('[data-framer-name="Menu Item"]').forEach(function (link) {
 
-    if (window.location.search.indexOf('action=click-team') !== -1) {
+      if (!isTeamMenuItem(link)) return
 
-      shouldClick = true
+      link.setAttribute('href', TEAM_PATH)
 
-      try {
+    })
 
-        history.replaceState(null, '', window.location.pathname)
 
-      } catch (e) {}
 
-    }
+    TEAM_SELECTORS.forEach(function (selector) {
 
-    try {
+      document.querySelectorAll(selector).forEach(function (link) {
 
-      if (sessionStorage.getItem('cyfernode_autoclick_team') === 'true') {
+        link.setAttribute('href', TEAM_PATH)
 
-        shouldClick = true
+      })
 
-        sessionStorage.removeItem('cyfernode_autoclick_team')
+    })
+
+
+
+    document.querySelectorAll('.framer-vwn2k8-container a, .framer-5qc1o0').forEach(function (link) {
+
+      link.setAttribute('href', TEAM_PATH)
+
+    })
+
+
+
+    document.querySelectorAll('[data-framer-name="Scaling Button"], [data-framer-name="Fluid Button"]').forEach(function (link) {
+
+      var label = normalizeLabel(link.textContent)
+
+      if (label === 'our team' || label === 'our team our team' || label === 'team' || label === 'team team' || label.indexOf('our team') !== -1) {
+
+        link.setAttribute('href', TEAM_PATH)
 
       }
 
-    } catch (e) {}
-
-
-
-    if (shouldClick) {
-
-      triggerTeamAction()
-
-    }
+    })
 
   }
 
@@ -636,6 +626,10 @@
 
   function wireLinks() {
 
+    wireHomeLinks()
+
+    wireTeamLinks()
+
     wireRegisterLinks()
 
     wirePromptsLinks()
@@ -718,7 +712,7 @@
 
       event.stopPropagation()
 
-      triggerTeamAction()
+      navigateToTeam()
 
       return
 
@@ -754,22 +748,31 @@
 
 
 
-  function init() {
-
-    wireLinks()
-
-    checkAutoClickTeam()
-
-
-
-    new MutationObserver(wireLinks).observe(document.documentElement, {
-
-      childList: true,
-
-      subtree: true,
-
+  function blockBadge() {
+    var selectors = [
+      '#__framer-badge-container',
+      '.__framer-badge',
+      'a[href*="framer.com"][data-framer-name]',
+      'div[data-framer-name="Light"][data-nosnippet="true"]',
+    ]
+    selectors.forEach(function (selector) {
+      document.querySelectorAll(selector).forEach(function (node) {
+        node.remove()
+      })
     })
+  }
 
+  function init() {
+    wireLinks()
+    blockBadge()
+
+    new MutationObserver(function () {
+      wireLinks()
+      blockBadge()
+    }).observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+    })
   }
 
 

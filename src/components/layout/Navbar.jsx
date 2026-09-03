@@ -15,7 +15,7 @@ export function Navbar() {
         <nav className={styles.nav} aria-label="Primary">
           <Link to="/" className={styles.link}>Home</Link>
           <a className={styles.link} href="/#events">Events</a>
-          <a className={styles.link} href="/#team">Team</a>
+          <a className={styles.link} href="/team">Team</a>
           <a className={styles.link} href="/#timeline">Timeline</a>
         </nav>
         <Link

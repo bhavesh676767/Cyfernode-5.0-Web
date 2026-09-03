@@ -19,6 +19,10 @@ const STANDALONE_ROUTES = [
     document: '/prompts/index.html',
     aliases: new Set(['/prompts', '/prompts/', '/prompts.html']),
   },
+  {
+    document: '/team/index.html',
+    aliases: new Set(['/team', '/team/', '/team.html']),
+  },
 ]
 
 /**

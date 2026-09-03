@@ -1,8 +1,9 @@
 import { Route, Routes } from 'react-router-dom'
 import { Home } from '@/pages/Home/Home'
+import { Team } from '@/pages/Team/Team'
 
 /*
- * Every route other than "/" is served by the Framer document, so React
+ * Every route other than "/" and "/team" is served by the Framer document, so React
  * deliberately declares no catch-all: an unmatched path must render nothing
  * rather than cover the Framer page that lives there.
  *
@@ -13,6 +14,7 @@ export function AppRouter() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/team" element={<Team />} />
     </Routes>
   )
 }

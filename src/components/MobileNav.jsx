@@ -13,14 +13,8 @@ const NAV_ITEMS = [
   { id: 'socials', label: 'Socials' },
 ]
 
-function scrollToTeam() {
-  const section = document.querySelector(TEAM_SELECTOR)
-  if (section) {
-    section.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    return
-  }
-
-  window.location.assign('/#team')
+function navigateToTeam() {
+  window.location.assign('/team')
 }
 
 export function MobileNav() {
@@ -66,7 +60,7 @@ export function MobileNav() {
     setOpen(false)
 
     if (id === 'team') {
-      window.setTimeout(scrollToTeam, 180)
+      window.setTimeout(navigateToTeam, 180)
       return
     }
 
