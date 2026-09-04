@@ -110,7 +110,6 @@ export function MobileNav() {
       >
         <div className={styles.panelHeader}>
           <span className={styles.panelTitle}>Menu</span>
-          <span className={styles.panelBadge}>Cyfernode 5.0</span>
         </div>
 
         <nav className={styles.nav} aria-label="Mobile Navigation">

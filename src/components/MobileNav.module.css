@@ -181,16 +181,6 @@
   color: #71717a;
 }
 
-.panelBadge {
-  font: 600 0.75rem/1 var(--font-sans, "Geist", system-ui, sans-serif);
-  letter-spacing: -0.01em;
-  color: #d24500;
-  background: #fff5ee;
-  border: 1px solid rgba(210, 69, 0, 0.2);
-  padding: 3px 8px;
-  border-radius: 999px;
-}
-
 .nav {
   display: grid;
   gap: 0.25rem;
