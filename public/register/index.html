@@ -1257,6 +1257,56 @@ html.dup-open { overflow: hidden; }
   color: var(--orange);
 }
 
+/* Success confirmation card */
+.sub-success-card {
+  margin: 24px 0;
+  padding: 24px 28px;
+  background: #f0fdf4;
+  border: 2px solid rgba(22, 163, 74, 0.3);
+  border-radius: 16px;
+  text-align: left;
+  animation: dupIn 0.3s ease;
+}
+.success-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #15803d;
+  background: #dcfce7;
+  border: 1px solid rgba(22, 163, 74, 0.25);
+  padding: 6px 12px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+.success-title {
+  font-family: var(--font-sans);
+  font-size: clamp(22px, 3.5vw, 28px);
+  font-weight: 800;
+  color: #166534;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+.success-code {
+  font-family: var(--font-px);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--orange);
+  margin-bottom: 10px;
+}
+.success-text {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 500;
+  color: #14532d;
+  line-height: 1.5;
+}
+
 /* ── RESPONSIVENESS ───────────────────────────────────── */
 @media (max-width: 768px) {
   #exit-btn {
@@ -1376,8 +1426,18 @@ html.dup-open { overflow: hidden; }
     <div class="done-tags" id="done-tags"></div>
     <div class="summary-list" id="summary-out"></div>
     
-    <div class="done-btns" style="margin-bottom: 24px;">
-      <button class="btn-p" id="btn-sub" onclick="submitData()">Confirm & Submit →</button>
+    <!-- Prominent Success Banner Card -->
+    <div id="sub-success-card" class="sub-success-card" style="display: none;">
+      <div class="success-badge">✓ Registration Completed</div>
+      <div class="success-title">Registration Successful!</div>
+      <div class="success-code" id="success-code-display">School Code: CYN01</div>
+      <div class="success-text" id="success-msg-text">
+        Your registration details have been securely recorded. Confirmation emails with Discord &amp; WhatsApp group invites have been sent to your teacher and participants. You do not need to submit again.
+      </div>
+    </div>
+
+    <div class="done-btns" id="submit-btn-row" style="margin-bottom: 24px;">
+      <button class="btn-p" id="btn-sub" onclick="submitData()">Confirm &amp; Submit →</button>
     </div>
     <div class="q-err" id="sub-err" role="alert"></div>
     <div class="done-btns">
@@ -1683,6 +1743,15 @@ function goHome() {
   dynPCount = {};
   clearState();
   updateThemeAccent('var(--orange)');
+  const submitRow = document.getElementById('submit-btn-row');
+  const successCard = document.getElementById('sub-success-card');
+  if (submitRow) submitRow.style.display = 'flex';
+  if (successCard) successCard.style.display = 'none';
+  const btn = document.getElementById('btn-sub');
+  if (btn) {
+    setSlideButton(btn, 'Confirm & Submit →');
+    btn.disabled = false;
+  }
   showScreen('s0');
 }
 
@@ -2366,6 +2435,10 @@ function downloadCSV() {
 async function submitData(confirmMerge = false) {
   const payload = { ...buildExcelPayload(), confirmMerge };
   const btn = document.getElementById('btn-sub');
+  const submitRow = document.getElementById('submit-btn-row');
+  const successCard = document.getElementById('sub-success-card');
+  const codeDisplay = document.getElementById('success-code-display');
+  const msgText = document.getElementById('success-msg-text');
   const errBox = document.getElementById('sub-err');
 
   setSlideButton(btn, confirmMerge ? 'Linking & submitting…' : 'Sending data…');
@@ -2405,29 +2478,35 @@ async function submitData(confirmMerge = false) {
       throw new Error(result.error || `Save failed (${res.status})`);
     }
 
-    setSlideButton(btn, 'Submitted ✓');
+    // Success! Permanently hide submit button row and display prominent success banner
+    if (submitRow) submitRow.style.display = 'none';
+
     if (result.schoolCode) {
-      errBox.textContent = result.linkedSchool
-        ? `Registration saved and linked to school code ${result.schoolCode}.`
-        : `Registration saved. School code: ${result.schoolCode}.`;
-      errBox.classList.add('show');
-      errBox.style.color = 'var(--orange)';
+      codeDisplay.textContent = `Official School Code: ${result.schoolCode}`;
+      msgText.textContent = result.linkedSchool
+        ? `Registration saved and linked to school code ${result.schoolCode}. Confirmation emails with Discord & WhatsApp group invites have been sent to your teacher and participants. Your registration is complete and does not need to be submitted again.`
+        : `Registration saved successfully under school code ${result.schoolCode}. Confirmation emails with Discord & WhatsApp group invites have been sent to your teacher and participants. Your registration is complete and does not need to be submitted again.`;
+    } else {
+      codeDisplay.textContent = '';
+      msgText.textContent = 'Registration saved successfully. Confirmation emails with Discord & WhatsApp group invites have been sent. Your registration is complete and does not need to be submitted again.';
     }
+
+    if (successCard) {
+      successCard.style.display = 'block';
+      successCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
     clearState();
   } catch (err) {
     console.error('Registration submit failed:', err);
-    setSlideButton(btn, 'Submission failed');
+    setSlideButton(btn, 'Confirm & Submit →');
+    btn.disabled = false;
     errBox.style.color = '';
     errBox.textContent = err.message
       ? `${err.message}. Nothing was lost - download your details below and try again.`
       : 'Something went wrong while saving. Download your details below and contact the organisers.';
     errBox.classList.add('show');
   }
-
-  setTimeout(() => {
-    setSlideButton(btn, 'Confirm & Submit →');
-    btn.disabled = false;
-  }, 3500);
 }
 
 function setDupScrollLock(locked) {
