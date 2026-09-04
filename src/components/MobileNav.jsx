@@ -5,17 +5,13 @@ import { lockPageScroll } from '@/lib/scrollLock'
 import styles from './MobileNav.module.css'
 
 const SOCIALS_EVENT = 'cyfernode:open-socials-modal'
-const TEAM_SELECTOR = '[data-framer-name="Team"]'
 
 const NAV_ITEMS = [
-  { id: 'team', label: 'Team' },
-  { id: 'prompts', label: 'Prompts' },
-  { id: 'socials', label: 'Socials' },
+  { id: 'home', num: '01', label: 'Home' },
+  { id: 'prompts', num: '02', label: 'Prompts' },
+  { id: 'socials', num: '03', label: 'Socials' },
+  { id: 'team', num: '04', label: 'Team' },
 ]
-
-function navigateToTeam() {
-  window.location.assign('/team')
-}
 
 export function MobileNav() {
   const menuId = useId()
@@ -54,25 +50,39 @@ export function MobileNav() {
     }
   }, [open])
 
-  if (!isHome) return null
+  const hideOnPaths = ['/register', '/admin']
+  if (hideOnPaths.includes(pathname)) return null
 
   const handleSelect = (id) => {
     setOpen(false)
 
-    if (id === 'team') {
-      window.setTimeout(navigateToTeam, 180)
+    if (id === 'home') {
+      window.location.assign('/')
       return
     }
 
     if (id === 'prompts') {
-      window.setTimeout(() => window.location.assign('/prompts'), 180)
+      window.location.assign('/prompts')
       return
     }
 
     if (id === 'socials') {
-      window.setTimeout(() => {
+      if (window.location.pathname === '/' || window.location.pathname === '') {
         window.dispatchEvent(new CustomEvent(SOCIALS_EVENT))
-      }, 180)
+      } else {
+        window.location.assign('/#socials')
+      }
+      return
+    }
+
+    if (id === 'team') {
+      window.location.assign('/team')
+      return
+    }
+
+    if (id === 'register') {
+      window.location.assign('/register')
+      return
     }
   }
 
@@ -83,13 +93,13 @@ export function MobileNav() {
         className={`${styles.toggle} ${open ? styles.toggleOpen : ''}`}
         aria-expanded={open}
         aria-controls={menuId}
-        aria-label={open ? 'Close menu' : 'Open menu'}
+        aria-label={open ? 'Close navigation menu' : 'Open navigation menu'}
         onClick={() => setOpen((value) => !value)}
       >
         <span className={styles.toggleIcon} aria-hidden="true">
-          <span />
-          <span />
-          <span />
+          <span className={styles.barTop} />
+          <span className={styles.barMid} />
+          <span className={styles.barBot} />
         </span>
       </button>
 
@@ -98,7 +108,12 @@ export function MobileNav() {
         className={`${styles.panel} ${open ? styles.panelOpen : ''}`}
         aria-hidden={!open}
       >
-        <nav className={styles.nav} aria-label="Mobile">
+        <div className={styles.panelHeader}>
+          <span className={styles.panelTitle}>Menu</span>
+          <span className={styles.panelBadge}>Cyfernode 5.0</span>
+        </div>
+
+        <nav className={styles.nav} aria-label="Mobile Navigation">
           {NAV_ITEMS.map((item, index) => (
             <button
               key={item.id}
@@ -107,11 +122,25 @@ export function MobileNav() {
               style={{ '--item-index': index }}
               onClick={() => handleSelect(item.id)}
             >
-              <span className={styles.linkLabel}>{item.label}</span>
+              <div className={styles.linkLeft}>
+                <span className={styles.linkNum}>{item.num}</span>
+                <span className={styles.linkLabel}>{item.label}</span>
+              </div>
               <span className={styles.linkArrow} aria-hidden="true">↗</span>
             </button>
           ))}
         </nav>
+
+        <div className={styles.panelFooter}>
+          <button
+            type="button"
+            className={styles.registerButton}
+            onClick={() => handleSelect('register')}
+          >
+            <span className={styles.registerLabel}>Register Now</span>
+            <span className={styles.registerArrow} aria-hidden="true">→</span>
+          </button>
+        </div>
       </div>
 
       <button
