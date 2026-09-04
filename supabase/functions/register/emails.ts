@@ -448,6 +448,33 @@ export function buildTeacherEmail(ctx: RegistrationEmailContext) {
   }
 }
 
+function renderParticipantWhatsAppCard(ev: EmailEvent) {
+  const wa = getEventWhatsApp(ev.eventId) || getEventWhatsApp(ev.eventName)
+  const groupUrl = wa ? wa.url : null
+  const groupName = wa ? wa.name : ev.eventName
+
+  if (!groupUrl) return ''
+
+  return `
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:16px 0;border:1px solid ${BORDER};border-radius:12px;background-color:${CARD_BG};">
+      <tr>
+        <td style="padding:18px 20px;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td style="vertical-align:middle;">
+                <div style="font-size:14px;font-weight:700;color:${INK};margin-bottom:3px;">Official ${esc(groupName)} WhatsApp Group</div>
+                <div style="font-size:12px;line-height:1.45;color:${MUTED};font-weight:500;">Connect with fellow participants in <strong>${esc(groupName)}</strong> and receive real-time updates and announcements for your event.</div>
+              </td>
+              <td align="right" style="vertical-align:middle;padding-left:16px;white-space:nowrap;">
+                <a href="${esc(groupUrl)}" target="_blank" style="display:inline-block;padding:10px 16px;background-color:#f0fdf4;border:1px solid rgba(22,163,74,0.3);color:${WHATSAPP_GREEN};text-decoration:none;font-size:12px;font-weight:700;border-radius:8px;letter-spacing:0.01em;">Join WhatsApp &rarr;</a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>`
+}
+
 export function buildParticipantEmail(
   ctx: RegistrationEmailContext,
   ev: EmailEvent,
@@ -472,12 +499,13 @@ export function buildParticipantEmail(
     <!-- School Code -->
     ${schoolCodeBlock(ctx.schoolCode, 'Your institutional School Code. Quote this in challenge submissions and official queries.')}
 
-    <!-- Next Step: Discord (Mandatory) -->
-    ${sectionTitle('1. Join the Official Discord Server (Mandatory)')}
+    <!-- Next Step: Discord & WhatsApp Communication Channels -->
+    ${sectionTitle('1. Important Communication Channels (Action Required)')}
     <p style="margin:0 0 10px;font-size:13px;line-height:1.6;color:${MUTED};font-weight:500;">
-      All prompt releases, event announcements, submission links, clarifications, and competition updates for Cyfernode 5.0 take place exclusively on our official Discord server. <strong>Please join immediately:</strong>
+      All prompt releases, event announcements, submission links, clarifications, and live competition updates take place on our official Discord server and your event WhatsApp group. <strong>Please join both immediately:</strong>
     </p>
     ${discordActionCard()}
+    ${renderParticipantWhatsAppCard(ev)}
 
     <!-- Event Brochure & Rulebook -->
     ${sectionTitle('2. Event Guidelines & Rulebook')}
