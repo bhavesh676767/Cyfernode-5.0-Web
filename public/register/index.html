@@ -1384,6 +1384,7 @@ html.dup-open { overflow: hidden; }
       <button class="btn-s" onclick="downloadJSON()">Download JSON</button>
       <button class="btn-s" onclick="downloadCSV()">Download CSV</button>
       <button class="btn-s" onclick="goHome()">↺ Restart</button>
+      <a href="/" class="btn-s" style="text-decoration:none">Back to Home →</a>
     </div>
   </div>
 
@@ -1614,41 +1615,6 @@ function clearState() {
   } catch (e) {}
 }
 
-// Temporary autofill for testing - populates the current question's inputs with sample data
-function autoFillCurrentEvent() {
-  const ev = curEv();
-  if (!ev) return;
-  const f = getFields(ev)[fIdx];
-  if (!f) return;
-
-  if (f.type === 'text' || f.type === 'email' || f.type === 'tel') {
-    const input = document.getElementById('main-input');
-    if (input) {
-      if (f.type === 'email') input.value = 'test@example.com';
-      else if (f.type === 'tel') input.value = '+91 9999999999';
-      else input.value = 'Test Data';
-    }
-  } else if (f.type === 'select') {
-    const tiles = document.querySelectorAll('.sel-opt');
-    if (tiles.length > 0) tiles[0].click();
-  } else if (f.type === 'participants') {
-    const pContainer = document.querySelector('.p-container');
-    if (pContainer) {
-      const inputs = pContainer.querySelectorAll('input');
-      inputs.forEach(inp => {
-        const pf = inp.dataset.pf;
-        if (pf === 'name') inp.value = 'Test Participant';
-        if (pf === 'phone') inp.value = '+91 9999999999';
-        if (pf === 'email') inp.value = 'participant@example.com';
-      });
-      const gradeSels = pContainer.querySelectorAll('.grade-selector');
-      gradeSels.forEach(gs => {
-        const btn = gs.querySelector('.grade-btn');
-        if (btn) btn.click();
-      });
-    }
-  }
-}
 
 // Navigation wrapper
 function showScreen(id) {
@@ -2165,12 +2131,6 @@ function renderField() {
   backBtn.addEventListener('click', goBack);
   btnRow.appendChild(backBtn);
 
-  const testBtn = document.createElement('button');
-  testBtn.className = 'btn-s';
-  testBtn.type = 'button';
-  setSlideButton(testBtn, 'Auto-fill');
-  testBtn.addEventListener('click', autoFillCurrentEvent);
-  btnRow.appendChild(testBtn);
   
   const nextButton = document.createElement('button');
   nextButton.className = 'btn-p';
