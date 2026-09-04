@@ -362,62 +362,78 @@
 
 
 
-  function cleanupNavigationState() {
+  var prefetched = new Set()
 
-    document.documentElement.classList.remove('is-navigating-to-register')
+  function prefetchUrl(url) {
+    if (!url || typeof url !== 'string') return
+    var cleanUrl = url.split('#')[0].split('?')[0]
+    if (!cleanUrl || prefetched.has(cleanUrl)) return
+    if (cleanUrl === window.location.pathname) return
 
+    prefetched.add(cleanUrl)
+
+    try {
+      var link = document.createElement('link')
+      link.rel = 'prefetch'
+      link.href = cleanUrl
+      link.as = 'document'
+      document.head.appendChild(link)
+    } catch (e) {}
+
+    if (window.fetch) {
+      try {
+        window.fetch(cleanUrl, { priority: 'low', mode: 'no-cors' }).catch(function () {})
+      } catch (e) {}
+    }
   }
 
-
-
-  window.addEventListener('pageshow', cleanupNavigationState)
-
-  window.addEventListener('popstate', cleanupNavigationState)
-
-  cleanupNavigationState()
-
-
-
-  function navigateToRegister() {
-
-    if (window.location.pathname === REGISTER_PATH) return
-
-    document.documentElement.classList.add('is-navigating-to-register')
-
-    window.setTimeout(function () {
-
-      window.location.assign(REGISTER_PATH)
-
-    }, 180)
-
-    window.setTimeout(cleanupNavigationState, 1500)
-
-  }
-
-
-
-  function navigateToPrompts() {
-
-    if (window.location.pathname === PROMPTS_PATH) return
-
-    window.location.assign(PROMPTS_PATH)
-
-  }
-
-
-
-  function navigateToTeam() {
-
-    if (window.location.pathname === TEAM_PATH || window.location.pathname === TEAM_PATH + '/') {
-
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-
+  function idlePrefetchRoutes() {
+    var routes = [REGISTER_PATH, PROMPTS_PATH, TEAM_PATH, '/']
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(function () {
+        routes.forEach(prefetchUrl)
+      }, { timeout: 1500 })
     } else {
+      setTimeout(function () {
+        routes.forEach(prefetchUrl)
+      }, 600)
+    }
+  }
 
-      window.location.assign(TEAM_PATH)
-
+  function smoothNavigate(targetPath) {
+    if (!targetPath) return
+    var current = window.location.pathname
+    if (current === targetPath || (targetPath === '/' && current === '')) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
     }
 
+    if (document.startViewTransition) {
+      try {
+        document.startViewTransition(function () {
+          window.location.assign(targetPath)
+        })
+        return
+      } catch (e) {}
+    }
+
+    window.location.assign(targetPath)
+  }
+
+  function navigateToHome() {
+    smoothNavigate('/')
+  }
+
+  function navigateToRegister() {
+    smoothNavigate(REGISTER_PATH)
+  }
+
+  function navigateToPrompts() {
+    smoothNavigate(PROMPTS_PATH)
+  }
+
+  function navigateToTeam() {
+    smoothNavigate(TEAM_PATH)
   }
 
 
@@ -615,7 +631,50 @@
     }
   }, true)
 
+  function prefetchTarget(target) {
+    if (!(target instanceof Element)) return
+    if (homeTrigger(target)) {
+      prefetchUrl('/')
+    } else if (teamTrigger(target)) {
+      prefetchUrl(TEAM_PATH)
+    } else if (promptsTrigger(target)) {
+      prefetchUrl(PROMPTS_PATH)
+    } else if (registerTrigger(target)) {
+      prefetchUrl(REGISTER_PATH)
+    } else {
+      var a = target.closest('a')
+      if (a && a.href && a.origin === window.location.origin) {
+        prefetchUrl(a.pathname)
+      }
+    }
+  }
 
+  document.addEventListener('pointerenter', function (e) {
+    prefetchTarget(e.target)
+  }, { capture: true, passive: true })
+
+  document.addEventListener('touchstart', function (e) {
+    prefetchTarget(e.target)
+  }, { capture: true, passive: true })
+
+  document.addEventListener('focusin', function (e) {
+    prefetchTarget(e.target)
+  }, { capture: true, passive: true })
+
+  function injectPerformanceStyles() {
+    if (document.getElementById('cyfernode-perf-styles')) return
+    var style = document.createElement('style')
+    style.id = 'cyfernode-perf-styles'
+    style.textContent = [
+      '@view-transition { navigation: auto; }',
+      'html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }',
+      '::view-transition-old(root) { animation: 90ms cubic-bezier(0.4, 0, 1, 1) both fade-out; }',
+      '::view-transition-new(root) { animation: 140ms cubic-bezier(0, 0, 0.2, 1) both fade-in; }',
+      '@keyframes fade-out { to { opacity: 0; } }',
+      '@keyframes fade-in { from { opacity: 0; } }'
+    ].join('\n')
+    document.head.appendChild(style)
+  }
 
   function blockBadge() {
     var selectors = [
@@ -632,8 +691,10 @@
   }
 
   function init() {
+    injectPerformanceStyles()
     wireLinks()
     blockBadge()
+    idlePrefetchRoutes()
 
     new MutationObserver(function () {
       wireLinks()
