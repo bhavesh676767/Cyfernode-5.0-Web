@@ -197,7 +197,7 @@ function emailShell(title: string, bodyHtml: string, siteUrl: string) {
                 <tr>
                   <td align="center" style="font-size:12px;line-height:1.6;color:${LIGHT_MUTED};font-weight:500;">
                     <div style="font-weight:700;color:${INK};font-size:13px;letter-spacing:-0.01em;margin-bottom:4px;">
-                      Cyfernode 5.0 &bull; Summer Fields School, Kailash Colony
+                      Cyfernode 5.0 &bull; Summer Fields School, DLF Phase 1, Gurugram
                     </div>
                     <div>
                       Official Tech Symposium &bull; <a href="${esc(siteUrl)}" target="_blank" style="color:${ORANGE};text-decoration:none;font-weight:600;">${host}</a> &bull; <a href="${brochure}" target="_blank" style="color:${ORANGE};text-decoration:none;font-weight:600;">Event Brochure</a>
@@ -360,7 +360,7 @@ export function buildTeacherEmail(ctx: RegistrationEmailContext) {
 
   const introText = isReturning
     ? `Dear ${esc(ctx.teacher.name)},<br><br>We are pleased to confirm that the new event registration for <strong>${esc(ctx.schoolName)}</strong> has been recorded for <strong>Cyfernode 5.0</strong>. Your institutional school code remains unchanged.`
-    : `Dear ${esc(ctx.teacher.name)},<br><br>We are pleased to confirm that <strong>${esc(ctx.schoolName)}</strong> has successfully registered for <strong>Cyfernode 5.0</strong>, the annual inter-school technology symposium organized by Summer Fields School, Kailash Colony.`
+    : `Dear ${esc(ctx.teacher.name)},<br><br>We are pleased to confirm that <strong>${esc(ctx.schoolName)}</strong> has successfully registered for <strong>Cyfernode 5.0</strong>, the annual inter-school technology symposium organized by Summer Fields School, DLF Phase 1, Gurugram.`
 
   const whatsAppCards = ctx.events
     .map(renderTeacherWhatsAppCard)
@@ -434,7 +434,7 @@ export function buildTeacherEmail(ctx: RegistrationEmailContext) {
       <p style="margin:16px 0 0;font-size:14px;line-height:1.6;color:${INK};font-weight:700;">
         Warm regards,<br>
         <span style="font-size:15px;color:${ORANGE};">Organizing Committee &bull; Cyfernode 5.0</span><br>
-        <span style="font-size:12px;color:${MUTED};font-weight:500;">Tech Club, Summer Fields School, Kailash Colony</span>
+        <span style="font-size:12px;color:${MUTED};font-weight:500;">Tech Club, Summer Fields School, DLF Phase 1, Gurugram</span>
       </p>
     </div>`
 
@@ -534,7 +534,7 @@ export function buildParticipantEmail(
       <p style="margin:16px 0 0;font-size:14px;line-height:1.6;color:${INK};font-weight:700;">
         Warm regards,<br>
         <span style="font-size:15px;color:${ORANGE};">Team Cyfernode</span><br>
-        <span style="font-size:12px;color:${MUTED};font-weight:500;">Tech Club, Summer Fields School, Kailash Colony</span>
+        <span style="font-size:12px;color:${MUTED};font-weight:500;">Tech Club, Summer Fields School, DLF Phase 1, Gurugram</span>
       </p>
     </div>`
 
