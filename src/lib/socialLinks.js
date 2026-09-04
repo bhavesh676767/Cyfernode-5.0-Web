@@ -1,10 +1,10 @@
 export const SOCIAL_LINKS = {
   instagram: {
     label: 'Instagram',
-    href: 'https://instagram.com/',
+    href: 'https://www.instagram.com/cyfernauts',
   },
   discord: {
     label: 'Discord',
-    href: 'https://discord.com/',
+    href: 'https://discord.gg/bkqrUAAnvc',
   },
 }
