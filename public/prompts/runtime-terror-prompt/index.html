@@ -981,8 +981,9 @@ function showQuestion(index) {
   const fadeInNewCard = () => {
     if(cards[index]) {
       cards[index].style.display = 'block';
-      void cards[index].offsetWidth;
-      cards[index].classList.add('active');
+      requestAnimationFrame(() => {
+        cards[index].classList.add('active');
+      });
     }
   };
 

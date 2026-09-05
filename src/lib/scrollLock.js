@@ -23,6 +23,8 @@ export function lockPageScroll(lockClass) {
       bodyPaddingRight: document.body.style.paddingRight,
     }
 
+    const scrollbarWidth = supportsScrollbarGutter() ? 0 : getScrollbarWidth()
+
     if (lockClass) {
       document.documentElement.classList.add(lockClass)
     }
@@ -30,13 +32,10 @@ export function lockPageScroll(lockClass) {
     document.documentElement.style.overflow = 'hidden'
     document.body.style.overflow = 'hidden'
 
-    if (!supportsScrollbarGutter()) {
-      const scrollbarWidth = getScrollbarWidth()
-      if (scrollbarWidth > 0) {
-        const padding = `${scrollbarWidth}px`
-        document.documentElement.style.paddingRight = padding
-        document.body.style.paddingRight = padding
-      }
+    if (scrollbarWidth > 0) {
+      const padding = `${scrollbarWidth}px`
+      document.documentElement.style.paddingRight = padding
+      document.body.style.paddingRight = padding
     }
   }
 

@@ -696,9 +696,15 @@
     blockBadge()
     idlePrefetchRoutes()
 
+    var observerScheduled = false
     new MutationObserver(function () {
-      wireLinks()
-      blockBadge()
+      if (observerScheduled) return
+      observerScheduled = true
+      requestAnimationFrame(function () {
+        observerScheduled = false
+        wireLinks()
+        blockBadge()
+      })
     }).observe(document.documentElement, {
       childList: true,
       subtree: true,
