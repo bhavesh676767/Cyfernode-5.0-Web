@@ -14,7 +14,7 @@
   var PROMPTS_SELECTORS = ['.framer-le5629', '[data-framer-appear-id="le5629"]']
   var SOCIALS_SELECTORS = ['.framer-5q2vr0', '[data-framer-appear-id="5q2vr0"]']
   var TEAM_SELECTORS = ['.framer-1o95l5b', '[data-framer-appear-id="1o95l5b"]']
-  var BROCHURE_PATH = '/CyferNode_5.0_Official_Event_Brochure_2026.pdf'
+  var BROCHURE_PATH = '/Cyfernode_5.0_Event_Brochure_SFS_2026.pdf'
 
 
 

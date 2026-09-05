@@ -32,7 +32,7 @@ export type RegistrationEmailContext = {
 }
 
 export const DISCORD_INVITE_URL = 'https://discord.gg/bkqrUAAnvc'
-export const OFFICIAL_BROCHURE_FILENAME = 'CyferNode_5.0_Official_Event_Brochure_2026.pdf'
+export const OFFICIAL_BROCHURE_FILENAME = 'Cyfernode_5.0_Event_Brochure_SFS_2026.pdf'
 
 export const EVENT_WHATSAPP_LINKS: Record<string, { name: string; url: string }> = {
   'fontastic': {
