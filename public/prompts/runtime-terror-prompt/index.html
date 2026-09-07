@@ -1152,6 +1152,12 @@ function endQuiz() {
   const event = window.getCyfernodeEventByPromptSlug(slug)
 
   if (event) {
+    const PROMPT_UNLOCK_TIME = new Date('2026-09-25T00:00:00+05:30').getTime()
+    if (Date.now() < PROMPT_UNLOCK_TIME) {
+      window.location.replace('/prompts')
+      return
+    }
+
     document.title = `${event.name} Prompt - Cyfernode 5.0`
     const cat = document.getElementById('prompt-category')
     const tit = document.getElementById('prompt-title')

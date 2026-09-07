@@ -270,6 +270,12 @@ html, body {
     return
   }
 
+  const PROMPT_UNLOCK_TIME = new Date('2026-09-25T00:00:00+05:30').getTime()
+  if (Date.now() < PROMPT_UNLOCK_TIME) {
+    window.location.replace('/prompts')
+    return
+  }
+
   document.title = `${event.name} Prompt - Cyfernode 5.0`
   document.getElementById('prompt-category').textContent = event.category
   document.getElementById('prompt-title').textContent = event.name
