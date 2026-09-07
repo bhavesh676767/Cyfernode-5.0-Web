@@ -9,8 +9,13 @@
 <link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700,800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>
+if (Date.now() < new Date('2026-09-25T00:00:00+05:30').getTime()) {
+  location.replace('/prompts');
+}
+</script>
 <style>
+#prompt-panel[hidden] { display: none !important; }
 :root {
   --text: #111114;
   --muted: rgba(17, 17, 20, 0.56);

@@ -9,8 +9,13 @@
 <link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700,800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>
+if (Date.now() < new Date('2026-09-25T00:00:00+05:30').getTime()) {
+  location.replace('/prompts');
+}
+</script>
 <style>
+#prompt-panel[hidden], #landing-page[hidden] { display: none !important; }
 :root {
   --text: #111114;
   --muted: rgba(17, 17, 20, 0.56);
@@ -443,8 +448,8 @@ html, body {
 <a href="/prompts" id="exit-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
 
 <!-- Landing Page -->
-<main class="page" id="landing-page">
-  <article class="panel" id="prompt-panel">
+<main class="page" id="landing-page" hidden>
+  <article class="panel" id="prompt-panel" hidden>
     <header class="head">
       <p class="eyebrow" id="prompt-category">COMPETITIVE PROGRAMMING</p>
       <h1 class="title" id="prompt-title">Runtime Terror</h1>
@@ -1163,6 +1168,10 @@ function endQuiz() {
     const tit = document.getElementById('prompt-title')
     if (cat) cat.textContent = event.category.toUpperCase()
     if (tit) tit.textContent = event.name
+    const landing = document.getElementById('landing-page')
+    const panel = document.getElementById('prompt-panel')
+    if (landing) landing.hidden = false
+    if (panel) panel.hidden = false
   }
 })()
 </script>
