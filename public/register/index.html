@@ -2176,7 +2176,8 @@ function renderField() {
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
           return { err: `Participant ${i + 1} email is invalid.` };
         }
-        if (phone.replace(/\D/g, '').length < 8) {
+        const phoneDigits = phone.replace(/\D/g, '');
+        if (phoneDigits.length < 8 || phoneDigits.length > 11) {
           return { err: `Participant ${i + 1} phone number is invalid.` };
         }
         
