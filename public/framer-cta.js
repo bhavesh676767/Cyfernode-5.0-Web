@@ -627,7 +627,7 @@
       return
     }
 
-    var schoolLogo = event.target.closest('.framer-sfs-top-logo')
+    var schoolLogo = event.target.closest('.framer-sfs-top-logo, .framer-sfs-mobile-logo')
     if (schoolLogo) {
       event.preventDefault()
       event.stopPropagation()
@@ -744,28 +744,38 @@
       }
     })
 
-    var mobileHeaders = document.querySelectorAll('.framer-3gULP.framer-v-1efxmqq, .framer-3gULP.framer-v-7f05hk')
-    mobileHeaders.forEach(function (header) {
-      var container = header.querySelector('.framer-13dn7vz')
-      if (!container) return
-      if (container.querySelector('.framer-sfs-top-logo')) return
+    // Remove any school logo mistakenly placed inside mobile headers
+    var mobileNavLogos = document.querySelectorAll(
+      '.framer-3gULP.framer-v-1efxmqq .framer-sfs-top-logo, .framer-3gULP.framer-v-7f05hk .framer-sfs-top-logo, .framer-v-1efxmqq .framer-sfs-top-logo, .framer-v-7f05hk .framer-sfs-top-logo'
+    )
+    mobileNavLogos.forEach(function (el) {
+      el.remove()
+    })
 
-      var registerContainer = container.querySelector('.framer-1umqj66-container')
+    // On mobile / tablet, ensure the school logo is positioned just above the hero text (CYFERNODE)
+    var heroContainers = document.querySelectorAll(
+      '#introduction .framer-n6jl3j, [data-framer-name="Introduction"] [data-framer-name="Container"], .framer-zdw2x3 .framer-n6jl3j'
+    )
+    heroContainers.forEach(function (container) {
+      if (container.querySelector('.framer-sfs-mobile-logo')) return
 
-      var logoLink = document.createElement('a')
-      logoLink.className = 'framer-sfs-top-logo mobile'
-      logoLink.href = '/'
-      logoLink.setAttribute('aria-label', 'Summer Fields School')
+      var topElement = container.querySelector('.framer-su3lnf, [data-framer-name="Top"]')
+      var mobileLogo = document.createElement('a')
+      mobileLogo.className = 'framer-sfs-mobile-logo'
+      mobileLogo.href = '/'
+      mobileLogo.setAttribute('aria-label', 'Summer Fields School')
       var img = document.createElement('img')
       img.src = SCHOOL_LOGO_SRC
       img.alt = 'Summer Fields School'
       img.loading = 'eager'
-      logoLink.appendChild(img)
+      mobileLogo.appendChild(img)
 
-      if (registerContainer) {
-        container.insertBefore(logoLink, registerContainer)
+      if (topElement) {
+        container.insertBefore(mobileLogo, topElement)
+      } else if (container.firstChild) {
+        container.insertBefore(mobileLogo, container.firstChild)
       } else {
-        container.appendChild(logoLink)
+        container.appendChild(mobileLogo)
       }
     })
   }

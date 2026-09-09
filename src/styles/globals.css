@@ -142,25 +142,52 @@ a.__framer-badge {
   object-fit: contain;
 }
 
+/* Mobile Hero: Summer Fields School logo directly above CYFERNODE */
+.framer-sfs-mobile-logo {
+  display: none !important;
+}
+
+/* Responsive: On tablet and mobile (<= 1199.98px), shift out of nav to above hero text */
 @media (max-width: 1199.98px) {
   .framer-sfs-top-logo {
-    height: 26px;
-    margin: 0 8px;
+    display: none !important;
   }
-  .framer-sfs-top-logo img {
-    height: 26px;
-    max-width: 220px;
+
+  .framer-sfs-mobile-logo {
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    margin: 0 0 10px 0;
+    text-decoration: none;
+    z-index: 3;
+    flex: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .framer-sfs-mobile-logo:hover {
+    opacity: 0.8;
+  }
+
+  .framer-sfs-mobile-logo img {
+    display: block;
+    height: 24px;
+    width: auto;
+    max-height: 100%;
+    max-width: 240px;
+    object-fit: contain;
   }
 }
 
 @media (max-width: 809.98px) {
-  .framer-sfs-top-logo {
-    height: 22px;
-    margin: 0;
+  .framer-sfs-mobile-logo {
+    margin: 0 0 8px 0;
+    padding-left: 1px;
   }
-  .framer-sfs-top-logo img {
+
+  .framer-sfs-mobile-logo img {
     height: 22px;
-    max-width: 180px;
+    max-width: 220px;
   }
 }
 
