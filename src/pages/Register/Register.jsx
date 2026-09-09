@@ -24,6 +24,14 @@ export function Register() {
         <div className={styles.topline}>
           <span>[08]</span>
           <span>// REGISTER</span>
+          <a
+            href="/Cyfernode5.0_Event_Brochure_SFS_2026.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.brochureLink}
+          >
+            📄 Brochure ↗
+          </a>
         </div>
 
         <header className={styles.hero}>
