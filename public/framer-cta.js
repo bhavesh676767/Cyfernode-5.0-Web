@@ -549,6 +549,10 @@
         link.setAttribute('href', '/#socials')
       })
     })
+
+    document.querySelectorAll('a[href*="instagram.com" i], a[href*="Instagram.com"]').forEach(function (link) {
+      link.setAttribute('href', 'https://www.instagram.com/cyfernode5.0/')
+    })
   }
 
   function wireInviteLinks() {
@@ -623,6 +627,14 @@
       return
     }
 
+    var schoolLogo = event.target.closest('.framer-sfs-top-logo')
+    if (schoolLogo) {
+      event.preventDefault()
+      event.stopPropagation()
+      navigateToHome()
+      return
+    }
+
     if (registerTrigger(event.target)) {
       event.preventDefault()
       event.stopPropagation()
@@ -690,10 +702,79 @@
     })
   }
 
+  var SCHOOL_LOGO_SRC = 'https://framerusercontent.com/images/xjDxMWEiZB9bsPheXoyR4jMPRyE.png'
+
+  function ensureSchoolLogoTop() {
+    var bottomLogos = document.querySelectorAll(
+      '.framer-10daebw [data-framer-name="Group 24"], .framer-10daebw .framer-152jo0i, .framer-10daebw img[src*="xjDxMWEiZB9bsPheXoyR4jMPRyE"]'
+    )
+    bottomLogos.forEach(function (el) {
+      el.style.setProperty('display', 'none', 'important')
+      var parent = el.closest('.ssr-variant')
+      if (parent && parent.parentElement && parent.parentElement.classList.contains('framer-10daebw')) {
+        parent.style.setProperty('display', 'none', 'important')
+      }
+    })
+
+    var desktopHeaders = document.querySelectorAll('.framer-3gULP:not(.framer-v-1efxmqq):not(.framer-v-7f05hk)')
+    desktopHeaders.forEach(function (header) {
+      var container = header.querySelector('.framer-13dn7vz')
+      if (!container) return
+      if (container.querySelector('.framer-sfs-top-logo')) return
+
+      var navContainer = container.querySelector('.framer-um16ls-container')
+      var registerContainer = container.querySelector('.framer-1umqj66-container')
+
+      var logoLink = document.createElement('a')
+      logoLink.className = 'framer-sfs-top-logo'
+      logoLink.href = '/'
+      logoLink.setAttribute('aria-label', 'Summer Fields School')
+      var img = document.createElement('img')
+      img.src = SCHOOL_LOGO_SRC
+      img.alt = 'Summer Fields School'
+      img.loading = 'eager'
+      logoLink.appendChild(img)
+
+      if (registerContainer) {
+        container.insertBefore(logoLink, registerContainer)
+      } else if (navContainer && navContainer.nextSibling) {
+        container.insertBefore(logoLink, navContainer.nextSibling)
+      } else {
+        container.appendChild(logoLink)
+      }
+    })
+
+    var mobileHeaders = document.querySelectorAll('.framer-3gULP.framer-v-1efxmqq, .framer-3gULP.framer-v-7f05hk')
+    mobileHeaders.forEach(function (header) {
+      var container = header.querySelector('.framer-13dn7vz')
+      if (!container) return
+      if (container.querySelector('.framer-sfs-top-logo')) return
+
+      var registerContainer = container.querySelector('.framer-1umqj66-container')
+
+      var logoLink = document.createElement('a')
+      logoLink.className = 'framer-sfs-top-logo mobile'
+      logoLink.href = '/'
+      logoLink.setAttribute('aria-label', 'Summer Fields School')
+      var img = document.createElement('img')
+      img.src = SCHOOL_LOGO_SRC
+      img.alt = 'Summer Fields School'
+      img.loading = 'eager'
+      logoLink.appendChild(img)
+
+      if (registerContainer) {
+        container.insertBefore(logoLink, registerContainer)
+      } else {
+        container.appendChild(logoLink)
+      }
+    })
+  }
+
   function init() {
     injectPerformanceStyles()
     wireLinks()
     blockBadge()
+    ensureSchoolLogoTop()
     idlePrefetchRoutes()
 
     var observerScheduled = false
@@ -704,6 +785,7 @@
         observerScheduled = false
         wireLinks()
         blockBadge()
+        ensureSchoolLogoTop()
       })
     }).observe(document.documentElement, {
       childList: true,

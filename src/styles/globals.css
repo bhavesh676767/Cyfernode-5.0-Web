@@ -106,3 +106,61 @@ a.__framer-badge {
   height: 0 !important;
   overflow: hidden !important;
 }
+
+/* Hide Summer Fields School logo from bottom Brands section */
+.framer-10daebw .framer-152jo0i,
+.framer-10daebw [data-framer-name="Group 24"],
+.framer-10daebw img[src*="xjDxMWEiZB9bsPheXoyR4jMPRyE"] {
+  display: none !important;
+}
+
+/* Summer Fields School logo in top navbar */
+.framer-sfs-top-logo {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  max-height: 34px;
+  margin: 0 16px;
+  text-decoration: none;
+  z-index: 2;
+  flex: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.framer-sfs-top-logo:hover {
+  opacity: 0.8;
+  transform: scale(1.02);
+}
+
+.framer-sfs-top-logo img {
+  display: block;
+  height: 32px;
+  width: auto;
+  max-height: 100%;
+  max-width: 300px;
+  object-fit: contain;
+}
+
+@media (max-width: 1199.98px) {
+  .framer-sfs-top-logo {
+    height: 26px;
+    margin: 0 8px;
+  }
+  .framer-sfs-top-logo img {
+    height: 26px;
+    max-width: 220px;
+  }
+}
+
+@media (max-width: 809.98px) {
+  .framer-sfs-top-logo {
+    height: 22px;
+    margin: 0;
+  }
+  .framer-sfs-top-logo img {
+    height: 22px;
+    max-width: 180px;
+  }
+}
+
