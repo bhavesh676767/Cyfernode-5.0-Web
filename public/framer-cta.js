@@ -631,7 +631,7 @@
     if (schoolLogo) {
       event.preventDefault()
       event.stopPropagation()
-      navigateToHome()
+      window.open('https://sfsdlf.com/', '_blank', 'noopener,noreferrer')
       return
     }
 
@@ -727,7 +727,9 @@
 
       var logoLink = document.createElement('a')
       logoLink.className = 'framer-sfs-top-logo'
-      logoLink.href = '/'
+      logoLink.href = 'https://sfsdlf.com/'
+      logoLink.target = '_blank'
+      logoLink.rel = 'noopener noreferrer'
       logoLink.setAttribute('aria-label', 'Summer Fields School')
       var img = document.createElement('img')
       img.src = SCHOOL_LOGO_SRC
@@ -762,7 +764,9 @@
       var topElement = container.querySelector('.framer-su3lnf, [data-framer-name="Top"]')
       var mobileLogo = document.createElement('a')
       mobileLogo.className = 'framer-sfs-mobile-logo'
-      mobileLogo.href = '/'
+      mobileLogo.href = 'https://sfsdlf.com/'
+      mobileLogo.target = '_blank'
+      mobileLogo.rel = 'noopener noreferrer'
       mobileLogo.setAttribute('aria-label', 'Summer Fields School')
       var img = document.createElement('img')
       img.src = SCHOOL_LOGO_SRC
