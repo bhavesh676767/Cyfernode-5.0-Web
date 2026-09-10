@@ -716,70 +716,50 @@
       }
     })
 
-    var desktopHeaders = document.querySelectorAll('.framer-3gULP:not(.framer-v-1efxmqq):not(.framer-v-7f05hk)')
-    desktopHeaders.forEach(function (header) {
-      var container = header.querySelector('.framer-13dn7vz')
-      if (!container) return
-      if (container.querySelector('.framer-sfs-top-logo')) return
-
-      var navContainer = container.querySelector('.framer-um16ls-container')
-      var registerContainer = container.querySelector('.framer-1umqj66-container')
-
-      var logoLink = document.createElement('a')
-      logoLink.className = 'framer-sfs-top-logo'
-      logoLink.href = 'https://sfsdlf.com/'
-      logoLink.target = '_blank'
-      logoLink.rel = 'noopener noreferrer'
-      logoLink.setAttribute('aria-label', 'Summer Fields School')
-      var img = document.createElement('img')
-      img.src = SCHOOL_LOGO_SRC
-      img.alt = 'Summer Fields School'
-      img.loading = 'eager'
-      logoLink.appendChild(img)
-
-      if (registerContainer) {
-        container.insertBefore(logoLink, registerContainer)
-      } else if (navContainer && navContainer.nextSibling) {
-        container.insertBefore(logoLink, navContainer.nextSibling)
-      } else {
-        container.appendChild(logoLink)
-      }
-    })
-
-    // Remove any school logo mistakenly placed inside mobile headers
-    var mobileNavLogos = document.querySelectorAll(
-      '.framer-3gULP.framer-v-1efxmqq .framer-sfs-top-logo, .framer-3gULP.framer-v-7f05hk .framer-sfs-top-logo, .framer-v-1efxmqq .framer-sfs-top-logo, .framer-v-7f05hk .framer-sfs-top-logo'
-    )
-    mobileNavLogos.forEach(function (el) {
+    // Remove any school logo from ALL headers / navbars (desktop and mobile)
+    document.querySelectorAll('.framer-sfs-top-logo').forEach(function (el) {
       el.remove()
     })
 
-    // On mobile / tablet, ensure the school logo is positioned just above the hero text (CYFERNODE)
+    // Check if we are on the home page
+    var rawPath = window.location.pathname || '/'
+    var path = rawPath.replace(/\/index\.html$/, '') || '/'
+    var isHomePage = path === '/'
+
+    if (!isHomePage) {
+      // Ensure no other page has the summer fields logo in hero section
+      document.querySelectorAll('.framer-sfs-mobile-logo, .framer-sfs-hero-logo').forEach(function (el) {
+        el.remove()
+      })
+      return
+    }
+
+    // On the home page hero section, place the school logo directly above the CYFERNODE hero heading
     var heroContainers = document.querySelectorAll(
       '#introduction .framer-n6jl3j, [data-framer-name="Introduction"] [data-framer-name="Container"], .framer-zdw2x3 .framer-n6jl3j'
     )
     heroContainers.forEach(function (container) {
-      if (container.querySelector('.framer-sfs-mobile-logo')) return
+      if (container.querySelector('.framer-sfs-mobile-logo, .framer-sfs-hero-logo')) return
 
       var topElement = container.querySelector('.framer-su3lnf, [data-framer-name="Top"]')
-      var mobileLogo = document.createElement('a')
-      mobileLogo.className = 'framer-sfs-mobile-logo'
-      mobileLogo.href = 'https://sfsdlf.com/'
-      mobileLogo.target = '_blank'
-      mobileLogo.rel = 'noopener noreferrer'
-      mobileLogo.setAttribute('aria-label', 'Summer Fields School')
+      var heroLogo = document.createElement('a')
+      heroLogo.className = 'framer-sfs-hero-logo framer-sfs-mobile-logo'
+      heroLogo.href = 'https://sfsdlf.com/'
+      heroLogo.target = '_blank'
+      heroLogo.rel = 'noopener noreferrer'
+      heroLogo.setAttribute('aria-label', 'Summer Fields School')
       var img = document.createElement('img')
       img.src = SCHOOL_LOGO_SRC
       img.alt = 'Summer Fields School'
       img.loading = 'eager'
-      mobileLogo.appendChild(img)
+      heroLogo.appendChild(img)
 
       if (topElement) {
-        container.insertBefore(mobileLogo, topElement)
+        container.insertBefore(heroLogo, topElement)
       } else if (container.firstChild) {
-        container.insertBefore(mobileLogo, container.firstChild)
+        container.insertBefore(heroLogo, container.firstChild)
       } else {
-        container.appendChild(mobileLogo)
+        container.appendChild(heroLogo)
       }
     })
   }

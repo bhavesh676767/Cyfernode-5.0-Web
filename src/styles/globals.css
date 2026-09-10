@@ -114,74 +114,48 @@ a.__framer-badge {
   display: none !important;
 }
 
-/* Summer Fields School logo in top navbar */
+/* Remove Summer Fields School logo from navbar completely */
 .framer-sfs-top-logo {
+  display: none !important;
+}
+
+/* Summer Fields School logo in hero section directly above CYFERNODE (home page only) */
+#main #introduction .framer-sfs-mobile-logo,
+.framer-sfs-mobile-logo {
   display: flex !important;
   align-items: center;
-  justify-content: center;
-  height: 32px;
-  max-height: 34px;
-  margin: 0 16px;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 0 0 16px 0;
   text-decoration: none;
-  z-index: 2;
+  z-index: 3;
   flex: none;
   transition: opacity 0.2s ease;
 }
 
-.framer-sfs-top-logo:hover {
+.framer-sfs-mobile-logo:hover {
   opacity: 0.8;
-  transform: none !important;
 }
 
-.framer-sfs-top-logo img {
+.framer-sfs-mobile-logo img {
   display: block;
   height: 32px;
   width: auto;
   max-height: 100%;
-  max-width: 300px;
+  max-width: 320px;
   object-fit: contain;
 }
 
-/* Mobile Hero: Summer Fields School logo directly above CYFERNODE */
-.framer-sfs-mobile-logo {
-  display: none !important;
-}
-
-/* Responsive: On tablet and mobile (<= 1199.98px), shift out of nav to above hero text */
 @media (max-width: 1199.98px) {
-  .framer-sfs-top-logo {
-    display: none !important;
-  }
-
-  .framer-sfs-mobile-logo {
-    display: flex !important;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    margin: 0 0 10px 0;
-    text-decoration: none;
-    z-index: 3;
-    flex: none;
-    transition: opacity 0.2s ease;
-  }
-
-  .framer-sfs-mobile-logo:hover {
-    opacity: 0.8;
-  }
-
   .framer-sfs-mobile-logo img {
-    display: block;
-    height: 24px;
-    width: auto;
-    max-height: 100%;
-    max-width: 240px;
-    object-fit: contain;
+    height: 26px;
+    max-width: 260px;
   }
 }
 
 @media (max-width: 809.98px) {
   .framer-sfs-mobile-logo {
-    margin: 0 0 8px 0;
+    margin: 0 0 10px 0;
     padding-left: 1px;
   }
 
