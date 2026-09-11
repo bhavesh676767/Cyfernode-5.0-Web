@@ -2694,13 +2694,21 @@ function duplicateKeysForRows(rows) {
   return new Set([...counts.entries()].filter(([, n]) => n > 1).map(([k]) => k));
 }
 
+function normalizePersonName(name) {
+  return String(name || '').trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
 function normalizeParticipantKey(p) {
+  // Identify unique individuals primarily by their name (+ school if available).
+  // Students from the same school often share the teacher's email or phone number in registrations,
+  // so identifying by email/phone alone causes all students sharing that email to falsely merge into one!
+  const name = normalizePersonName(p.name);
+  if (name) return `name:${name}`;
   const email = (p.email || '').trim().toLowerCase();
   if (email && email.includes('@')) return `email:${email}`;
   const phoneDigits = (p.phone || '').replace(/\D/g, '');
   if (phoneDigits.length >= 8) return `phone:${phoneDigits.slice(-10)}`;
-  const name = (p.name || '').trim().toLowerCase().replace(/\s+/g, ' ');
-  return name ? `name:${name}` : '';
+  return '';
 }
 
 function findRepeatingParticipantsBySchool(rows) {
@@ -2717,20 +2725,20 @@ function findRepeatingParticipantsBySchool(rows) {
     const pAppearances = new Map();
     events.forEach(ev => {
       (ev.participants || []).forEach(p => {
-        const pKey = normalizeParticipantKey(p);
-        if (!pKey) return;
-        if (!pAppearances.has(pKey)) {
-          pAppearances.set(pKey, { name: p.name || 'Student', events: new Set() });
+        const normName = normalizePersonName(p.name);
+        if (!normName) return;
+        if (!pAppearances.has(normName)) {
+          pAppearances.set(normName, { displayName: p.name.trim(), events: new Set() });
         }
-        pAppearances.get(pKey).events.add(ev.event_name || ev.event_id);
+        pAppearances.get(normName).events.add(ev.event_name || ev.event_id);
       });
     });
 
     const repeating = [];
     let totalRepeatSlots = 0;
-    pAppearances.forEach(({ name, events }) => {
+    pAppearances.forEach(({ displayName, events }, normName) => {
       if (events.size > 1) {
-        repeating.push({ name, events: [...events] });
+        repeating.push({ normName, name: displayName, events: [...events] });
         totalRepeatSlots += (events.size - 1);
       }
     });
@@ -2740,8 +2748,8 @@ function findRepeatingParticipantsBySchool(rows) {
     events.forEach(ev => {
       (ev.participants || []).forEach(p => {
         totalPCount += 1;
-        const pKey = normalizeParticipantKey(p);
-        if (pKey) allPKeys.add(pKey);
+        const normName = normalizePersonName(p.name);
+        if (normName) allPKeys.add(normName);
       });
     });
 
@@ -4005,9 +4013,10 @@ function renderExplorerTable(rows) {
       const isSchoolRepeating = repInfo && repInfo.repeatingCount > 0;
       
       const repeatingNamesInRow = isSchoolRepeating
-        ? item.participantNames.filter(name =>
-            repInfo.repeating.some(r => r.name.toLowerCase() === name.toLowerCase())
-          )
+        ? item.participantNames.filter(name => {
+            const n = normalizePersonName(name);
+            return repInfo.repeating.some(r => r.normName === n || normalizePersonName(r.name) === n);
+          })
         : [];
 
       return `<tr>${cols.map(c => {
