@@ -2600,9 +2600,9 @@ function showParticipantDupModal(result) {
   const actions = document.getElementById('dup-actions');
 
   badge.className = 'dup-badge block';
-  badge.textContent = 'Participant already registered';
-  title.textContent = 'This student is already in another event';
-  text.textContent = result.error || 'Each participant can only register for one event. We match by full name, school, and class.';
+  badge.textContent = 'Participant event limit reached';
+  title.textContent = 'Participant event limit reached';
+  text.textContent = result.error || 'Each participant can take part in a maximum of 2 events: 1 online event and 1 offline event.';
 
   const conflicts = result.conflicts || [];
   body.innerHTML = conflicts.slice(0, 4).map((c) => `
@@ -2610,8 +2610,7 @@ function showParticipantDupModal(result) {
       <div class="dup-conflict-name">${escHtml(c.participantName)}</div>
       <div class="dup-conflict-meta">
         ${escHtml(c.grade)} · ${escHtml(c.schoolName)}<br>
-        Already in <strong>${escHtml(c.existingEventName)}</strong>
-        ${c.newEventName && c.newEventName !== c.existingEventName ? ` · cannot also join <strong>${escHtml(c.newEventName)}</strong>` : ''}
+        ${c.reason ? escHtml(c.reason) : `Already in <strong>${escHtml(c.existingEventName)}</strong>${c.newEventName && c.newEventName !== c.existingEventName ? ` · cannot also join <strong>${escHtml(c.newEventName)}</strong>` : ''}`}
       </div>
     </div>
   `).join('');
