@@ -1711,6 +1711,27 @@ body:not(.view-team) .insights.show { display: flex; }
   border-radius: 999px;
   margin-left: 6px;
 }
+.repeat-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #c2410c;
+  background: #fff7ed;
+  border: 1px solid rgba(234, 88, 12, 0.25);
+  padding: 3px 8px;
+  border-radius: 999px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+.repeat-names {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted-strong);
+  margin-top: 4px;
+}
 .last-sync {
   font-size: 11px;
   font-weight: 500;
@@ -2671,6 +2692,69 @@ function duplicateKeysForRows(rows) {
     counts.set(key, (counts.get(key) || 0) + 1);
   });
   return new Set([...counts.entries()].filter(([, n]) => n > 1).map(([k]) => k));
+}
+
+function normalizeParticipantKey(p) {
+  const email = (p.email || '').trim().toLowerCase();
+  if (email && email.includes('@')) return `email:${email}`;
+  const phoneDigits = (p.phone || '').replace(/\D/g, '');
+  if (phoneDigits.length >= 8) return `phone:${phoneDigits.slice(-10)}`;
+  const name = (p.name || '').trim().toLowerCase().replace(/\s+/g, ' ');
+  return name ? `name:${name}` : '';
+}
+
+function findRepeatingParticipantsBySchool(rows) {
+  const schoolMap = new Map();
+  rows.forEach(({ ev }) => {
+    const sKey = (ev.school_code || ev.school_name || '').trim().toLowerCase();
+    if (!sKey) return;
+    if (!schoolMap.has(sKey)) schoolMap.set(sKey, []);
+    schoolMap.get(sKey).push(ev);
+  });
+
+  const schoolRepeats = new Map();
+  schoolMap.forEach((events, sKey) => {
+    const pAppearances = new Map();
+    events.forEach(ev => {
+      (ev.participants || []).forEach(p => {
+        const pKey = normalizeParticipantKey(p);
+        if (!pKey) return;
+        if (!pAppearances.has(pKey)) {
+          pAppearances.set(pKey, { name: p.name || 'Student', events: new Set() });
+        }
+        pAppearances.get(pKey).events.add(ev.event_name || ev.event_id);
+      });
+    });
+
+    const repeating = [];
+    let totalRepeatSlots = 0;
+    pAppearances.forEach(({ name, events }) => {
+      if (events.size > 1) {
+        repeating.push({ name, events: [...events] });
+        totalRepeatSlots += (events.size - 1);
+      }
+    });
+
+    const allPKeys = new Set();
+    let totalPCount = 0;
+    events.forEach(ev => {
+      (ev.participants || []).forEach(p => {
+        totalPCount += 1;
+        const pKey = normalizeParticipantKey(p);
+        if (pKey) allPKeys.add(pKey);
+      });
+    });
+
+    schoolRepeats.set(sKey, {
+      repeating,
+      uniqueCount: allPKeys.size,
+      totalCount: totalPCount,
+      repeatingCount: repeating.length,
+      repeatSlots: totalRepeatSlots,
+    });
+  });
+
+  return schoolRepeats;
 }
 
 function rowDupKey(row) {
@@ -3882,6 +3966,7 @@ function renderExplorerTable(rows) {
   }
 
   if (coreViewMode === 'summary') {
+    const schoolRepeats = findRepeatingParticipantsBySchool(rows);
     const map = new Map();
     rows.forEach(({ ev }) => {
       const key = `${ev.event_id}::${ev.school_code || ev.school_name}`;
@@ -3889,18 +3974,63 @@ function renderExplorerTable(rows) {
         event: ev.event_name,
         schoolCode: ev.school_code || '-',
         schoolName: ev.school_name,
+        schoolKey: (ev.school_code || ev.school_name || '').trim().toLowerCase(),
         participants: 0,
+        participantNames: [],
       };
-      cur.participants += (ev.participants || []).length;
+      const parts = ev.participants || [];
+      cur.participants += parts.length;
+      cur.participantNames.push(...parts.map(p => p.name).filter(Boolean));
       map.set(key, cur);
     });
     const items = [...map.values()].sort((a, b) => a.event.localeCompare(b.event) || a.schoolName.localeCompare(b.schoolName));
-    document.getElementById('stat-showing').textContent = String(items.reduce((n, i) => n + i.participants, 0));
-    body.innerHTML = items.map(item => `<tr>${cols.map(c => {
-      if (c === 'schoolCode') return `<td class="code">${esc(item.schoolCode)}</td>`;
-      if (c === 'participants') return `<td class="num">${esc(item.participants)}</td>`;
-      return `<td>${esc(item[c])}</td>`;
-    }).join('')}</tr>`).join('');
+    const totalSlots = items.reduce((n, i) => n + i.participants, 0);
+
+    const allUniqueStudentKeys = new Set();
+    rows.forEach(({ ev }) => {
+      (ev.participants || []).forEach(p => {
+        const k = normalizeParticipantKey(p);
+        if (k) allUniqueStudentKeys.add(k);
+      });
+    });
+    const uniqueCount = allUniqueStudentKeys.size;
+    const repeatedCount = totalSlots - uniqueCount;
+
+    document.getElementById('stat-showing').textContent = repeatedCount > 0
+      ? `${totalSlots} (${uniqueCount} unique, ${repeatedCount} duplicate slots)`
+      : String(totalSlots);
+
+    body.innerHTML = items.map(item => {
+      const repInfo = schoolRepeats.get(item.schoolKey);
+      const isSchoolRepeating = repInfo && repInfo.repeatingCount > 0;
+      
+      const repeatingNamesInRow = isSchoolRepeating
+        ? item.participantNames.filter(name =>
+            repInfo.repeating.some(r => r.name.toLowerCase() === name.toLowerCase())
+          )
+        : [];
+
+      return `<tr>${cols.map(c => {
+        if (c === 'schoolCode') return `<td class="code">${esc(item.schoolCode)}</td>`;
+        if (c === 'schoolName') {
+          let badge = '';
+          if (isSchoolRepeating && repeatingNamesInRow.length > 0) {
+            const uniqueRowNames = [...new Set(repeatingNamesInRow)];
+            badge = ` <span class="repeat-badge" title="Participating in multiple events: ${esc(uniqueRowNames.join(', '))}">${uniqueRowNames.length} in multiple events</span>`;
+          }
+          return `<td>${esc(item.schoolName)}${badge}</td>`;
+        }
+        if (c === 'participants') {
+          let extra = '';
+          if (repeatingNamesInRow.length > 0) {
+            const uniqueRowNames = [...new Set(repeatingNamesInRow)];
+            extra = `<div class="repeat-names">⚠ In other events: <strong>${esc(uniqueRowNames.join(', '))}</strong></div>`;
+          }
+          return `<td class="num">${esc(item.participants)}${extra}</td>`;
+        }
+        return `<td>${esc(item[c])}</td>`;
+      }).join('')}</tr>`;
+    }).join('');
     return;
   }
 
@@ -3974,10 +4104,20 @@ function updateCoreStats(rows) {
   }
 
   if (coreViewMode === 'summary') {
-    document.getElementById('stat-lbl-total').textContent = 'Participants';
-    document.getElementById('stat-lbl-secondary').textContent = 'Schools';
-    document.getElementById('stat-total').textContent = String(participants);
-    document.getElementById('stat-events').textContent = String(schools);
+    const allUniqueStudentKeys = new Set();
+    rows.forEach(({ ev }) => {
+      (ev.participants || []).forEach(p => {
+        const k = normalizeParticipantKey(p);
+        if (k) allUniqueStudentKeys.add(k);
+      });
+    });
+    const uniqueCount = allUniqueStudentKeys.size;
+    const repeatedCount = participants - uniqueCount;
+
+    document.getElementById('stat-lbl-total').textContent = repeatedCount > 0 ? 'Unique Students' : 'Participants';
+    document.getElementById('stat-lbl-secondary').textContent = repeatedCount > 0 ? 'Total Event Slots' : 'Schools';
+    document.getElementById('stat-total').textContent = repeatedCount > 0 ? String(uniqueCount) : String(participants);
+    document.getElementById('stat-events').textContent = repeatedCount > 0 ? `${participants} (${repeatedCount} repeats)` : String(schools);
     return;
   }
 
