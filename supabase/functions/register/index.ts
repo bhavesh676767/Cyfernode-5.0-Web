@@ -333,22 +333,7 @@ async function analyzeDuplicates(
       seenEventIds.add(e.eventId)
     }
 
-    const onlineEntries = entries.filter((e) => e.eventMode === 'online')
     const offlineEntries = entries.filter((e) => e.eventMode === 'offline')
-
-    if (onlineEntries.length > 1) {
-      participantConflicts.push({
-        participantName: entries[0].name,
-        grade: entries[0].grade,
-        schoolName: entries[0].schoolName,
-        existingEventId: onlineEntries[0].eventId,
-        existingEventName: onlineEntries[0].eventName,
-        newEventId: onlineEntries[1].eventId,
-        newEventName: onlineEntries[1].eventName,
-        source: 'submission',
-        reason: `Entered in multiple online events (${onlineEntries.map((e) => e.eventName).join(', ')}). Maximum 1 online event allowed.`,
-      })
-    }
 
     if (offlineEntries.length > 1) {
       participantConflicts.push({
@@ -364,19 +349,6 @@ async function analyzeDuplicates(
       })
     }
 
-    if (entries.length > 2 && onlineEntries.length <= 1 && offlineEntries.length <= 1) {
-      participantConflicts.push({
-        participantName: entries[0].name,
-        grade: entries[0].grade,
-        schoolName: entries[0].schoolName,
-        existingEventId: entries[0].eventId,
-        existingEventName: entries[0].eventName,
-        newEventId: entries[2].eventId,
-        newEventName: entries[2].eventName,
-        source: 'submission',
-        reason: `Entered in ${entries.length} events. Maximum 2 events (1 online and 1 offline) allowed.`,
-      })
-    }
   }
 
   // Fetch existing registrations to check against database
@@ -439,43 +411,25 @@ async function analyzeDuplicates(
         }
       }
 
-      // Check if already registered for an event with the same mode (online vs offline)
-      const sameModeEvent = dbList.find((db) => db.eventId !== sub.eventId && db.eventMode === sub.eventMode)
-      if (sameModeEvent) {
-        const dedupeKey = `${key}|${sameModeEvent.eventId}|${sub.eventId}`
+      // Online events may be entered freely; retain the one-offline-event rule.
+      const existingOfflineEvent = sub.eventMode === 'offline'
+        ? dbList.find((db) => db.eventId !== sub.eventId && db.eventMode === 'offline')
+        : undefined
+      if (existingOfflineEvent) {
+        const dedupeKey = `${key}|${existingOfflineEvent.eventId}|${sub.eventId}`
         if (!conflictKeys.has(dedupeKey)) {
           conflictKeys.add(dedupeKey)
           participantConflicts.push({
             participantName: sub.name,
             grade: sub.grade,
             schoolName: sub.schoolName,
-            existingEventId: sameModeEvent.eventId,
-            existingEventName: sameModeEvent.eventName,
-            existingSchoolCode: sameModeEvent.schoolCode,
+            existingEventId: existingOfflineEvent.eventId,
+            existingEventName: existingOfflineEvent.eventName,
+            existingSchoolCode: existingOfflineEvent.schoolCode,
             newEventId: sub.eventId,
             newEventName: sub.eventName,
             source: 'database',
-            reason: `Already registered for ${sameModeEvent.eventMode} event ${sameModeEvent.eventName} and cannot also join ${sub.eventMode} event ${sub.eventName}. Maximum 1 online and 1 offline event allowed.`,
-          })
-        }
-      }
-
-      // Check if student already reached 2 events in database
-      if (dbList.length >= 2) {
-        const dedupeKey = `${key}|max_reached|${sub.eventId}`
-        if (!conflictKeys.has(dedupeKey)) {
-          conflictKeys.add(dedupeKey)
-          participantConflicts.push({
-            participantName: sub.name,
-            grade: sub.grade,
-            schoolName: sub.schoolName,
-            existingEventId: dbList[0].eventId,
-            existingEventName: dbList[0].eventName,
-            existingSchoolCode: dbList[0].schoolCode,
-            newEventId: sub.eventId,
-            newEventName: sub.eventName,
-            source: 'database',
-            reason: `Already registered for maximum 2 events (${dbList.map((e) => e.eventName).join(', ')}). Maximum 1 online and 1 offline event allowed.`,
+            reason: `Already registered for offline event ${existingOfflineEvent.eventName} and cannot also join offline event ${sub.eventName}. Maximum 1 offline event allowed.`,
           })
         }
       }
@@ -554,10 +508,10 @@ function participantConflictMessage(conflicts: ParticipantConflict[]) {
     return `${first.participantName} (${first.grade}, ${first.schoolName})${code}: ${first.reason}${extra}`
   }
   if (first.source === 'submission') {
-    return `${first.participantName} (${first.grade}, ${first.schoolName}) cannot register for both ${first.existingEventName} and ${first.newEventName}. Each participant may only enter 1 online and 1 offline event.${extra}`
+    return `${first.participantName} (${first.grade}, ${first.schoolName}) cannot register for both ${first.existingEventName} and ${first.newEventName}.${extra}`
   }
   const code = first.existingSchoolCode ? ` (${first.existingSchoolCode})` : ''
-  return `${first.participantName} (${first.grade}, ${first.schoolName}) is already registered for ${first.existingEventName}${code}. Each participant may only enter 1 online and 1 offline event.${extra}`
+  return `${first.participantName} (${first.grade}, ${first.schoolName}) is already registered for ${first.existingEventName}${code}.${extra}`
 }
 
 function formatSchoolCode(num: number) {

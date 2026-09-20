@@ -2600,9 +2600,9 @@ function showParticipantDupModal(result) {
   const actions = document.getElementById('dup-actions');
 
   badge.className = 'dup-badge block';
-  badge.textContent = 'Participant event limit reached';
-  title.textContent = 'Participant event limit reached';
-  text.textContent = result.error || 'Each participant can take part in a maximum of 2 events: 1 online event and 1 offline event.';
+  badge.textContent = 'Registration conflict';
+  title.textContent = 'Registration conflict';
+  text.textContent = result.error || 'This participant is already registered for this event.';
 
   const conflicts = result.conflicts || [];
   body.innerHTML = conflicts.slice(0, 4).map((c) => `
