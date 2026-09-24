@@ -96,11 +96,29 @@ html {
 
 /* Countdown Timer */
 .countdown-section {
+  max-height: 180px;
   margin-bottom: 32px;
   text-align: center;
   padding: 18px 20px;
   background: #fafafa;
   border: 1px solid rgba(17, 17, 20, 0.08);
+  box-sizing: border-box;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              padding 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              margin-bottom 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.countdown-section.is-fading-out {
+  opacity: 0;
+  max-height: 0 !important;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-color: transparent;
+  pointer-events: none;
 }
 
 .countdown-label {
@@ -150,14 +168,7 @@ html {
   margin-bottom: 14px;
 }
 
-.unlocked-badge {
-  display: none;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #0a7a0a;
-}
+
 
 /* File List */
 .file-list {
@@ -195,9 +206,8 @@ html {
 }
 
 .file-link.disabled {
-  opacity: 0.35;
+  opacity: 0.42;
   cursor: not-allowed;
-  pointer-events: none;
   user-select: none;
 }
 
@@ -228,6 +238,28 @@ html {
   margin-left: auto;
   font-size: 12px;
   color: var(--muted);
+}
+
+.event-timer-tag {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+  background: rgba(17, 17, 20, 0.05);
+  border: 1px solid rgba(17, 17, 20, 0.08);
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.event-timer-tag i {
+  font-size: 9px;
+  color: var(--orange);
 }
 
 @media (max-width: 768px) {
@@ -276,9 +308,6 @@ html {
           <span class="timer-unit-label">Secs</span>
         </div>
       </div>
-      <div class="unlocked-badge" id="unlocked-badge">
-        <i class="fa-solid fa-lock-open" style="margin-right: 6px;"></i> Prompts are now accessible
-      </div>
     </div>
 
     <ul class="file-list" id="file-list"></ul>
@@ -299,7 +328,7 @@ function promptHref(event) {
 }
 
 // 25th September 2026 - 00:00 AM IST
-const PROMPT_UNLOCK_TIME = new Date('2026-09-25T00:00:00+05:30').getTime();
+const DEFAULT_PROMPT_UNLOCK_TIME = new Date('2026-09-25T00:00:00+05:30').getTime();
 
 const timerDays = document.getElementById('timer-days');
 const timerHours = document.getElementById('timer-hours');
@@ -307,49 +336,124 @@ const timerMins = document.getElementById('timer-mins');
 const timerSecs = document.getElementById('timer-secs');
 const timerGrid = document.getElementById('timer-grid');
 const countdownLabel = document.getElementById('countdown-label');
-const unlockedBadge = document.getElementById('unlocked-badge');
+const countdownSection = document.getElementById('countdown-section');
 
-function renderFileList(isLocked) {
-  document.getElementById('file-list').innerHTML = window.CYFERNODE_EVENTS.map((event) => `
-    <li>
-      <a class="file-link ${isLocked ? 'disabled' : ''}" href="${isLocked ? 'javascript:void(0)' : promptHref(event)}" title="${isLocked ? 'Locked until 25 Sep 2026, 00:00 AM' : event.category}">
-        ${FILE_ICON}
-        <span>${event.name}</span>
-        ${isLocked ? '<i class="fa-solid fa-lock lock-icon-tag"></i>' : ''}
-      </a>
-    </li>
-  `).join('');
+function getEventUnlockTime(event) {
+  if (event.unlockTime) {
+    return new Date(event.unlockTime).getTime();
+  }
+  return DEFAULT_PROMPT_UNLOCK_TIME;
 }
 
-let isCurrentlyLocked = true;
-renderFileList(true);
-
-function updateCountdown() {
-  const now = Date.now();
-  const diff = PROMPT_UNLOCK_TIME - now;
-
-  if (diff <= 0) {
-    if (isCurrentlyLocked) {
-      isCurrentlyLocked = false;
-      renderFileList(false);
-      timerGrid.style.display = 'none';
-      countdownLabel.style.display = 'none';
-      unlockedBadge.style.display = 'block';
-    }
-    return;
+function getEventUnlockLabel(event) {
+  if (event.unlockLabel) {
+    return event.unlockLabel;
   }
+  return 'Locked until 25 Sep 2026, 00:00 AM';
+}
 
-  isCurrentlyLocked = true;
+function isEventLocked(event, now = Date.now()) {
+  return now < getEventUnlockTime(event);
+}
 
+function formatRemainingTime(diff) {
+  if (diff <= 0) return '';
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
   const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
   const mins = Math.floor((diff / (1000 * 60)) % 60);
   const secs = Math.floor((diff / 1000) % 60);
 
-  timerDays.textContent = String(days).padStart(2, '0');
-  timerHours.textContent = String(hours).padStart(2, '0');
-  timerMins.textContent = String(mins).padStart(2, '0');
-  timerSecs.textContent = String(secs).padStart(2, '0');
+  const parts = [];
+  if (days > 0) parts.push(`${days}d`);
+  parts.push(`${String(hours).padStart(2, '0')}h`);
+  parts.push(`${String(mins).padStart(2, '0')}m`);
+  parts.push(`${String(secs).padStart(2, '0')}s`);
+  return parts.join(' ');
+}
+
+function renderFileList() {
+  const now = Date.now();
+  document.getElementById('file-list').innerHTML = window.CYFERNODE_EVENTS.map((event) => {
+    const isLocked = isEventLocked(event, now);
+    const lockTitle = getEventUnlockLabel(event);
+    const diff = getEventUnlockTime(event) - now;
+    let timerTag = '';
+    if (isLocked) {
+      if (event.unlockTime && diff > 0) {
+        timerTag = `<span class="event-timer-tag"><i class="fa-solid fa-lock"></i> <span id="event-timer-${event.id}">${formatRemainingTime(diff)}</span></span>`;
+      } else {
+        timerTag = `<i class="fa-solid fa-lock lock-icon-tag"></i>`;
+      }
+    }
+
+    return `
+    <li>
+      <a class="file-link ${isLocked ? 'disabled' : ''}" href="${isLocked ? 'javascript:void(0)' : promptHref(event)}" title="${isLocked ? lockTitle : event.category}">
+        ${FILE_ICON}
+        <span>${event.name}</span>
+        ${timerTag}
+      </a>
+    </li>
+  `;
+  }).join('');
+}
+
+let prevLockedSummary = '';
+let hasCollapsed = false;
+
+function updateCountdown() {
+  const now = Date.now();
+  const diff = DEFAULT_PROMPT_UNLOCK_TIME - now;
+
+  if (diff <= 0) {
+    if (!hasCollapsed) {
+      hasCollapsed = true;
+      if (countdownSection) {
+        if (!prevLockedSummary) {
+          countdownSection.style.display = 'none';
+        } else {
+          countdownSection.classList.add('is-fading-out');
+          setTimeout(() => {
+            countdownSection.style.display = 'none';
+          }, 600);
+        }
+      }
+    }
+  } else {
+    if (countdownSection && !hasCollapsed) {
+      countdownSection.style.display = 'block';
+      countdownSection.classList.remove('is-fading-out');
+    }
+    timerGrid.style.display = 'flex';
+    countdownLabel.style.display = 'block';
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const mins = Math.floor((diff / (1000 * 60)) % 60);
+    const secs = Math.floor((diff / 1000) % 60);
+
+    timerDays.textContent = String(days).padStart(2, '0');
+    timerHours.textContent = String(hours).padStart(2, '0');
+    timerMins.textContent = String(mins).padStart(2, '0');
+    timerSecs.textContent = String(secs).padStart(2, '0');
+  }
+
+  // Update live per-event countdown tags
+  for (const event of window.CYFERNODE_EVENTS) {
+    const timerEl = document.getElementById(`event-timer-${event.id}`);
+    if (timerEl) {
+      const remaining = getEventUnlockTime(event) - now;
+      if (remaining > 0) {
+        timerEl.textContent = formatRemainingTime(remaining);
+      }
+    }
+  }
+
+  const currentLockedSummary = window.CYFERNODE_EVENTS.map((e) => `${e.id}:${isEventLocked(e, now)}`).join(',');
+  if (currentLockedSummary !== prevLockedSummary) {
+    prevLockedSummary = currentLockedSummary;
+    renderFileList();
+  }
 }
 
 updateCountdown();

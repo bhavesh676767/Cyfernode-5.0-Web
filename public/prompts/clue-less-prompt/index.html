@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700,800&display=swap" rel="stylesheet">
 <script>
-if (Date.now() < new Date('2026-09-25T00:00:00+05:30').getTime()) {
+if (Date.now() < new Date('2026-09-27T00:00:00+05:30').getTime()) {
   location.replace('/prompts');
 }
 </script>
@@ -307,7 +307,7 @@ if (!event) {
   document.title = 'Prompt not found - Cyfernode 5.0'
   notFound.hidden = false
 } else {
-  const PROMPT_UNLOCK_TIME = new Date('2026-09-25T00:00:00+05:30').getTime()
+  const PROMPT_UNLOCK_TIME = new Date(event.unlockTime || '2026-09-27T00:00:00+05:30').getTime()
   if (Date.now() < PROMPT_UNLOCK_TIME) {
     window.location.replace('/prompts')
     return

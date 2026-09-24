@@ -174,6 +174,7 @@ html, body {
 .start-btn-action:disabled {
   background: #ccc;
   cursor: not-allowed;
+  pointer-events: none;
 }
 
 /* Quiz UI Container & Elements */
@@ -458,7 +459,7 @@ html, body {
     <div class="prompt-body">
       <h2>Event Details</h2>
       <ul>
-        <li><strong>Date &amp; Time:</strong> Friday, 25 September 2026 — <strong>10:00 AM sharp</strong> to 11:30 AM IST.</li>
+        <li><strong>Date &amp; Time:</strong> Wednesday, 30 September 2026 — <strong>10:00 AM sharp</strong> to 11:30 AM IST.</li>
         <li><strong>Google Meet Link:</strong> <a href="https://meet.google.com/xaf-ttwv-rys" target="_blank" style="color: var(--orange); font-weight: 600; text-decoration: underline;">meet.google.com/xaf-ttwv-rys</a></li>
         <li><strong>Camera Requirement:</strong> Videos must be turned on throughout the session. No exceptions.</li>
         <li><strong>Internet Connection:</strong> Ensure a stable internet connection before joining. Disconnections or connectivity issues are the participant's responsibility and will not be entertained.</li>
@@ -506,12 +507,12 @@ html, body {
       </div>
 
       <div id="lock-warning" class="prompt-quote" style="display: none;">
-        Quiz is currently locked. It will unlock on <strong>25 September 2026 at 10:15 AM IST</strong>.<br>
+        Quiz is currently locked. It will unlock on <strong>30 September 2026 at 10:15 AM IST</strong>.<br>
         <span id="lock-countdown" style="font-size: 14px; font-weight: 500; color: var(--muted); margin-top: 4px; display: inline-block;"></span>
       </div>
 
       <div style="margin-top: 32px;">
-        <button class="start-btn-action" id="start-btn">Start Prelim Quiz <i class="fa-solid fa-arrow-right"></i></button>
+        <button class="start-btn-action" id="start-btn" disabled style="opacity: 0.5; cursor: not-allowed;">Start Prelim Quiz <i class="fa-solid fa-arrow-right"></i></button>
       </div>
 
       <p id="taken-msg" style="display:none; color: #c0392b; font-weight: 700; margin-top: 20px;">
@@ -854,7 +855,7 @@ const scoreVal = document.getElementById('score-val');
 const extWarning = document.getElementById('ext-warning');
 const lockWarning = document.getElementById('lock-warning');
 const lockCountdown = document.getElementById('lock-countdown');
-const UNLOCK_TIME = new Date('2026-09-25T10:15:00+05:30').getTime();
+const UNLOCK_TIME = new Date('2026-09-30T10:15:00+05:30').getTime();
 
 function checkDateLock() {
   const now = Date.now();
@@ -902,9 +903,8 @@ if (detectExtensions()) {
   extWarning.style.display = 'block';
 }
 
-if (checkDateLock()) {
-  setInterval(checkDateLock, 1000);
-}
+checkDateLock();
+setInterval(checkDateLock, 1000);
 
 // Check if taken (Disabled for testing)
 // if (localStorage.getItem('runtimeTerror_completed')) {
@@ -914,7 +914,11 @@ if (checkDateLock()) {
 //   extWarning.style.display = 'none';
 // }
 
-startBtn.addEventListener('click', async () => {
+startBtn.addEventListener('click', async (e) => {
+  if (checkDateLock()) {
+    if (e && e.preventDefault) e.preventDefault();
+    return;
+  }
   try {
     if (document.documentElement.requestFullscreen) {
       await document.documentElement.requestFullscreen();
