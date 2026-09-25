@@ -49,9 +49,110 @@ body {
 
 .framer-1umqj66-container,
 .framer-13hwuku-container,
+.framer-submission-container,
 .framer-le5629,
 .framer-5q2vr0 {
   cursor: pointer;
+}
+
+.framer-wncF6 .framer-submission-container {
+  z-index: 10;
+  flex: none;
+  width: auto;
+  height: auto;
+  position: relative;
+}
+
+.framer-submission-container a {
+  background: #000 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+  transition: background-color 180ms ease !important;
+}
+
+.framer-submission-container a::after {
+  border-color: #000 !important;
+  box-shadow: none !important;
+  transition: border-color 180ms ease !important;
+}
+
+.framer-submission-container a,
+.framer-submission-container a * {
+  transform: none !important;
+  scale: 1 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+}
+
+.framer-submission-container [data-framer-name="Overlay"],
+.framer-submission-container [data-framer-name="Lower Text"] {
+  display: none !important;
+}
+
+.framer-submission-container .framer-text {
+  color: #fff !important;
+  transition: color 180ms ease !important;
+}
+
+.framer-submission-container a:hover,
+.framer-submission-container a:focus-visible {
+  background: #fff !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.framer-submission-container a:hover .framer-text,
+.framer-submission-container a:focus-visible .framer-text {
+  color: #000 !important;
+}
+
+.framer-submission-container.is-locked,
+.framer-submission-container.is-locked a {
+  cursor: default !important;
+}
+
+.framer-submission-container.is-locked a,
+.framer-submission-container.is-locked a:hover,
+.framer-submission-container.is-locked a:focus-visible {
+  background: #d4d4d1 !important;
+  pointer-events: none;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  height: auto !important;
+  gap: 4px !important;
+  padding: 14px 36px 12px !important;
+}
+
+.framer-submission-container.is-locked a::after,
+.framer-submission-container.is-locked a:hover::after,
+.framer-submission-container.is-locked a:focus-visible::after {
+  border-color: #d4d4d1 !important;
+}
+
+.framer-submission-container.is-locked .framer-text,
+.framer-submission-container.is-locked a:hover .framer-text,
+.framer-submission-container.is-locked a:focus-visible .framer-text {
+  color: #7a7a76 !important;
+}
+
+.framer-submission-container {
+  position: relative;
+}
+
+.cyfernode-submission-timer {
+  position: static;
+  margin: 0;
+  color: #6f6f6b;
+  font-size: 11px;
+  font-weight: 550;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
 }
 
 html.invite-modal-open #main {
@@ -80,6 +181,15 @@ html.social-modal-open #cyfernode-react-root {
   min-height: 100vh;
   background: var(--color-surface);
   color: var(--color-content);
+}
+
+#cyfernode-react-root[data-host="react"][data-theme="light"] {
+  background: #f7f7f5;
+  color: #171717;
+}
+
+html:has(#cyfernode-react-root[data-theme="light"]) #main {
+  display: none !important;
 }
 
 #cyfernode-react-root[data-host="framer"] {

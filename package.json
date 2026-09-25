@@ -12,6 +12,7 @@
     "void:embed": "node scripts/embed-void-whitespace.mjs"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.117.2",
     "@vercel/speed-insights": "^2.0.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

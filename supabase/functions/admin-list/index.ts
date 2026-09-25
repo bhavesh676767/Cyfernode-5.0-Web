@@ -203,6 +203,63 @@ type InviteRequestRow = {
   submitted_at: string
 }
 
+async function loadSubmissions(supabase: ReturnType<typeof createClient>, teamEventId: string | null) {
+  let query = supabase
+    .from('submissions')
+    .select(`
+      id, status, reference_code, submitted_at, created_at,
+      school_code, school_name_snapshot, event_slug, event_name_snapshot,
+      team_name_snapshot, team_number,
+      submitted_by_name, submitted_by_email, submitted_by_role,
+      submission_deliverables (deliverable_name, value, file_name, file_path)
+    `)
+    .order('created_at', { ascending: false })
+
+  if (teamEventId) query = query.eq('event_slug', teamEventId)
+
+  const { data, error } = await query
+  if (error) throw error
+
+  return Promise.all((data || []).map(async (row) => {
+    const deliverables = await Promise.all((row.submission_deliverables || []).map(async (item: {
+      deliverable_name: string
+      value: string | null
+      file_name: string | null
+      file_path: string | null
+    }) => {
+      let fileUrl = ''
+      if (item.file_path) {
+        const signed = await supabase.storage.from('submission-files').createSignedUrl(item.file_path, 60 * 60 * 6)
+        fileUrl = signed.data?.signedUrl || ''
+      }
+      return {
+        name: item.deliverable_name || 'Item',
+        value: item.value || '',
+        file_name: item.file_name || '',
+        file_url: fileUrl,
+      }
+    }))
+
+    return {
+      id: row.id,
+      status: row.status,
+      reference_code: row.reference_code,
+      submitted_at: row.submitted_at,
+      created_at: row.created_at,
+      school_code: row.school_code,
+      school_name: row.school_name_snapshot,
+      event_slug: row.event_slug,
+      event_name: row.event_name_snapshot,
+      team_name: row.team_name_snapshot,
+      team_number: row.team_number,
+      submitted_by_name: row.submitted_by_name,
+      submitted_by_email: row.submitted_by_email,
+      submitted_by_role: row.submitted_by_role,
+      deliverables,
+    }
+  }))
+}
+
 async function loadInviteRequests(supabase: ReturnType<typeof createClient>) {
   const { data, error } = await supabase
     .from('invite_requests')
@@ -283,6 +340,8 @@ Deno.serve(async (req) => {
 
     let rows: RegistrationRow[]
     let inviteRequests: InviteRequestRow[] = []
+    let submissions: Awaited<ReturnType<typeof loadSubmissions>> = []
+    let submissionsError = ''
     try {
       rows = await loadRegistrations(supabase)
     } catch (queryError) {
@@ -304,6 +363,13 @@ Deno.serve(async (req) => {
       }
     }
 
+    try {
+      submissions = await loadSubmissions(supabase, teamEventId)
+    } catch (submissionError) {
+      console.error('admin-list submissions query:', submissionError)
+      submissionsError = 'Submissions could not be loaded. Run SUPABASE_SETUP.sql, then refresh.'
+    }
+
     return json(req, {
       ok: true,
       role: auth.role,
@@ -312,6 +378,9 @@ Deno.serve(async (req) => {
       event_counts: eventCounts,
       invite_requests: inviteRequests,
       invite_count: inviteRequests.length,
+      submissions,
+      submission_count: submissions.filter((row) => row.status === 'submitted').length,
+      submissions_error: submissionsError,
     })
   } catch (err) {
     console.error('admin-list error:', err)

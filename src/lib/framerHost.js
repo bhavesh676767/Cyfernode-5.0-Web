@@ -8,7 +8,7 @@ const FRAMER_SELECTORS = ['#main']
  * "/register" is not one of them: it is a standalone document served from
  * public/register/index.html and never reached through this app.
  */
-const REACT_PATHS = []
+const REACT_PATHS = ['/submission']
 const REGISTER_PATH = '/register'
 const REGISTER_TRIGGER_SELECTOR = '.framer-1umqj66-container'
 const INVITE_TRIGGER_SELECTOR = '.framer-13hwuku-container'
@@ -30,9 +30,15 @@ export function syncFramerHost(pathname) {
   const root = document.getElementById('cyfernode-react-root')
   if (root) {
     root.dataset.host = showFramer ? 'framer' : 'react'
+    if (pathname === '/submission') root.dataset.theme = 'light'
+    else delete root.dataset.theme
   }
 
-  document.body.style.background = showFramer ? '' : 'var(--color-surface)'
+  document.body.style.background = showFramer
+    ? ''
+    : pathname === '/submission'
+      ? '#f7f7f5'
+      : 'var(--color-surface)'
 }
 
 export function ensureReactRoot() {

@@ -219,7 +219,8 @@ html { scrollbar-gutter: stable; }
 }
 body.view-invites .toolbar-panel,
 body.view-invites #core-panel,
-body.view-invites #team-panel {
+body.view-invites #team-panel,
+body.view-invites #submissions-panel {
   display: none !important;
 }
 body.view-invites #invite-panel {
@@ -228,6 +229,83 @@ body.view-invites #invite-panel {
 #invite-panel {
   display: none;
 }
+body.view-submissions .toolbar-panel,
+body.view-submissions #core-panel,
+body.view-submissions #team-panel,
+body.view-submissions #invite-panel {
+  display: none !important;
+}
+body.view-submissions #submissions-panel {
+  display: block;
+}
+#submissions-panel {
+  display: none;
+}
+.sub-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.sub-tools .field-input {
+  flex: 1 1 220px;
+  min-width: 180px;
+}
+.sub-list {
+  display: grid;
+  gap: 12px;
+}
+.sub-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px 16px 14px;
+  box-shadow: var(--shadow-sm);
+}
+.sub-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+.sub-code {
+  font-weight: 750;
+  letter-spacing: 0.04em;
+}
+.sub-meta, .sub-who {
+  margin-top: 6px;
+  color: var(--muted-strong);
+  font-size: 13px;
+  line-height: 1.45;
+}
+.sub-status {
+  flex: none;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: rgba(17, 17, 20, 0.06);
+}
+.sub-status.submitted { background: #e8f6ee; color: #146c43; }
+.sub-status.draft { background: #fff6e8; color: #8a5a00; }
+.sub-items {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.sub-items li {
+  display: grid;
+  gap: 2px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+}
+.sub-items a { color: inherit; }
 .dash-title-wrap {
   display: flex;
   flex-direction: column;
@@ -1475,6 +1553,14 @@ html.sheet-lightbox-open { overflow: hidden; }
 #core-panel { display: block; }
 body.view-team #team-panel { display: block; }
 body.view-team #core-panel { display: none; }
+body.view-team.view-submissions #team-panel,
+body.view-team.view-submissions #core-panel,
+body.view-team.view-invites #team-panel {
+  display: none !important;
+}
+body.view-team.view-submissions #submissions-panel {
+  display: block !important;
+}
 
 /* Toolbar tools + filters */
 .toolbar-tools {
@@ -1553,6 +1639,7 @@ body.view-team #core-panel { display: none; }
   transition: background 0.18s, color 0.18s;
 }
 .tool-btn:hover { color: var(--text); border-color: var(--border-hover); }
+.tool-btn.active { background: var(--text); color: #fff; border-color: var(--text); }
 .tool-btn.warn { color: var(--orange); border-color: var(--orange-line); background: var(--orange-tint); }
 .tool-btn.hidden { display: none; }
 body.view-team .core-only { display: none !important; }
@@ -2031,10 +2118,13 @@ html.edit-open { overflow: hidden; }
       </div>
     </header>
 
-    <div class="dash-tabs core-only" id="dash-tabs" role="tablist" aria-label="Admin sections">
+    <div class="dash-tabs" id="dash-tabs" role="tablist" aria-label="Admin sections">
       <button type="button" class="dash-tab active" data-dash-tab="registrations" role="tab" aria-selected="true">Registrations</button>
-      <button type="button" class="dash-tab" data-dash-tab="invites" role="tab" aria-selected="false">
+      <button type="button" class="dash-tab core-only" data-dash-tab="invites" role="tab" aria-selected="false">
         Invite requests<span class="dash-tab-count" id="invite-tab-count">0</span>
+      </button>
+      <button type="button" class="dash-tab" data-dash-tab="submissions" role="tab" aria-selected="false">
+        Submissions<span class="dash-tab-count" id="submission-tab-count">0</span>
       </button>
     </div>
 
@@ -2321,6 +2411,22 @@ html.edit-open { overflow: hidden; }
         Requests from the landing page will appear here.
       </div>
     </div>
+
+    <div id="submissions-panel">
+      <p class="sub-who" id="submission-scope"></p>
+      <div class="sub-tools">
+        <input class="field-input search" type="search" id="submission-search" placeholder="Search school code, school, event, team, or name…" autocomplete="off">
+        <button type="button" class="tool-btn" data-sub-status="all">All</button>
+        <button type="button" class="tool-btn" data-sub-status="submitted">Submitted</button>
+        <button type="button" class="tool-btn" data-sub-status="draft">Drafts</button>
+        <button type="button" class="sheet-copy-btn" id="btn-export-submissions">Export CSV</button>
+      </div>
+      <div class="sub-list" id="submission-list"></div>
+      <div class="empty hidden" id="submission-empty">
+        <span class="empty-title">No submissions yet</span>
+        <span id="submission-empty-hint">Final submissions from schools will appear here with their school code, team, and deliverables.</span>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -2442,6 +2548,9 @@ function setPageScrollLock(className, locked) {
 
 let allRegs = [];
 let allInvites = [];
+let allSubmissions = [];
+let submissionStatusFilter = 'all';
+let submissionsError = '';
 let teamEventCounts = {};
 let dashTab = 'registrations';
 let adminSession = { role: 'core', password: '' };
@@ -3635,6 +3744,21 @@ function initToolbarTools() {
   });
 
   document.getElementById('btn-export-invites')?.addEventListener('click', exportInviteCsv);
+  document.getElementById('btn-export-submissions')?.addEventListener('click', exportSubmissionsCsv);
+  document.getElementById('submission-search')?.addEventListener('input', () => {
+    renderSubmissions();
+    updateSubmissionStats();
+  });
+  document.querySelectorAll('[data-sub-status]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      submissionStatusFilter = btn.dataset.subStatus;
+      document.querySelectorAll('[data-sub-status]').forEach(chip => {
+        chip.classList.toggle('active', chip === btn);
+      });
+      renderSubmissions();
+      updateSubmissionStats();
+    });
+  });
 
   document.getElementById('dash-tabs')?.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-dash-tab]');
@@ -4189,9 +4313,10 @@ function clearSession() {
 }
 
 function setDashTab(tab) {
-  if (adminSession.role !== 'core') tab = 'registrations';
+  if (adminSession.role !== 'core' && tab === 'invites') tab = 'registrations';
   dashTab = tab;
   document.body.classList.toggle('view-invites', tab === 'invites');
+  document.body.classList.toggle('view-submissions', tab === 'submissions');
   document.querySelectorAll('.dash-tab').forEach(btn => {
     const active = btn.dataset.dashTab === tab;
     btn.classList.toggle('active', active);
@@ -4202,12 +4327,19 @@ function setDashTab(tab) {
   if (sub) {
     sub.textContent = tab === 'invites'
       ? 'Schools that requested a registration invite from the landing page.'
-      : 'Explore all data - filter by event, view, and columns.';
+      : tab === 'submissions'
+        ? (adminSession.role === 'team'
+          ? 'Submissions for the event you are viewing, with school code, team, and files.'
+          : 'Every school submission, with school code, event, team, and deliverables.')
+        : 'Explore all data - filter by event, view, and columns.';
   }
 
   if (tab === 'invites') {
     renderInviteRequests();
     updateInviteStats();
+  } else if (tab === 'submissions') {
+    renderSubmissions();
+    updateSubmissionStats();
   } else {
     applyFilter();
   }
@@ -4216,6 +4348,102 @@ function setDashTab(tab) {
 function updateInviteTabCount() {
   const badge = document.getElementById('invite-tab-count');
   if (badge) badge.textContent = String(allInvites.length);
+}
+
+function updateSubmissionTabCount() {
+  const badge = document.getElementById('submission-tab-count');
+  const submitted = allSubmissions.filter(row => row.status === 'submitted').length;
+  if (badge) badge.textContent = String(submitted);
+}
+
+function filteredSubmissions() {
+  const q = (document.getElementById('submission-search')?.value || '').trim().toLowerCase();
+  return allSubmissions.filter(row => {
+    if (submissionStatusFilter !== 'all' && row.status !== submissionStatusFilter) return false;
+    if (!q) return true;
+    const hay = [
+      row.school_code, row.school_name, row.event_name, row.event_slug,
+      row.team_name, row.submitted_by_name, row.submitted_by_email, row.reference_code,
+    ].join(' ').toLowerCase();
+    return hay.includes(q);
+  });
+}
+
+function updateSubmissionStats() {
+  const rows = filteredSubmissions();
+  const submitted = allSubmissions.filter(row => row.status === 'submitted').length;
+  document.getElementById('stat-lbl-total').textContent = 'Submitted';
+  document.getElementById('stat-lbl-secondary').textContent = 'Showing';
+  document.getElementById('stat-total').textContent = String(submitted);
+  document.getElementById('stat-events').textContent = String(rows.length);
+  document.getElementById('stat-showing').textContent = String(rows.length);
+}
+
+function renderSubmissions() {
+  const list = document.getElementById('submission-list');
+  const empty = document.getElementById('submission-empty');
+  const hint = document.getElementById('submission-empty-hint');
+  const scope = document.getElementById('submission-scope');
+  if (!list || !empty) return;
+  if (scope) {
+    const eventName = (typeof EVENTS !== 'undefined' ? EVENTS.find(event => event.id === selectedEventId)?.name : '') || 'this event';
+    scope.textContent = adminSession.role === 'team'
+      ? `This list is ${eventName} only. Open Registrations and pick another event to switch.`
+      : 'Every event is included. Search by school code, team, or the person who submitted.';
+  }
+  const rows = filteredSubmissions();
+  if (hint && submissionsError) hint.textContent = submissionsError;
+  if (!rows.length) {
+    list.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+  list.innerHTML = rows.map(row => {
+    const teamNo = row.team_number ? `Team ${String(row.team_number).padStart(2, '0')} · ` : '';
+    const when = row.submitted_at ? fmtDate(row.submitted_at) : 'Not submitted';
+    const items = (row.deliverables || []).map(item => {
+      const detail = item.file_url
+        ? `<a href="${esc(item.file_url)}" target="_blank" rel="noopener noreferrer">${esc(item.file_name || 'Open file')}</a>`
+        : esc(item.value || item.file_name || 'Not added');
+      return `<li><strong>${esc(item.name)}</strong><span>${detail}</span></li>`;
+    }).join('');
+    return `
+      <article class="sub-card">
+        <div class="sub-top">
+          <div>
+            <div class="sub-code">${esc(row.school_code || '—')} · ${esc(row.school_name || '')}</div>
+            <div class="sub-meta">${esc(row.event_name || '')} · ${esc(teamNo + (row.team_name || 'Team'))}</div>
+          </div>
+          <span class="sub-status ${esc(row.status)}">${esc(String(row.status || '').replaceAll('_', ' '))}</span>
+        </div>
+        <div class="sub-who">Submitted by ${esc(row.submitted_by_name || '—')} · ${esc(row.submitted_by_email || '')}</div>
+        <div class="sub-who">${esc(when)}${row.reference_code ? ` · ${esc(row.reference_code)}` : ''}</div>
+        ${items ? `<ul class="sub-items">${items}</ul>` : ''}
+      </article>
+    `;
+  }).join('');
+}
+
+function exportSubmissionsCsv() {
+  const rows = [
+    ['School code', 'School', 'Event', 'Team', 'Status', 'Submitted by', 'Email', 'Role', 'Submitted at', 'Reference', 'Deliverables'],
+    ...filteredSubmissions().map(row => [
+      row.school_code,
+      row.school_name,
+      row.event_name,
+      row.team_name,
+      row.status,
+      row.submitted_by_name,
+      row.submitted_by_email,
+      row.submitted_by_role,
+      row.submitted_at || '',
+      row.reference_code || '',
+      (row.deliverables || []).map(item => `${item.name}: ${item.file_name || item.value || ''}`).join(' | '),
+    ]),
+  ];
+  downloadCsv(rows, `cyfernode_submissions_${Date.now()}.csv`);
+  showToast('Submissions exported');
 }
 
 function updateInviteStats() {
@@ -4267,10 +4495,14 @@ function setAdminView(role) {
     setDashTab('registrations');
   }
   document.getElementById('dash-sub').textContent = role === 'team'
-    ? 'Browse registrations one event at a time.'
+    ? (dashTab === 'submissions'
+      ? 'Submissions for the event you are viewing, with school code, team, and files.'
+      : 'Browse registrations one event at a time.')
     : dashTab === 'invites'
       ? 'Schools that requested a registration invite from the landing page.'
-      : 'Explore all data - filter by event, view, and columns.';
+      : dashTab === 'submissions'
+        ? 'Every school submission, with school code, event, team, and deliverables.'
+        : 'Explore all data - filter by event, view, and columns.';
   document.getElementById('search').placeholder = role === 'team'
     ? 'Search school code, teacher, participant…'
     : 'Search names, codes, emails, phones…';
@@ -4372,6 +4604,8 @@ async function fetchRegistrations(session, options = {}) {
   return {
     registrations: data.registrations || [],
     inviteRequests: data.invite_requests || [],
+    submissions: data.submissions || [],
+    submissionsError: data.submissions_error || '',
     eventCounts: data.event_counts || {},
   };
 }
@@ -4893,18 +5127,23 @@ async function loadDashboard(options = {}) {
     const data = await fetchRegistrations(adminSession, options);
     allRegs = data.registrations;
     allInvites = data.inviteRequests;
+    allSubmissions = data.submissions || [];
+    submissionsError = data.submissionsError || '';
     if (adminSession.role === 'team') {
       teamEventCounts = data.eventCounts || {};
     }
     lastRefreshedAt = new Date().toISOString();
     updateLastSync();
     updateInviteTabCount();
+    updateSubmissionTabCount();
     renderSchoolFilterOptions();
     renderExportMenu();
     saveSession();
     setAdminView(adminSession.role);
     if (dashTab === 'invites' && adminSession.role === 'core') {
       setDashTab('invites');
+    } else if (dashTab === 'submissions') {
+      setDashTab('submissions');
     } else {
       applyFilter();
     }

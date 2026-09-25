@@ -86,6 +86,8 @@ export function MobileNav() {
     }
   }
 
+  if (pathname === '/submission') return null
+
   return createPortal(
     <div className={styles.root} ref={rootRef}>
       <button

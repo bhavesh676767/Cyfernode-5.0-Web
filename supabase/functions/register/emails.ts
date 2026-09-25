@@ -588,7 +588,7 @@ async function sendViaBrevoApi(
   return { ok: true }
 }
 
-async function sendBrevoEmail(to: { email: string; name: string }, subject: string, htmlContent: string) {
+export async function sendBrevoEmail(to: { email: string; name: string }, subject: string, htmlContent: string) {
   const senderEmail = getEnv('BREVO_SENDER_EMAIL')
   const senderName = getEnv('BREVO_SENDER_NAME') ?? 'Cyfernode'
   const apiKey = getEnv('BREVO_API_KEY')

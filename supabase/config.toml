@@ -15,3 +15,6 @@ verify_jwt = false
 
 [functions.request-invite]
 verify_jwt = false
+
+[functions.submission-access]
+verify_jwt = false

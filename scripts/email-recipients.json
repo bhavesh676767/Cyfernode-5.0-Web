@@ -1,0 +1,1332 @@
+{
+  "teachers": [
+    {
+      "email": "nkumar@aisg43.amity.edu.in",
+      "name": "Naveen Kumar",
+      "school": "Amity International school, Sec 43, Gurugram",
+      "events": [
+        {
+          "id": "wireframe",
+          "name": "Wireframe",
+          "link": "https://cyfernode.com/prompts/wireframe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "msharma@ais.amity.edu.in",
+      "name": "Ms. Manisha Sharma",
+      "school": "Amity International School, Sector 46, Gurugram",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        },
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        },
+        {
+          "id": "wireframe",
+          "name": "Wireframe",
+          "link": "https://cyfernode.com/prompts/wireframe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "jjyoti@aisg43.amity.edu.in",
+      "name": "Jeevan Jyoti",
+      "school": "Amity International School, Sector-43",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "Sharmishthabhatia_bbms@bluebells.org",
+      "name": "Mrs. Sharmishtha Bhatia",
+      "school": "Blue Bells Model School",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        }
+      ]
+    },
+    {
+      "email": "20192886@asose.in",
+      "name": "Dimple Chandra",
+      "school": "CM Shri, Kalkaji",
+      "events": [
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        },
+        {
+          "id": "wireframe",
+          "name": "Wireframe",
+          "link": "https://cyfernode.com/prompts/wireframe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "alkas@dpsgurgaon.org",
+      "name": "Ms Alka Sanan",
+      "school": "Delhi Public School, Sector 45 Gurgaon",
+      "events": [
+        {
+          "id": "breadboard",
+          "name": "Breadboard",
+          "link": "https://cyfernode.com/prompts/breadboard-prompt"
+        },
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        },
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        },
+        {
+          "id": "wireframe",
+          "name": "Wireframe",
+          "link": "https://cyfernode.com/prompts/wireframe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "raksha@gdgps.gdgoenka.com",
+      "name": "Ms. Raksha Panjwani",
+      "school": "GD Goenka, The Flagship School, Vasant Kunj",
+      "events": [
+        {
+          "id": "blendered",
+          "name": "Blendered",
+          "link": "https://cyfernode.com/prompts/blendered-prompt"
+        },
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        },
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        },
+        {
+          "id": "wireframe",
+          "name": "Wireframe",
+          "link": "https://cyfernode.com/prompts/wireframe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "amishachaudhary7@gmail.com",
+      "name": "AMISHA CHAUDHARY",
+      "school": "GYAN DEVI PUBLIC SCHOOL SENIOR SECONDARY SECTOR 17A,GURUGRAM",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        }
+      ]
+    },
+    {
+      "email": "beenitanegi28@gmail.com",
+      "name": "Beenita negi",
+      "school": "Jagran Public School Noida",
+      "events": [
+        {
+          "id": "entrepreneur-exe",
+          "name": "Entreprenuer.exe",
+          "link": "https://cyfernode.com/prompts/entrepreneur-exe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "srishti@lionspublicschool.com",
+      "name": "Ms. Srishti",
+      "school": "Lions Public School",
+      "events": [
+        {
+          "id": "entrepreneur-exe",
+          "name": "Entreprenuer.exe",
+          "link": "https://cyfernode.com/prompts/entrepreneur-exe-prompt"
+        },
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        }
+      ]
+    },
+    {
+      "email": "bhavishka47@gmail.com",
+      "name": "Ms. Raj Aggarwal",
+      "school": "Maharaja Aggarsain Adarsh Public School",
+      "events": [
+        {
+          "id": "wireframe",
+          "name": "Wireframe",
+          "link": "https://cyfernode.com/prompts/wireframe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "lokreddy44@gmail.com",
+      "name": "Lokanath Reddy",
+      "school": "MIRS-Himadri-kurnool",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        },
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "induskurnool@gmail.com",
+      "name": "Lokanath reddy",
+      "school": "Montessori Indus residential school",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        },
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "yendurivenkatesh2004@gmail.com",
+      "name": "Yenduri Venkateswarlu",
+      "school": "Montessori Indus Residential School-KAILASH BLOCK",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        },
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "oxford.diw@gmail.com",
+      "name": "Damandeep",
+      "school": "Oxford Senior Secondary School",
+      "events": [
+        {
+          "id": "entrepreneur-exe",
+          "name": "Entreprenuer.exe",
+          "link": "https://cyfernode.com/prompts/entrepreneur-exe-prompt"
+        },
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "neerumittalxixii@gmail.com",
+      "name": "Mrs. Neeru Mittal",
+      "school": "S. R. D. A. V. Public School",
+      "events": [
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        }
+      ]
+    },
+    {
+      "email": "vineetagarg123@gmail.com",
+      "name": "Mrs. Vineeta Garg",
+      "school": "Shaheed Rajpal DAV Public School",
+      "events": [
+        {
+          "id": "blendered",
+          "name": "Blendered",
+          "link": "https://cyfernode.com/prompts/blendered-prompt"
+        }
+      ]
+    },
+    {
+      "email": "ritukaushik4177@gmail.com",
+      "name": "RITU KAUSHIK",
+      "school": "ST.MARY'S PUBLIC SCHOOL",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        },
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "varshagoyal@suncityschool-37d.com",
+      "name": "Ms. Varsha Goyal",
+      "school": "SUNCITY SCHOOL 37 D",
+      "events": [
+        {
+          "id": "blendered",
+          "name": "Blendered",
+          "link": "https://cyfernode.com/prompts/blendered-prompt"
+        },
+        {
+          "id": "buildout",
+          "name": "Buildout",
+          "link": "https://cyfernode.com/prompts/buildout-prompt"
+        },
+        {
+          "id": "entrepreneur-exe",
+          "name": "Entreprenuer.exe",
+          "link": "https://cyfernode.com/prompts/entrepreneur-exe-prompt"
+        },
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        },
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        },
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        },
+        {
+          "id": "wireframe",
+          "name": "Wireframe",
+          "link": "https://cyfernode.com/prompts/wireframe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "manju@suncityschool-37d.com",
+      "name": "Manju Chhillar",
+      "school": "Suncity School 37D , Gurgaon",
+      "events": [
+        {
+          "id": "blendered",
+          "name": "Blendered",
+          "link": "https://cyfernode.com/prompts/blendered-prompt"
+        },
+        {
+          "id": "entrepreneur-exe",
+          "name": "Entreprenuer.exe",
+          "link": "https://cyfernode.com/prompts/entrepreneur-exe-prompt"
+        },
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        },
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        }
+      ]
+    },
+    {
+      "email": "anita.pgtcs@gmail.com",
+      "name": "Anita Sharma",
+      "school": "The Shikshiyan School",
+      "events": [
+        {
+          "id": "blendered",
+          "name": "Blendered",
+          "link": "https://cyfernode.com/prompts/blendered-prompt"
+        },
+        {
+          "id": "entrepreneur-exe",
+          "name": "Entreprenuer.exe",
+          "link": "https://cyfernode.com/prompts/entrepreneur-exe-prompt"
+        },
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        },
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        },
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    }
+  ],
+  "students": [
+    {
+      "email": "aabhav.srivastava@ais.amity.edu.in",
+      "name": "Aabhav Srivastava",
+      "events": [
+        {
+          "id": "wireframe",
+          "name": "Wireframe",
+          "link": "https://cyfernode.com/prompts/wireframe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "prakhar.sharma2@ais.amity.edu.in",
+      "name": "Prakhar Sharma",
+      "events": [
+        {
+          "id": "wireframe",
+          "name": "Wireframe",
+          "link": "https://cyfernode.com/prompts/wireframe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "navyabansal438@gmail.com",
+      "name": "Navya Bansal",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        }
+      ]
+    },
+    {
+      "email": "shivpriya.bhargava@gmail.com",
+      "name": "Shivpriya Bhargava",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        }
+      ]
+    },
+    {
+      "email": "naitikxotwod@gmail.com",
+      "name": "Naitik Agarwal",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "itsayushgamez@gmail.com",
+      "name": "Ayush Sharma",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "karthik.venkateswaran09@gmail.com",
+      "name": "Karthik Venkateswaran",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "groverbhavit@gmail.com",
+      "name": "Bhavit Grover",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "ridhima.raghav11@gmail.com",
+      "name": "Ridhima Raghav",
+      "events": [
+        {
+          "id": "wireframe",
+          "name": "Wireframe",
+          "link": "https://cyfernode.com/prompts/wireframe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "aaravgupta25752@gmail.com",
+      "name": "Aarav Gupta",
+      "events": [
+        {
+          "id": "wireframe",
+          "name": "Wireframe",
+          "link": "https://cyfernode.com/prompts/wireframe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "rhitwik.rhiro@gmail.com",
+      "name": "Rhitwik Roy",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "vaidrachit1@gmai.com",
+      "name": "Rachit Vaid",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "manit.sharma@ais.amity.edu.in",
+      "name": "Manit Sharma",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "abhishek.pandey@ais.amity.edu.in",
+      "name": "Abhishek Pandey",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "adityachauhan.super@gmail.com",
+      "name": "Aditya Chauhan",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        }
+      ]
+    },
+    {
+      "email": "Bhavyasinghrawat_bbms@bluebells.org",
+      "name": "Bhavya Singh Rawat",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        }
+      ]
+    },
+    {
+      "email": "unseen094@gmail.com",
+      "name": "Rehan Kasim",
+      "events": [
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        }
+      ]
+    },
+    {
+      "email": "mohammadhuzaifa9009@gmail.com",
+      "name": "Mohammad Huzaifa",
+      "events": [
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        }
+      ]
+    },
+    {
+      "email": "info.adnanakhtar001@gmail.com",
+      "name": "Adnan A. Laskar",
+      "events": [
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        }
+      ]
+    },
+    {
+      "email": "ritikdubey8801@gmail.com",
+      "name": "Ritik",
+      "events": [
+        {
+          "id": "wireframe",
+          "name": "Wireframe",
+          "link": "https://cyfernode.com/prompts/wireframe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "bmwpaglu0@gmail.com",
+      "name": "Simar Singh",
+      "events": [
+        {
+          "id": "wireframe",
+          "name": "Wireframe",
+          "link": "https://cyfernode.com/prompts/wireframe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "M.Siddarth2021@dpsgurgaon.org",
+      "name": "M. Siddarth",
+      "events": [
+        {
+          "id": "breadboard",
+          "name": "Breadboard",
+          "link": "https://cyfernode.com/prompts/breadboard-prompt"
+        }
+      ]
+    },
+    {
+      "email": "advik124017@dpsgurgaon.org",
+      "name": "Advik Garg",
+      "events": [
+        {
+          "id": "breadboard",
+          "name": "Breadboard",
+          "link": "https://cyfernode.com/prompts/breadboard-prompt"
+        }
+      ]
+    },
+    {
+      "email": "PRISHA32015@dpsgurgaon.org",
+      "name": "Prisha Vishwakarma",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        }
+      ]
+    },
+    {
+      "email": "AANYA94515@dpsgurgaon.org",
+      "name": "Aanya Saini",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        }
+      ]
+    },
+    {
+      "email": "CHAITANYA57313@dpsgurgaon.org",
+      "name": "Chaitanya Gaur",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "DEVANK35913@dpsgurgaon.org",
+      "name": "Devank Dutta Choudhury",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "AKSHAJ117316@dpsgurgaon.org",
+      "name": "Akshaj Dwivedi",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "RAAGA25914@dpsgurgaon.org",
+      "name": "Raaga Sirohi",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "SHANNIDDHYA59814@dpsgurgaon.org",
+      "name": "Shanniddhya Saha",
+      "events": [
+        {
+          "id": "wireframe",
+          "name": "Wireframe",
+          "link": "https://cyfernode.com/prompts/wireframe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "SIDAK645232@DPSGURGAON.ORG",
+      "name": "Sidak Dhingra",
+      "events": [
+        {
+          "id": "wireframe",
+          "name": "Wireframe",
+          "link": "https://cyfernode.com/prompts/wireframe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "9105@gdgps.gdgoenka.com",
+      "name": "Raaghav M.",
+      "events": [
+        {
+          "id": "blendered",
+          "name": "Blendered",
+          "link": "https://cyfernode.com/prompts/blendered-prompt"
+        }
+      ]
+    },
+    {
+      "email": "6554@gdgps.gdgoenka.com",
+      "name": "Aarav Alag",
+      "events": [
+        {
+          "id": "blendered",
+          "name": "Blendered",
+          "link": "https://cyfernode.com/prompts/blendered-prompt"
+        }
+      ]
+    },
+    {
+      "email": "7076@gdgps.gdgoenka.com",
+      "name": "Zaara Reshi",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        }
+      ]
+    },
+    {
+      "email": "6669@gdgps.gdgoenka.com",
+      "name": "Mahika Nanda",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        }
+      ]
+    },
+    {
+      "email": "9455@gdgps.gdgoenka.com",
+      "name": "Aayesha Mittal",
+      "events": [
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        }
+      ]
+    },
+    {
+      "email": "7509@gdgps.gdgoenka.com",
+      "name": "Karnik Gupta",
+      "events": [
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        }
+      ]
+    },
+    {
+      "email": "6745@gdgps.gdgoenka.com",
+      "name": "Haamil Gorai",
+      "events": [
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        }
+      ]
+    },
+    {
+      "email": "8922@gdgps.gdgoenka.com",
+      "name": "Haardik Kewat",
+      "events": [
+        {
+          "id": "wireframe",
+          "name": "Wireframe",
+          "link": "https://cyfernode.com/prompts/wireframe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "6622@gdgps.gdgoenka.com",
+      "name": "Kanav Saxena",
+      "events": [
+        {
+          "id": "wireframe",
+          "name": "Wireframe",
+          "link": "https://cyfernode.com/prompts/wireframe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "gdps_sec17@hotmail.com",
+      "name": "NIYATI MUDGAL",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        }
+      ]
+    },
+    {
+      "email": "atharvnegi26@gmail.com",
+      "name": "Atharv Singh Negi",
+      "events": [
+        {
+          "id": "entrepreneur-exe",
+          "name": "Entreprenuer.exe",
+          "link": "https://cyfernode.com/prompts/entrepreneur-exe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "akshatparmar0512@gmail.com",
+      "name": "Akshat Parmar",
+      "events": [
+        {
+          "id": "entrepreneur-exe",
+          "name": "Entreprenuer.exe",
+          "link": "https://cyfernode.com/prompts/entrepreneur-exe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "commerce.suman@gmail.com",
+      "name": "Hardik Jain",
+      "events": [
+        {
+          "id": "entrepreneur-exe",
+          "name": "Entreprenuer.exe",
+          "link": "https://cyfernode.com/prompts/entrepreneur-exe-prompt"
+        },
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        }
+      ]
+    },
+    {
+      "email": "valenitejs@gmail.com",
+      "name": "Bhavya Aggarwal",
+      "events": [
+        {
+          "id": "wireframe",
+          "name": "Wireframe",
+          "link": "https://cyfernode.com/prompts/wireframe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "induskurnool@gmail.com",
+      "name": "Dharshini",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        },
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "yogaposter1@gmail.com",
+      "name": "gayathri",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "lokreddy44@gmail.com",
+      "name": "avani",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "mvm16652@gmail.com",
+      "name": "M.Venkata Mokshith",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        }
+      ]
+    },
+    {
+      "email": "gbadrinathyadav@gmail.com",
+      "name": "D.Yaswanth",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        },
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "chandasrivenkatpavansai@gmail.com",
+      "name": "C.Srivenkatpavansai",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "himash102938@gmail.com",
+      "name": "C.Himesh reddy",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "gollajeswanthsaiyadav@gmail.com",
+      "name": "G.Jeswanth sai yadav",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "cheeku.sood30@gmail.com",
+      "name": "Kabir Sood",
+      "events": [
+        {
+          "id": "entrepreneur-exe",
+          "name": "Entreprenuer.exe",
+          "link": "https://cyfernode.com/prompts/entrepreneur-exe-prompt"
+        },
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "astik.ayushb@gmail.com",
+      "name": "Astik Barnwal",
+      "events": [
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        }
+      ]
+    },
+    {
+      "email": "ayushsharma10669@gmail.com",
+      "name": "Ayush Sharma",
+      "events": [
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        }
+      ]
+    },
+    {
+      "email": "darshagg20@gmail.com",
+      "name": "Darsh Aggarwal",
+      "events": [
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        }
+      ]
+    },
+    {
+      "email": "shubhnitsinghal@gmail.com",
+      "name": "Shubhnit Singhal",
+      "events": [
+        {
+          "id": "blendered",
+          "name": "Blendered",
+          "link": "https://cyfernode.com/prompts/blendered-prompt"
+        }
+      ]
+    },
+    {
+      "email": "vihaan6510@gmail.com",
+      "name": "Vihaan",
+      "events": [
+        {
+          "id": "blendered",
+          "name": "Blendered",
+          "link": "https://cyfernode.com/prompts/blendered-prompt"
+        }
+      ]
+    },
+    {
+      "email": "amritatomar.2314@gmail.com",
+      "name": "ANTRIKSH TANWAR",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        },
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "varshag.connect@gmail.com",
+      "name": "Shauryaveer Nain",
+      "events": [
+        {
+          "id": "blendered",
+          "name": "Blendered",
+          "link": "https://cyfernode.com/prompts/blendered-prompt"
+        },
+        {
+          "id": "buildout",
+          "name": "Buildout",
+          "link": "https://cyfernode.com/prompts/buildout-prompt"
+        },
+        {
+          "id": "entrepreneur-exe",
+          "name": "Entreprenuer.exe",
+          "link": "https://cyfernode.com/prompts/entrepreneur-exe-prompt"
+        },
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        },
+        {
+          "id": "wireframe",
+          "name": "Wireframe",
+          "link": "https://cyfernode.com/prompts/wireframe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "etashsachdeva21@gmail.com",
+      "name": "etash sachdeva",
+      "events": [
+        {
+          "id": "blendered",
+          "name": "Blendered",
+          "link": "https://cyfernode.com/prompts/blendered-prompt"
+        }
+      ]
+    },
+    {
+      "email": "aadit.issar@gmail.com",
+      "name": "aadit issar",
+      "events": [
+        {
+          "id": "buildout",
+          "name": "Buildout",
+          "link": "https://cyfernode.com/prompts/buildout-prompt"
+        }
+      ]
+    },
+    {
+      "email": "madhvi@suncityschool-37d.com",
+      "name": "ranvir srivastava",
+      "events": [
+        {
+          "id": "entrepreneur-exe",
+          "name": "Entreprenuer.exe",
+          "link": "https://cyfernode.com/prompts/entrepreneur-exe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "praveenk.leo@gmail.com",
+      "name": "ridhi chaudhary",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        }
+      ]
+    },
+    {
+      "email": "dnyanada33@gmail.com",
+      "name": "lavanya chaturvedi",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        }
+      ]
+    },
+    {
+      "email": "rishitmanktala@gmail.com",
+      "name": "rishit manktala",
+      "events": [
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        }
+      ]
+    },
+    {
+      "email": "itsmenavya.0000@gmail.com",
+      "name": "navya shankar",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "priteeshabhatnagar10@gmail.com",
+      "name": "priteesha bhatnagar",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "avniuphadyay2211@gmail.com",
+      "name": "avni upadhyay",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "gaurika.upadhyaya@gmail.com",
+      "name": "gaurika Upadhyaya",
+      "events": [
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    },
+    {
+      "email": "ayushatlearning@gmail.com",
+      "name": "ayush jain",
+      "events": [
+        {
+          "id": "wireframe",
+          "name": "Wireframe",
+          "link": "https://cyfernode.com/prompts/wireframe-prompt"
+        },
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        }
+      ]
+    },
+    {
+      "email": "SHAURYAVEER262-22@suncityschool37.onmicrosoft.com",
+      "name": "Shauryaveer Nain",
+      "events": [
+        {
+          "id": "blendered",
+          "name": "Blendered",
+          "link": "https://cyfernode.com/prompts/blendered-prompt"
+        }
+      ]
+    },
+    {
+      "email": "etashachdeva21@gmail.com",
+      "name": "Etash Sachdeva",
+      "events": [
+        {
+          "id": "blendered",
+          "name": "Blendered",
+          "link": "https://cyfernode.com/prompts/blendered-prompt"
+        }
+      ]
+    },
+    {
+      "email": "kathuria.nandita@gmail.com",
+      "name": "Manasvi Kathuria",
+      "events": [
+        {
+          "id": "entrepreneur-exe",
+          "name": "Entreprenuer.exe",
+          "link": "https://cyfernode.com/prompts/entrepreneur-exe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "mansimar0134-19@suncityschool37.onmicrosoft.com",
+      "name": "Mansimar Babbar",
+      "events": [
+        {
+          "id": "entrepreneur-exe",
+          "name": "Entreprenuer.exe",
+          "link": "https://cyfernode.com/prompts/entrepreneur-exe-prompt"
+        }
+      ]
+    },
+    {
+      "email": "sabita.prasad05@gmail.com",
+      "name": "Nidhyathi Gupta",
+      "events": [
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        }
+      ]
+    },
+    {
+      "email": "RYAN167-22@suncityschool37.onmicrosoft.com",
+      "name": "Ryan Sharma",
+      "events": [
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        }
+      ]
+    },
+    {
+      "email": "kokchapreeti@gmail.com",
+      "name": "Yoshita",
+      "events": [
+        {
+          "id": "entrepreneur-exe",
+          "name": "Entreprenuer.exe",
+          "link": "https://cyfernode.com/prompts/entrepreneur-exe-prompt"
+        },
+        {
+          "id": "fontastic",
+          "name": "Fontastic",
+          "link": "https://cyfernode.com/prompts/fontastic-prompt"
+        },
+        {
+          "id": "unbranded",
+          "name": "Unbranded",
+          "link": "https://cyfernode.com/prompts/unbranded-prompt"
+        },
+        {
+          "id": "unscripted",
+          "name": "Unscripted",
+          "link": "https://cyfernode.com/prompts/unscripted-prompt"
+        }
+      ]
+    }
+  ]
+}

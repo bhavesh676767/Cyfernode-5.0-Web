@@ -581,6 +581,14 @@
     if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
     if (!(event.target instanceof Element)) return
 
+    if (event.target.closest('.framer-submission-container')) {
+      event.preventDefault()
+      event.stopPropagation()
+      if (!submissionIsOpen()) return
+      smoothNavigate('/submission')
+      return
+    }
+
     if (brochureTrigger(event.target)) {
       event.preventDefault()
       event.stopPropagation()
@@ -703,6 +711,88 @@
   }
 
   var SCHOOL_LOGO_SRC = 'https://framerusercontent.com/images/xjDxMWEiZB9bsPheXoyR4jMPRyE.png'
+  var SUBMISSION_OPENS_AT = Date.parse('2026-10-01T00:00:00+05:30')
+
+  function submissionIsOpen() {
+    return Date.now() >= SUBMISSION_OPENS_AT
+  }
+
+  function formatSubmissionCountdown(now) {
+    var total = Math.max(0, Math.floor((SUBMISSION_OPENS_AT - now) / 1000))
+    var days = Math.floor(total / 86400)
+    var hours = Math.floor((total % 86400) / 3600)
+    var minutes = Math.floor((total % 3600) / 60)
+    var seconds = total % 60
+    function pad(value) {
+      return value < 10 ? '0' + value : String(value)
+    }
+    var clock = pad(hours) + ':' + pad(minutes) + ':' + pad(seconds)
+    return days > 0 ? days + 'd ' + clock : clock
+  }
+
+  function syncSubmissionLock() {
+    var open = submissionIsOpen()
+    document.querySelectorAll('.framer-submission-container').forEach(function (existing) {
+      existing.classList.toggle('is-locked', !open)
+      var link = existing.querySelector('a, button')
+      if (link) {
+        if (open) {
+          link.setAttribute('href', '/submission')
+          link.setAttribute('aria-label', 'Submission')
+          link.removeAttribute('aria-disabled')
+          link.removeAttribute('tabindex')
+        } else {
+          link.removeAttribute('href')
+          link.setAttribute('aria-disabled', 'true')
+          link.setAttribute('tabindex', '-1')
+          link.setAttribute('aria-label', 'Submission opens 1 October 2026')
+        }
+      }
+      var timer = existing.querySelector('.cyfernode-submission-timer')
+      if (open) {
+        if (timer) timer.remove()
+        return
+      }
+      if (!timer) {
+        timer = document.createElement('p')
+        timer.className = 'cyfernode-submission-timer'
+        timer.setAttribute('aria-live', 'polite')
+      }
+      if (link && timer.parentElement !== link) link.appendChild(timer)
+      var label = formatSubmissionCountdown(Date.now())
+      if (timer.textContent !== label) timer.textContent = label
+    })
+  }
+
+  function ensureSubmissionButton() {
+    document.querySelectorAll('.framer-1722gyb').forEach(function (row) {
+      var invite = row.querySelector('.framer-13hwuku-container')
+      if (!invite) return
+
+      var existing = row.querySelector('.framer-submission-container')
+      if (!existing) {
+        existing = invite.cloneNode(true)
+        existing.className = 'framer-submission-container'
+        existing.querySelectorAll('.framer-text').forEach(function (node) {
+          if (normalizeLabel(node.textContent) === 'request invite') {
+            node.textContent = 'Submission'
+          }
+        })
+        invite.insertAdjacentElement('beforebegin', existing)
+      }
+
+      if (existing.nextElementSibling !== invite) {
+        invite.insertAdjacentElement('beforebegin', existing)
+      }
+
+      var link = existing.querySelector('a, button')
+      if (link && submissionIsOpen()) {
+        link.setAttribute('href', '/submission')
+        link.setAttribute('aria-label', 'Submission')
+      }
+    })
+    syncSubmissionLock()
+  }
 
   function ensureSchoolLogoTop() {
     var bottomLogos = document.querySelectorAll(
@@ -768,8 +858,10 @@
     injectPerformanceStyles()
     wireLinks()
     blockBadge()
+    ensureSubmissionButton()
     ensureSchoolLogoTop()
     idlePrefetchRoutes()
+    window.setInterval(syncSubmissionLock, 1000)
 
     var observerScheduled = false
     new MutationObserver(function () {
@@ -779,6 +871,7 @@
         observerScheduled = false
         wireLinks()
         blockBadge()
+        ensureSubmissionButton()
         ensureSchoolLogoTop()
       })
     }).observe(document.documentElement, {
@@ -800,4 +893,5 @@
   }
 
 })()
+
 
