@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>75e6406d-6f03-4a0c-83b3-0dee9ce17ab8</title>
+<meta name="theme-color" content="#08080b">
+<style>
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100%;
+  background: #08080b;
+  color: #f4f4f5;
+  font-family: 'Consolas', 'Courier New', monospace;
+  display: grid;
+  place-items: center;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Preloader */
+#preloader {
+  position: fixed;
+  inset: 0;
+  background: #08080b;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.preloader-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #f59e0b;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.uuid-text {
+  font-size: clamp(14px, 3vw, 20px);
+  letter-spacing: 0.08em;
+  color: #e4e4e7;
+  user-select: all;
+  padding: 24px;
+}
+</style>
+</head>
+<body>
+<div id="preloader">
+  <div class="preloader-spinner"></div>
+</div>
+
+<div class="uuid-text">75e6406d-6f03-4a0c-83b3-0dee9ce17ab8</div>
+
+<script type="module">
+window.addEventListener('DOMContentLoaded', () => {
+  const preloader = document.getElementById('preloader');
+  if (preloader) {
+    preloader.style.opacity = '0';
+    preloader.style.visibility = 'hidden';
+    setTimeout(() => preloader.remove(), 300);
+  }
+});
+</script>
+</body>
+</html>

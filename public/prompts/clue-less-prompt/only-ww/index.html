@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Only WW - Cyfernode 5.0</title>
+<meta name="description" content="Only WW">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700,800,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --text: #111114;
+  --muted: rgba(17, 17, 20, 0.44);
+  --orange: #d24500;
+  --font-sans: 'Satoshi', system-ui, sans-serif;
+  --font-mono: 'Consolas', 'Courier New', monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100%;
+  background: #fff;
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+#exit-btn {
+  position: fixed;
+  top: 28px;
+  left: 28px;
+  z-index: 800;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.15s ease;
+}
+
+#exit-btn:hover {
+  color: var(--orange);
+}
+
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 100px 24px 60px;
+}
+
+.panel {
+  width: min(100%, 580px);
+}
+
+.clue-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.clue-heading {
+  font-size: clamp(2rem, 4.5vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  color: var(--text);
+}
+
+.clue-subheading {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.clue-quote {
+  font-size: 16px;
+  font-style: italic;
+  color: rgba(17, 17, 20, 0.82);
+  line-height: 1.6;
+  border-left: 2px solid var(--text);
+  padding-left: 14px;
+}
+
+.clue-line {
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(17, 17, 20, 0.75);
+}
+
+.cipher-card {
+  background: #111114;
+  color: #f4f4f5;
+  padding: 22px 20px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  line-height: 1.7;
+  letter-spacing: 0.08em;
+  margin: 6px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.cipher-card .label {
+  color: rgba(255, 255, 255, 0.45);
+  display: inline-block;
+  width: 80px;
+}
+
+.cipher-card .val {
+  color: #ff9858;
+  font-weight: 700;
+}
+
+.cipher-card .unknown {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Minimal Input */
+.input-line {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid var(--text);
+  padding: 6px 0;
+  margin-top: 16px;
+}
+
+.input-prompt {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-right: 12px;
+  user-select: none;
+}
+
+.raw-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  outline: none;
+}
+
+.status-echo {
+  font-size: 13px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  min-height: 20px;
+  margin-top: 8px;
+  transition: opacity 0.2s ease;
+  line-height: 1.4;
+}
+
+.status-echo.success {
+  color: #10b981;
+}
+
+.status-echo.error {
+  color: #b91c1c;
+}
+
+.status-echo.warning {
+  color: #d97706;
+}
+
+/* Completion */
+.done-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.done-tag {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--muted);
+}
+
+.done-title {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.done-link {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--orange);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.top-reset-btn {
+  position: fixed;
+  top: 28px;
+  right: 28px;
+  z-index: 800;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.15s ease;
+}
+
+.top-reset-btn:hover {
+  color: var(--text);
+}
+
+@media (max-width: 768px) {
+  #exit-btn {
+    top: 24px;
+    left: 20px;
+  }
+  .top-reset-btn {
+    top: 24px;
+    right: 20px;
+  }
+  .page {
+    padding: 96px 16px 40px;
+  }
+}
+</style>
+</head>
+<body>
+<!-- LOCK:START -->
+<div id="lock-overlay" style="position:fixed;inset:0;background:#08080b;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;">
+  <div style="font-family:'Consolas',monospace;font-size:10px;letter-spacing:0.18em;color:rgba(255,255,255,0.25);text-transform:uppercase;">Cyfernode 5.0 · Clue-Less</div>
+  <div style="font-family:'Satoshi',system-ui,sans-serif;font-size:clamp(2rem,6vw,3rem);font-weight:900;color:#fff;letter-spacing:-0.04em;line-height:1;">LOCKED</div>
+  <div style="font-family:'Consolas',monospace;font-size:12px;color:rgba(255,255,255,0.35);text-align:center;margin-top:4px;">Opens at 12:00 PM &nbsp;·&nbsp; 27 Sep 2026</div>
+  <div id="lock-countdown" style="font-family:'Consolas',monospace;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;color:#d24500;letter-spacing:0.08em;margin-top:12px;">--:--:--</div>
+  <div style="font-family:'Consolas',monospace;font-size:10px;color:rgba(255,255,255,0.15);margin-top:24px;letter-spacing:0.08em;">HH &nbsp; MM &nbsp; SS</div>
+</div>
+<script>
+(function(){
+  var UNLOCK = new Date('2026-09-27T12:00:00+05:30').getTime();
+  var overlay = document.getElementById('lock-overlay');
+  var cd = document.getElementById('lock-countdown');
+  if (!overlay) return;
+  function tick() {
+    var now = Date.now();
+    var diff = UNLOCK - now;
+    if (diff <= 0) { overlay.remove(); return; }
+    var h = Math.floor(diff / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    var s = Math.floor((diff % 60000) / 1000);
+    cd.textContent = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }
+  tick();
+  var iv = setInterval(function(){ tick(); if (Date.now() >= UNLOCK) clearInterval(iv); }, 1000);
+})();
+</script>
+<!-- LOCK:END -->
+
+<a href="/prompts/clue-less-prompt" id="exit-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
+<button type="button" id="reset-btn" class="top-reset-btn" title="Reset level progress">Reset</button>
+
+<main class="page">
+  <article class="panel" id="viewport"></article>
+</main>
+
+<script type="module">
+const STORAGE_KEY = 'cyfernode_clueless_only_ww_stage'
+
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function clean(str) {
+  return String(str || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '')
+}
+
+const STAGES = [
+  // Stage 1 — The sculpture -> K2's plaintext
+  {
+    id: 1,
+    title: 'ONLY WW',
+    quotes: [
+      'A copper wall outside a cafeteria has been whispering since 1990.',
+      'Most of it has been made to speak. One part still refuses.',
+      'Somewhere nearby, something was put in the ground on purpose,\nand only two initials know where.',
+    ],
+    validHashes: [
+      '904d164f95a5b228b68967003e20a087edb7745a707266c5674f09b2abb6394c',
+      'fceb290782970d75e8709e798535222e93812ada525b23e92fc36b1d89675603',
+      '47e0905834f07331f62c47658f50fa4d7ea61dc0a04a01ca0caff96de8ff1e7c',
+      '2a539aaf5aceccbfad6332230a84e699bfc385d570410f15fa8a2796d6c0ec79',
+      '44989b9559a61ef8145e1f1fd0c5e3c58e72345da78482d99539985625a93127'
+    ],
+    next: 2,
+  },
+
+  // Stage 2
+  {
+    id: 2,
+    title: '/ONLYWW',
+    quotes: [
+      'A message keyed to the copper sculpture.',
+    ],
+    cipherCard: {
+      key: 'ABSCISSAABSCI',
+      plain: '?????????????',
+      cipher: 'BVJKID???????',
+    },
+    validHashes: [
+      '4c991cf8e303d8013a9b137617c612122971b789f59e6f6eac9b7e76eea95c24',
+      '6c7cae8528a34c9e1974cef6cff50c15d092ea263a59b304fb54eced2949903f',
+      '8288a8766b49562749826bed4ec76c42ff88bf1fcf9f6423f825f996acfbafe3'
+    ],
+    next: 3,
+  },
+
+  // Stage 3
+  {
+    id: 3,
+    title: 'BURIAL',
+    quotes: [
+      'Not a trench. Not a cemetery.',
+      '“Only five people know I make tunes.”',
+    ],
+    lines: [
+      'Suspects from the tabloid manhunt:',
+      '• Aphex Twin (Richard D. James)',
+      '• Fatboy Slim (Norman Cook)',
+      '<span style="font-size:13px;color:rgba(17,17,20,0.5);font-style:italic;">A documented red herring.</span>',
+    ],
+    redHerrings: ['aphextwin', 'richarddjames', 'fatboyslim', 'normancook', 'richardjames'],
+    redHerringMessage: 'Documented red herring. Discard the false lead.',
+    validHashes: [
+      '6b84a219960e19867bed0c7e10577bbf842307737894ebb32ec4b1c15c70ca92',
+      'a17eaaffdb514d7a5882eac2f745e44124fc864881d9e07086ecd04f82c218f3',
+      '65e404cf1c1a2883cd44534b96018eff3602a2995525d06b6edb8a52a6dd5837',
+      'cb99dfdb661f1bd9a61afc6b93e25bffcf9afb48f325469c0bd124ad19ede787',
+      '666532561bf78876d890de0ff1b62176f7ff0956368f0b30cc93e29cff1ce2b7'
+    ],
+    next: 4,
+  },
+
+  // Stage 4
+  {
+    id: 4,
+    title: '/NOTAPHEXTWIN',
+    quotes: [
+      'February 2008.',
+      'The Independent traced the frequencies back to South London.',
+      'The same school that shaped Kieran Hebden.',
+    ],
+    lines: [
+      'An alumnus under the static.',
+    ],
+    validHashes: [
+      'cb99dfdb661f1bd9a61afc6b93e25bffcf9afb48f325469c0bd124ad19ede787',
+      'f283e18f38a872647b28969d7bad756c2781da5bb4d9b1e60a38b40a8626e2ee',
+      '7f8b5fa6b3d12c92990849a4ac1f774caa752974c4f646f7d6b76064af4ac44e',
+      '1bb0446ad091ebcc1d72113aa49bd083617d7473812bd06106bec1015afbd931',
+      '97420b3997a8bad479913c31e87cf4379e268a2ac03d00d2e9a359aa0760f1a9'
+    ],
+    next: 5,
+  },
+
+  // Stage 5
+  {
+    id: 5,
+    title: 'THE CONFIRMATION',
+    quotes: [
+      'August 5, 2008.',
+      '“My name\'s...”',
+    ],
+    lines: [
+      '<span style="font-size:13px;font-family:var(--font-mono);color:rgba(17,17,20,0.55);">format: lowercase, no spaces</span>',
+    ],
+    validHashes: [
+      '1bb0446ad091ebcc1d72113aa49bd083617d7473812bd06106bec1015afbd931',
+      '97420b3997a8bad479913c31e87cf4379e268a2ac03d00d2e9a359aa0760f1a9',
+      'bc16f5825a9dafc8c245dc7cd93f4e671a9885035a73e6ef29c04f2d3863bfab',
+      '2f692de0779aefd8897c84dbc39b6c906419f773630bf918ce7e59d609887d4d'
+    ],
+    next: 'CLEAR',
+  },
+]
+
+let currentStage = localStorage.getItem(STORAGE_KEY) || 1
+currentStage = isNaN(currentStage) ? currentStage : parseFloat(currentStage)
+
+function setStage(val) {
+  currentStage = val
+  localStorage.setItem(STORAGE_KEY, String(val))
+}
+
+function markLevelCompleted(levelId) {
+  try {
+    const raw = localStorage.getItem('cyfernode_clueless_completed_levels')
+    const list = raw ? JSON.parse(raw) : []
+    if (!list.includes(levelId)) {
+      list.push(levelId)
+      localStorage.setItem('cyfernode_clueless_completed_levels', JSON.stringify(list))
+    }
+  } catch {}
+}
+
+function fadeAndRedirect() {
+  document.body.style.transition = 'opacity 0.8s ease'
+  document.body.style.opacity = '0'
+  setTimeout(() => {
+    window.location.href = '/prompts/clue-less-prompt'
+  }, 800)
+}
+
+function render() {
+  const container = document.getElementById('viewport')
+  if (!container) return
+
+  if (currentStage === 'CLEAR') {
+    container.innerHTML = `
+      <div class="done-stack">
+        <span class="done-tag">[RECORDED]</span>
+        <h1 class="done-title">WILL BEVAN</h1>
+        <p class="clue-line">Anonymity ended.</p>
+        <a href="/prompts/clue-less-prompt" class="done-link">&larr; Return</a>
+      </div>
+    `
+    return
+  }
+
+  const stage = STAGES.find(s => String(s.id) === String(currentStage)) || STAGES[0]
+
+  const quotesHtml = (stage.quotes || []).map(q =>
+    `<div class="clue-quote">${q.replace(/\n/g, '<br>')}</div>`
+  ).join('')
+
+  const linesHtml = (stage.lines || []).map(l =>
+    `<div class="clue-line" style="font-weight:700;font-size:15px;">${l}</div>`
+  ).join('')
+
+  let cipherCardHtml = ''
+  if (stage.cipherCard) {
+    cipherCardHtml = `
+      <div class="cipher-card">
+        <div><span class="label">key:</span> <span class="val">${stage.cipherCard.key}</span></div>
+        <div><span class="label">plain:</span> <span class="unknown">${stage.cipherCard.plain}</span></div>
+        <div><span class="label">cipher:</span> <span class="val">${stage.cipherCard.cipher}</span></div>
+      </div>
+    `
+  }
+
+  container.innerHTML = `
+    
+    <div class="clue-stack">
+      <h1 class="clue-heading">${stage.title}</h1>
+      ${quotesHtml}
+      ${cipherCardHtml}
+      ${linesHtml}
+
+      <form id="clue-form">
+        <div class="input-line">
+          <span class="input-prompt">&gt;</span>
+          <input
+            type="text"
+            class="raw-input"
+            id="user-input"
+            autocomplete="off"
+            spellcheck="false"
+            autofocus
+          />
+        </div>
+        <div class="status-echo" id="echo"></div>
+      </form>
+    </div>
+  `
+
+  const form = document.getElementById('clue-form')
+  const input = document.getElementById('user-input')
+  const echo = document.getElementById('echo')
+
+  input?.focus()
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const val = clean(input.value)
+    if (!val) return
+
+    // Red herring check
+    if (stage.redHerrings && stage.redHerrings.some(rh => clean(rh) === val)) {
+      echo.textContent = stage.redHerringMessage || 'Documented red herring.'
+      echo.className = 'status-echo warning'
+      input.select()
+      return
+    }
+
+    const hashed = await sha256(val);
+    const ok = stage.validHashes && stage.validHashes.includes(hashed);
+
+    if (ok) {
+      echo.textContent = 'Correct.'
+      echo.className = 'status-echo success'
+      input.disabled = true
+
+      if (stage.next === 'CLEAR') {
+        markLevelCompleted('only-ww')
+        setStage('CLEAR')
+        setTimeout(() => {
+          fadeAndRedirect()
+        }, 3000)
+      } else {
+        setTimeout(() => {
+          setStage(stage.next)
+          render()
+        }, 3000)
+      }
+    } else {
+      echo.textContent = '...'
+      echo.className = 'status-echo error'
+      input.select()
+    }
+  })
+}
+
+document.getElementById('reset-btn')?.addEventListener('click', () => {
+  if (confirm('Reset level progress?')) {
+    setStage(1)
+    render()
+  }
+})
+
+render()
+</script>
+</body>
+</html>

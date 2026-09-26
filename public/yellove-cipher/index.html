@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yellove Cipher - Tool</title>
+<meta name="description" content="Yellove Cipher Tool">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700,800,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --text: #111114;
+  --muted: rgba(17, 17, 20, 0.44);
+  --orange: #d24500;
+  --yellow: #f59e0b;
+  --font-sans: 'Satoshi', system-ui, sans-serif;
+  --font-mono: 'Consolas', 'Courier New', monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100%;
+  background: #0d0d11;
+  color: #f4f4f5;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Preloader */
+#preloader {
+  position: fixed;
+  inset: 0;
+  background: #0d0d11;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.preloader-spinner {
+  width: 32px;
+  height: 32px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--yellow);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 80px 20px 60px;
+}
+
+.card {
+  width: min(100%, 620px);
+  background: #17171d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+}
+
+.title-area {
+  margin-bottom: 24px;
+}
+
+.badge {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: 6px;
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.sub {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 4px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--font-mono);
+}
+
+.input-box, .textarea-box {
+  width: 100%;
+  background: #0d0d11;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  padding: 12px 14px;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input-box:focus, .textarea-box:focus {
+  border-color: var(--yellow);
+}
+
+.textarea-box {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.mode-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 10px;
+  background: #0d0d11;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mode-btn.active {
+  background: var(--yellow);
+  color: #000;
+  border-color: var(--yellow);
+}
+
+.action-btn {
+  width: 100%;
+  padding: 12px;
+  background: #fff;
+  color: #000;
+  font-weight: 800;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.action-btn:hover {
+  opacity: 0.9;
+}
+
+.output-box {
+  margin-top: 24px;
+  background: #0a0a0d;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.output-label {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 6px;
+}
+
+.output-text {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  color: var(--yellow);
+  word-break: break-all;
+  user-select: all;
+  min-height: 22px;
+}
+
+.debug-info {
+  margin-top: 10px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: rgba(255, 255, 255, 0.4);
+}
+</style>
+</head>
+<body>
+<div id="preloader">
+  <div class="preloader-spinner"></div>
+</div>
+
+<main class="page">
+  <div class="card">
+    <div class="title-area">
+      <div class="badge">TOOL / DECODER</div>
+      <h1 class="title">Yellove Cipher</h1>
+      <p class="sub">Two-layer Columnar Transposition + Repeating Shift Reversible Cipher</p>
+    </div>
+
+    <div class="mode-toggle">
+      <button type="button" class="mode-btn active" id="btn-decode" data-mode="decode">Decode</button>
+      <button type="button" class="mode-btn" id="btn-encode" data-mode="encode">Encode</button>
+    </div>
+
+    <div class="form-group">
+      <label class="label" for="key-input">KEY</label>
+      <input type="text" id="key-input" class="input-box" value="2010-2023" placeholder="e.g. 2010-2023" />
+    </div>
+
+    <div class="form-group">
+      <label class="label" for="text-input" id="text-label">CIPHERTEXT</label>
+      <textarea id="text-input" class="textarea-box" placeholder="Enter text..."></textarea>
+    </div>
+
+    <button type="button" id="btn-process" class="action-btn">PROCESS</button>
+
+    <div class="output-box">
+      <div class="output-label">RESULT</div>
+      <div class="output-text" id="output-text">—</div>
+      <div class="debug-info" id="debug-info"></div>
+    </div>
+  </div>
+</main>
+
+<script type="module">
+window.addEventListener('DOMContentLoaded', () => {
+  const preloader = document.getElementById('preloader');
+  if (preloader) {
+    preloader.style.opacity = '0';
+    preloader.style.visibility = 'hidden';
+    setTimeout(() => preloader.remove(), 300);
+  }
+});
+
+let currentMode = 'decode';
+
+function getYelloveKeyDigits(keyStr) {
+  const digits = keyStr.replace(/\D/g, '').split('').map(Number);
+  if (digits.length === 0) throw new Error("Key must contain digits");
+  return digits;
+}
+
+function getColumnOrder(keyDigits) {
+  const indexed = keyDigits.map((val, idx) => ({ val, idx }));
+  indexed.sort((a, b) => a.val - b.val || a.idx - b.idx);
+  return indexed.map(item => item.idx);
+}
+
+function encodeYellove(plaintext, keyStr = "2010-2023") {
+  const keyDigits = getYelloveKeyDigits(keyStr);
+  const numCols = keyDigits.length;
+  const origLen = plaintext.length;
+  const padLen = (numCols - (origLen % numCols)) % numCols;
+  const padded = plaintext + 'X'.repeat(padLen);
+  const numRows = padded.length / numCols;
+  
+  // Layer 1: Columnar transposition
+  const colOrder = getColumnOrder(keyDigits);
+  let stage1 = '';
+  for (const col of colOrder) {
+    for (let r = 0; r < numRows; r++) {
+      stage1 += padded[r * numCols + col];
+    }
+  }
+
+  // Layer 2: Repeating numeric shift
+  let ciphertext = '';
+  for (let i = 0; i < stage1.length; i++) {
+    const ch = stage1[i];
+    const shift = keyDigits[i % numCols];
+    
+    if (ch >= 'a' && ch <= 'z') {
+      const code = ((ch.charCodeAt(0) - 97 + shift) % 26) + 97;
+      ciphertext += String.fromCharCode(code);
+    } else if (ch >= 'A' && ch <= 'Z') {
+      const code = ((ch.charCodeAt(0) - 65 + shift) % 26) + 65;
+      ciphertext += String.fromCharCode(code);
+    } else {
+      ciphertext += ch;
+    }
+  }
+
+  return { origLen, stage1, ciphertext };
+}
+
+function decodeYellove(ciphertext, keyStr = "2010-2023") {
+  const keyDigits = getYelloveKeyDigits(keyStr);
+  const numCols = keyDigits.length;
+  
+  // Reverse Layer 2
+  let stage1 = '';
+  for (let i = 0; i < ciphertext.length; i++) {
+    const ch = ciphertext[i];
+    const shift = keyDigits[i % numCols];
+    
+    if (ch >= 'a' && ch <= 'z') {
+      const code = ((ch.charCodeAt(0) - 97 - shift + 26) % 26) + 97;
+      stage1 += String.fromCharCode(code);
+    } else if (ch >= 'A' && ch <= 'Z') {
+      const code = ((ch.charCodeAt(0) - 65 - shift + 26) % 26) + 65;
+      stage1 += String.fromCharCode(code);
+    } else {
+      stage1 += ch;
+    }
+  }
+
+  // Reverse Layer 1
+  const numRows = Math.ceil(stage1.length / numCols);
+  const colOrder = getColumnOrder(keyDigits);
+  const grid = Array.from({ length: numRows }, () => Array(numCols).fill(''));
+  
+  let ptr = 0;
+  for (const col of colOrder) {
+    for (let r = 0; r < numRows; r++) {
+      if (ptr < stage1.length) {
+        grid[r][col] = stage1[ptr++];
+      }
+    }
+  }
+
+  let unpadded = '';
+  for (let r = 0; r < numRows; r++) {
+    for (let c = 0; c < numCols; c++) {
+      unpadded += grid[r][c];
+    }
+  }
+
+  return { stage1, result: unpadded.replace(/X+$/i, ''), rawWithPadding: unpadded };
+}
+
+const btnDecode = document.getElementById('btn-decode');
+const btnEncode = document.getElementById('btn-encode');
+const textLabel = document.getElementById('text-label');
+const textInput = document.getElementById('text-input');
+const keyInput = document.getElementById('key-input');
+const btnProcess = document.getElementById('btn-process');
+const outputText = document.getElementById('output-text');
+const debugInfo = document.getElementById('debug-info');
+
+btnDecode.addEventListener('click', () => {
+  currentMode = 'decode';
+  btnDecode.classList.add('active');
+  btnEncode.classList.remove('active');
+  textLabel.textContent = 'CIPHERTEXT';
+  process();
+});
+
+btnEncode.addEventListener('click', () => {
+  currentMode = 'encode';
+  btnEncode.classList.add('active');
+  btnDecode.classList.remove('active');
+  textLabel.textContent = 'PLAINTEXT';
+  process();
+});
+
+function process() {
+  const text = textInput.value.trim();
+  const key = keyInput.value.trim() || '2010-2023';
+  if (!text) {
+    outputText.textContent = '—';
+    debugInfo.textContent = '';
+    return;
+  }
+
+  try {
+    if (currentMode === 'encode') {
+      const res = encodeYellove(text, key);
+      outputText.textContent = res.ciphertext;
+      debugInfo.textContent = `Stage 1 Transposition: ${res.stage1}`;
+    } else {
+      const res = decodeYellove(text, key);
+      outputText.textContent = res.result;
+      debugInfo.textContent = `Reversed Transposition (with padding): ${res.rawWithPadding}`;
+    }
+  } catch (err) {
+    outputText.textContent = `Error: ${err.message}`;
+    debugInfo.textContent = '';
+  }
+}
+
+btnProcess.addEventListener('click', process);
+textInput.addEventListener('input', process);
+keyInput.addEventListener('input', process);
+</script>
+</body>
+</html>

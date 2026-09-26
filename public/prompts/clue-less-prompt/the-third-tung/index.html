@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE THIRD TUNG - Cyfernode 5.0</title>
+<meta name="description" content="THE THIRD TUNG">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700,800,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --text: #111114;
+  --muted: rgba(17, 17, 20, 0.44);
+  --orange: #d24500;
+  --font-sans: 'Satoshi', system-ui, sans-serif;
+  --font-mono: 'Consolas', 'Courier New', monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100%;
+  background: #fff;
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom dark/gold selection styling so invisible white text pops upon selection */
+::selection {
+  background: #111114;
+  color: #f59e0b;
+}
+
+#exit-btn {
+  position: fixed;
+  top: 28px;
+  left: 28px;
+  z-index: 800;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.15s ease;
+}
+
+#exit-btn:hover {
+  color: var(--orange);
+}
+
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 100px 24px 60px;
+}
+
+.panel {
+  width: min(100%, 580px);
+}
+
+.clue-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.clue-heading {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: var(--text);
+}
+
+.clue-quote {
+  font-size: 16px;
+  font-style: italic;
+  color: rgba(17, 17, 20, 0.82);
+  line-height: 1.6;
+  border-left: 2px solid var(--text);
+  padding-left: 14px;
+}
+
+.clue-line {
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(17, 17, 20, 0.75);
+}
+
+.level-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #000;
+  margin-bottom: 4px;
+}
+
+.level-image {
+  width: 100%;
+  max-height: 380px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Seamless inline invisible text: Takes zero extra line-height, reveals purely on selection */
+.invisible-select-text {
+  color: #fff;
+  user-select: text;
+  font-size: 12px;
+  display: inline;
+}
+
+/* Subtle interactive hover cue on clue lines */
+.clue-hover-cue {
+  transition: color 0.25s ease, opacity 0.25s ease;
+  cursor: default;
+}
+
+.clue-hover-cue:hover {
+  color: var(--orange);
+}
+
+/* Minimal Input */
+.input-line {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid var(--text);
+  padding: 6px 0;
+  margin-top: 12px;
+}
+
+.input-prompt {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-right: 12px;
+  user-select: none;
+}
+
+.raw-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  outline: none;
+}
+
+.status-echo {
+  font-size: 13px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  min-height: 20px;
+  margin-top: 6px;
+  transition: opacity 0.2s ease;
+  line-height: 1.4;
+}
+
+.status-echo.success {
+  color: #10b981;
+}
+
+.status-echo.error {
+  color: #b91c1c;
+}
+
+.status-echo.warning {
+  color: #d97706;
+}
+
+/* Completion */
+.done-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.done-tag {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--muted);
+}
+
+.done-title {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.done-link {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--orange);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.top-reset-btn {
+  position: fixed;
+  top: 28px;
+  right: 28px;
+  z-index: 800;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.15s ease;
+}
+
+.top-reset-btn:hover {
+  color: var(--text);
+}
+
+@media (max-width: 768px) {
+  #exit-btn {
+    top: 24px;
+    left: 20px;
+  }
+  .top-reset-btn {
+    top: 24px;
+    right: 20px;
+  }
+  .page {
+    padding: 96px 16px 40px;
+  }
+}
+</style>
+</head>
+<body>
+<!-- LOCK:START -->
+<div id="lock-overlay" style="position:fixed;inset:0;background:#08080b;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;">
+  <div style="font-family:'Consolas',monospace;font-size:10px;letter-spacing:0.18em;color:rgba(255,255,255,0.25);text-transform:uppercase;">Cyfernode 5.0 · Clue-Less</div>
+  <div style="font-family:'Satoshi',system-ui,sans-serif;font-size:clamp(2rem,6vw,3rem);font-weight:900;color:#fff;letter-spacing:-0.04em;line-height:1;">LOCKED</div>
+  <div style="font-family:'Consolas',monospace;font-size:12px;color:rgba(255,255,255,0.35);text-align:center;margin-top:4px;">Opens at 12:00 PM &nbsp;·&nbsp; 27 Sep 2026</div>
+  <div id="lock-countdown" style="font-family:'Consolas',monospace;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;color:#d24500;letter-spacing:0.08em;margin-top:12px;">--:--:--</div>
+  <div style="font-family:'Consolas',monospace;font-size:10px;color:rgba(255,255,255,0.15);margin-top:24px;letter-spacing:0.08em;">HH &nbsp; MM &nbsp; SS</div>
+</div>
+<script>
+(function(){
+  var UNLOCK = new Date('2026-09-27T12:00:00+05:30').getTime();
+  var overlay = document.getElementById('lock-overlay');
+  var cd = document.getElementById('lock-countdown');
+  if (!overlay) return;
+  function tick() {
+    var now = Date.now();
+    var diff = UNLOCK - now;
+    if (diff <= 0) { overlay.remove(); return; }
+    var h = Math.floor(diff / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    var s = Math.floor((diff % 60000) / 1000);
+    cd.textContent = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }
+  tick();
+  var iv = setInterval(function(){ tick(); if (Date.now() >= UNLOCK) clearInterval(iv); }, 1000);
+})();
+</script>
+<!-- LOCK:END -->
+
+<a href="/prompts/clue-less-prompt" id="exit-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
+<button type="button" id="reset-btn" class="top-reset-btn" title="Reset level progress">Reset</button>
+
+<main class="page">
+  <article class="panel" id="viewport"></article>
+</main>
+
+<script type="module">
+const STORAGE_KEY = 'cyfernode_clueless_third_tung_stage'
+
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function clean(str) {
+  return String(str || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '')
+}
+
+/*
+  DEVTOOLS CONSOLE BROADCAST
+*/
+console.log(
+  "%c🌙 [POS RONDA SISKAMLING FREQUENCY: 03:00 WIB]\n" +
+  "%cIsyarat malam berulang tiga kali.\n" +
+  "Kamus pos jaga: 1 ketuk = Lelayu | 2 ketuk = Pencurian | 3 ketuk = Bahaya / Sahur | 4 ketuk = Banjir | 5 ketuk = Aman.\n" +
+  "Instrumen: Kayu nangka / bambu berongga yang dilubangi memanjang (Slit Drum).\n" +
+  "Dengarkan tanda bunyi isyarat malam.",
+  "color: #f59e0b; font-weight: bold; font-family: monospace; font-size: 13px;",
+  "color: #94a3b8; font-family: monospace; font-size: 11px;"
+);
+
+const STAGES = [
+  // Stage 1 — THE PHOTOGRAPH
+  {
+    id: 1,
+    image: '/sahur.png',
+    quotes: [
+      '“Some warnings are repeated because the first one was ignored.”',
+    ],
+    hiddenSelectClue: 'suara ketukan di pos ronda tengah malam: tiga kali bunyi bilah bambu berongga bergetar...',
+    creatureKeywords: ['sahur', 'tungtungsahur', 'creature', 'monster', 'pocong', 'trollface', 'tungtungsahur', 'tungtung', 'posronda'],
+    creatureWarning: 'You found the creature.\nThat was not what was heard.',
+    validHashes: [
+      '62d3174f149b0d89677b0bc266835e2356f0622a112433e4ffc4815f430ea710',
+      '57e5d4d2b1a7a184257647fb04aabce6fa2324e670517678501f204ec6e46db3',
+      '5f8d5acf9089a48d55b839d8ad3a84046448d725b2fe4c0a7f36526e1f353c25'
+    ],
+    next: 2,
+  },
+
+  // Stage 2 — THE COUNTING / EXTRACTION
+  {
+    id: 2,
+    image: '/sahur.png',
+    quotes: [
+      'Good.\nYou counted the sound.\nNow tell what the sound was counting.',
+    ],
+    lines: [
+      'TUNG<br>TUNG<br>TUNG',
+      '<span class="clue-hover-cue" style="font-size:13px;color:rgba(17,17,20,0.5);font-style:italic;" >The answer is not above.</span>',
+    ],
+    hiddenSelectClue: 'perhatikan papan pos ronda di latar belakang: kenali nama alat pemukul kayu berlubang tersebut',
+    validHashes: [
+      'f3909c10ee6b535e5f8059893173eea17bea90620872cd565bdaec45675823d9',
+      '6e856f4be95f353402c507f34cbd7415f3588e00822a690a42a30be2753d7196',
+      '1d630e7b493a7c24c64f0c7a948f40fe163efeee5cb5d2384942e2731c6018a1',
+      'e5479d5f3f192808955d3ee3c82d6dc5720c02fd22d95879b2d7937ecfb872d4'
+    ],
+    next: 'CLEAR',
+  },
+]
+
+let currentStage = localStorage.getItem(STORAGE_KEY) || 1
+currentStage = isNaN(currentStage) ? currentStage : parseFloat(currentStage)
+
+function setStage(val) {
+  currentStage = val
+  localStorage.setItem(STORAGE_KEY, String(val))
+}
+
+function markLevelCompleted(levelId) {
+  try {
+    const raw = localStorage.getItem('cyfernode_clueless_completed_levels')
+    const list = raw ? JSON.parse(raw) : []
+    if (!list.includes(levelId)) {
+      list.push(levelId)
+      localStorage.setItem('cyfernode_clueless_completed_levels', JSON.stringify(list))
+    }
+  } catch {}
+}
+
+function fadeAndRedirect() {
+  document.body.style.transition = 'opacity 0.8s ease'
+  document.body.style.opacity = '0'
+  setTimeout(() => {
+    window.location.href = '/prompts/clue-less-prompt'
+  }, 800)
+}
+
+function render() {
+  const container = document.getElementById('viewport')
+  if (!container) return
+
+  if (currentStage === 'CLEAR') {
+    container.innerHTML = `
+      <div class="done-stack">
+        <span class="done-tag">[RECORDED]</span>
+        <h1 class="done-title">POS RONDA</h1>
+        <p class="clue-line">The slit drum has fallen silent.</p>
+        <a href="/prompts/clue-less-prompt" class="done-link">&larr; Return</a>
+      </div>
+    `
+    return
+  }
+
+  const stage = STAGES.find(s => String(s.id) === String(currentStage)) || STAGES[0]
+
+  const imageHtml = stage.image
+    ? `<!-- [SISKAMLING POS RONDA SIGNAL] -->
+       
+       
+       <div class="level-image-wrapper">
+         <img src="${stage.image}" alt="pos-ronda-night-watch" class="level-image">
+       </div>`
+    : ''
+
+  const headingHtml = stage.title
+    ? `<h1 class="clue-heading">${stage.title}</h1>`
+    : ''
+
+  const quotesHtml = (stage.quotes || []).map(q =>
+    `<div class="clue-quote">${q.replace(/\n/g, '<br>')}</div>`
+  ).join('')
+
+  const linesHtml = (stage.lines || []).map(l =>
+    `<div class="clue-line" style="font-weight:700;font-size:16px;">${l}</div>`
+  ).join('')
+
+  const hiddenSelectHtml = stage.hiddenSelectClue
+    ? `<div class="invisible-select-text">${stage.hiddenSelectClue}</div>`
+    : ''
+
+  container.innerHTML = `
+    
+    <!-- Clue hidden in white text below (select with mouse to read) -->
+    <div class="clue-stack">
+      ${imageHtml}
+      ${headingHtml}
+      ${quotesHtml}
+      ${linesHtml}
+      ${hiddenSelectHtml}
+
+      <form id="clue-form">
+        <div class="input-line">
+          <span class="input-prompt">&gt;</span>
+          <input
+            type="text"
+            class="raw-input"
+            id="user-input"
+            autocomplete="off"
+            spellcheck="false"
+            autofocus
+          />
+        </div>
+        <div class="status-echo" id="echo"></div>
+      </form>
+    </div>
+  `
+
+  const form = document.getElementById('clue-form')
+  const input = document.getElementById('user-input')
+  const echo = document.getElementById('echo')
+
+  input?.focus()
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const val = clean(input.value)
+    if (!val) return
+
+    // Creature trap check
+    if (stage.creatureKeywords && stage.creatureKeywords.some(k => clean(k) === val || (val.includes(clean(k)) && val !== 'tungtungtung'))) {
+      echo.innerHTML = (stage.creatureWarning || 'You found the creature.<br>That was not what was asked.').replace(/\n/g, '<br>')
+      echo.className = 'status-echo warning'
+      input.select()
+      return
+    }
+
+    const hashed = await sha256(val);
+    const ok = stage.validHashes && stage.validHashes.includes(hashed);
+
+    if (ok) {
+      echo.textContent = 'Correct.'
+      echo.className = 'status-echo success'
+      input.disabled = true
+
+      if (stage.next === 'CLEAR') {
+        markLevelCompleted('the-third-tung')
+        setStage('CLEAR')
+        setTimeout(() => {
+          fadeAndRedirect()
+        }, 3000)
+      } else {
+        setTimeout(() => {
+          setStage(stage.next)
+          render()
+        }, 3000)
+      }
+    } else {
+      echo.textContent = '...'
+      echo.className = 'status-echo error'
+      input.select()
+    }
+  })
+}
+
+document.getElementById('reset-btn')?.addEventListener('click', () => {
+  if (confirm('Reset level progress?')) {
+    setStage(1)
+    render()
+  }
+})
+
+render()
+</script>
+</body>
+</html>

@@ -3,25 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prompt - Cyfernode 5.0</title>
-<meta name="description" content="Clue-Less: a 10-level linear cryptic hunt. Solve puzzles, riddles, and ciphers with no hints. Cyfernode 5.0 cyber investigation event.">
+<title>Clue-Less Prompt - Cyfernode 5.0</title>
+<meta name="description" content="Clue-Less: a linear cryptic hunt. Solve puzzles, riddles, and hidden ciphers with no hints. Cyfernode 5.0 cyber investigation event.">
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700,800&display=swap" rel="stylesheet">
-<script>
-if (Date.now() < new Date('2026-09-27T00:00:00+05:30').getTime()) {
-  location.replace('/prompts');
-}
-</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<!-- Supabase Realtime Client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 #prompt-panel[hidden] { display: none !important; }
 :root {
   --text: #111114;
-  --muted: rgba(17, 17, 20, 0.56);
+  --muted: rgba(17, 17, 20, 0.52);
   --orange: #d24500;
   --font-sans: 'Satoshi', system-ui, sans-serif;
   --font-px: 'Satoshi', system-ui, sans-serif;
+  --border: rgba(17, 17, 20, 0.08);
 }
 
 *, *::before, *::after {
@@ -44,14 +43,14 @@ html, body {
   left: 28px;
   z-index: 800;
   font-family: var(--font-px);
-  font-size: 17px;
-  font-weight: 800;
+  font-size: 16px;
+  font-weight: 700;
   color: var(--text);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  transition: color 0.2s;
+  gap: 8px;
+  transition: color 0.15s ease;
 }
 
 #exit-btn:hover {
@@ -59,9 +58,81 @@ html, body {
 }
 
 #exit-btn i {
-  font-size: 15px;
+  font-size: 14px;
 }
 
+/* Top Right Minimal Navigation */
+.top-right-nav {
+  position: fixed;
+  top: 28px;
+  right: 28px;
+  z-index: 800;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-link-btn {
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.nav-link-btn:hover {
+  color: var(--orange);
+}
+
+.count-badge {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--orange);
+  background: rgba(210, 69, 0, 0.08);
+  padding: 2px 7px;
+  border-radius: 999px;
+  line-height: 1;
+}
+
+.user-pill {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-pill .code {
+  color: var(--orange);
+  font-weight: 800;
+}
+
+.signout-link {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s;
+}
+
+.signout-link:hover {
+  color: #e53e3e;
+}
+
+/* Main Layout */
 .page {
   min-height: 100vh;
   display: grid;
@@ -99,98 +170,68 @@ html, body {
   color: rgba(17, 17, 20, 0.82);
 }
 
-.prompt-body p + p {
-  margin-top: 14px;
-}
-
-.prompt-body h2 {
-  margin-top: 32px;
-  margin-bottom: 14px;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.level-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 4px;
-}
-
-.level-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+/* File List */
+.file-list {
+  list-style: none;
   width: 100%;
-  padding: 15px 18px;
-  border: 1.5px solid rgba(17, 17, 20, 0.12);
-  border-radius: 12px;
-  background: #fff;
-  color: var(--text);
-  font-family: inherit;
-  text-align: left;
-  text-decoration: none;
-  cursor: pointer;
-  transition: border-color 0.2s;
-}
-
-.level-card:hover {
-  border-color: rgba(17, 17, 20, 0.22);
-}
-
-.level-card.is-locked {
-  opacity: 0.42;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-.level-card.is-locked:hover {
-  border-color: rgba(17, 17, 20, 0.12);
-}
-
-.level-card.is-complete .level-status {
-  color: rgba(17, 17, 20, 0.45);
-}
-
-.level-meta {
   display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.file-list li {
+  width: 100%;
+}
+
+.file-link {
+  display: inline-flex;
   align-items: center;
-  gap: 14px;
-  min-width: 0;
-}
-
-.level-num {
-  flex-shrink: 0;
-  width: 22px;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  color: var(--muted);
-}
-
-.level-name {
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  gap: 12px;
+  width: 100%;
+  padding: 4px 0;
   color: var(--text);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  transition: opacity 0.2s ease, color 0.15s ease, text-decoration-color 0.15s ease;
 }
 
-.level-card.is-final .level-name {
-  letter-spacing: 0.14em;
-}
-
-.level-status {
-  flex-shrink: 0;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.file-link:hover {
   color: var(--orange);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.file-link:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.file-icon {
+  width: 19px;
+  height: 23px;
+  flex-shrink: 0;
+  color: var(--text);
+  transition: color 0.15s ease;
+}
+
+.file-link:hover .file-icon {
+  color: var(--orange);
+}
+
+.tick-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #10b981;
+  font-size: 12px;
+  font-weight: 900;
+  flex-shrink: 0;
 }
 
 .not-found {
@@ -199,19 +240,361 @@ html, body {
   font-weight: 600;
 }
 
-@media (max-width: 520px) {
-  .level-grid {
-    grid-template-columns: 1fr;
-  }
+/* Clean Slide-out Sidebar Drawer */
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 17, 20, 0.25);
+  backdrop-filter: blur(2px);
+  z-index: 900;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.sidebar-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sidebar-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(100vw, 360px);
+  background: #fff;
+  border-left: 1px solid var(--border);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: -12px 0 36px rgba(17, 17, 20, 0.05);
+}
+
+.sidebar-drawer.is-open {
+  transform: translateX(0);
+}
+
+.sidebar-header {
+  padding: 28px 24px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-title-group {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.sidebar-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.sidebar-sub {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.sidebar-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.sidebar-close:hover {
+  color: var(--text);
+}
+
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 24px 24px;
+}
+
+.school-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.school-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(17, 17, 20, 0.06);
+  gap: 12px;
+}
+
+.school-row:last-child {
+  border-bottom: none;
+}
+
+.school-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.school-code-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.school-code {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--orange);
+  letter-spacing: 0.02em;
+}
+
+.school-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+}
+
+.school-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.school-score {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.no-schools {
+  padding: 48px 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* Minimal Auth Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 17, 20, 0.35);
+  backdrop-filter: blur(3px);
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.modal-overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  background: #fff;
+  width: min(100%, 420px);
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(17, 17, 20, 0.12);
+  border: 1px solid rgba(17, 17, 20, 0.08);
+  padding: 28px 26px;
+  position: relative;
+  transform: translateY(8px) scale(0.98);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-overlay.is-open .modal-card {
+  transform: translateY(0) scale(1);
+}
+
+.modal-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.modal-close:hover {
+  color: var(--text);
+}
+
+.modal-kicker {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 6px;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.modal-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.form-input {
+  width: 100%;
+  padding: 11px 13px;
+  border-radius: 9px;
+  border: 1.5px solid var(--border);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.form-input:focus {
+  border-color: var(--orange);
+}
+
+.passkey-input {
+  letter-spacing: 0.35em;
+  font-size: 22px;
+  font-weight: 800;
+  text-align: center;
+  font-family: Consolas, Monaco, monospace;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 13px;
+  background: var(--text);
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s;
+  margin-top: 4px;
+}
+
+.btn-primary:hover {
+  background: #2b2b33;
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error-msg {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  line-height: 1.4;
+}
+
+.info-msg {
+  background: rgba(210, 69, 0, 0.06);
+  border: 1px solid rgba(210, 69, 0, 0.18);
+  color: #9a3412;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  line-height: 1.4;
+}
+
+.resend-row {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.resend-link {
+  color: var(--orange);
+  font-weight: 700;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.resend-link:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 @media (max-width: 768px) {
   #exit-btn {
     position: absolute;
     top: 24px;
-    left: 24px;
+    left: 20px;
   }
-
+  .top-right-nav {
+    top: 24px;
+    right: 20px;
+    gap: 14px;
+  }
   .page {
     padding: 100px 16px 40px;
   }
@@ -221,17 +604,23 @@ html, body {
 <body>
 <a href="/prompts" id="exit-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
 
+<!-- Top Right Clean Navigation -->
+<nav class="top-right-nav">
+  <div id="auth-status-container"></div>
+  <button type="button" id="sidebar-toggle-btn" class="nav-link-btn" title="View schools & scores">
+    <span>Schools</span>
+    <span id="teams-badge" class="count-badge">0</span>
+  </button>
+</nav>
+
 <main class="page">
   <article class="panel" id="prompt-panel" hidden>
     <header class="head">
-      <p class="eyebrow" id="prompt-category"></p>
-      <h1 class="title" id="prompt-title"></h1>
+      <p class="eyebrow" id="prompt-category">CYBER INVESTIGATION</p>
+      <h1 class="title" id="prompt-title">Clue-Less</h1>
     </header>
     <div class="prompt-body" id="prompt-body">
-      <p>Clue-Less is a 10-level linear cryptic hunt. Teams race to solve a sequence of raw puzzles, riddles, and hidden ciphers with no hints provided. Progress is tracked on a live public leaderboard. The first team to clear all 10 puzzles wins, or the team furthest ahead when the timer expires.</p>
-
-      <h2>Levels</h2>
-      <div class="level-grid" id="level-grid" aria-label="10 hunt levels"></div>
+      <ul class="file-list" id="level-list" aria-label="Hunt levels"></ul>
     </div>
   </article>
 
@@ -241,83 +630,371 @@ html, body {
   </div>
 </main>
 
+<!-- Slide-out Sidebar Drawer for Schools & Live Scores -->
+<div class="sidebar-backdrop" id="sidebar-backdrop" aria-hidden="true"></div>
+<aside class="sidebar-drawer" id="sidebar-drawer" aria-label="Schools Leaderboard">
+  <div class="sidebar-header">
+    <div class="sidebar-title-group">
+      <h2 class="sidebar-title">Schools</h2>
+      <span class="sidebar-sub" id="sidebar-count">0 logged in</span>
+    </div>
+    <button type="button" class="sidebar-close" id="sidebar-close-btn" aria-label="Close sidebar">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+  <div class="sidebar-content">
+    <div id="schools-list-container" class="school-list">
+      <div class="no-schools">No schools authenticated yet.</div>
+    </div>
+  </div>
+</aside>
+
+<!-- Minimal Authentication Modal -->
+<div class="modal-overlay" id="auth-modal" aria-hidden="true">
+  <div class="modal-card">
+    <button type="button" class="modal-close" id="auth-modal-close" aria-label="Close modal">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div class="modal-kicker">AUTHENTICATION</div>
+    <h2 class="modal-title">Clue-Less Access</h2>
+    <p class="modal-desc">Enter your school code and registered email to receive your passkey.</p>
+    
+    <div id="auth-error" class="error-msg" hidden></div>
+    <div id="auth-notice" class="info-msg" hidden></div>
+
+    <!-- Step 1: Details -->
+    <form id="auth-form-details">
+      <div class="form-group">
+        <label class="form-label" for="input-school-code">School Code</label>
+        <input class="form-input" id="input-school-code" type="text" placeholder="e.g. CYN01" maxlength="6" required autocomplete="off" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="input-email">Registered Clue-Less Email</label>
+        <input class="form-input" id="input-email" type="email" placeholder="student@school.com" required autocomplete="email" />
+      </div>
+      <button type="submit" class="btn-primary" id="btn-request-passkey">
+        <span>Request Passkey</span> <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </form>
+
+    <!-- Step 2: Passkey -->
+    <form id="auth-form-passkey" hidden>
+      <div class="form-group">
+        <label class="form-label" for="input-passkey">4-Digit Passkey</label>
+        <input class="form-input passkey-input" id="input-passkey" type="text" maxlength="4" placeholder="••••" pattern="[0-9]{4}" required autocomplete="one-time-code" />
+      </div>
+      <button type="submit" class="btn-primary" id="btn-verify-passkey">
+        <span>Authenticate</span> <i class="fa-solid fa-unlock"></i>
+      </button>
+      <div class="resend-row">
+        <span>Didn't get code? </span>
+        <button type="button" class="resend-link" id="btn-resend-passkey">Resend</button>
+        <span id="resend-timer"></span>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script src="/prompts/events.js"></script>
 <script type="module">
-import { isLevelUnlocked, loadProgress } from '/clue-less/lib/state.js'
+import {
+  getCluelessSession,
+  clearCluelessSession,
+  requestPasskey,
+  verifyPasskey,
+  subscribeToCluelessTeams,
+} from '/clue-less/auth.js'
 
 const PROMPT_BASE = '/prompts/clue-less-prompt'
 
 const LEVELS = [
-  { id: 'void', num: '01', name: 'Void', href: `${PROMPT_BASE}/void` },
-  { id: 'echo', num: '02', name: 'Echo', href: `${PROMPT_BASE}/echo` },
-  { id: 'mirror', num: '03', name: 'Mirror', href: `${PROMPT_BASE}/mirror` },
-  { id: 'deceit', num: '04', name: 'Deceit', href: `${PROMPT_BASE}/deceit` },
-  { id: 'context', num: '05', name: 'Context', href: `${PROMPT_BASE}/context` },
-  { id: 'rabbit', num: '06', name: 'Rabbit', href: `${PROMPT_BASE}/rabbit` },
-  { id: 'shift', num: '07', name: 'Shift', href: `${PROMPT_BASE}/shift` },
-  { id: 'absence', num: '08', name: 'Absence', href: `${PROMPT_BASE}/absence` },
-  { id: 'trace', num: '09', name: 'Trace', href: `${PROMPT_BASE}/trace` },
-  { id: 'clue-less', num: '10', name: 'Clue Less', href: `${PROMPT_BASE}/finale` },
+  { id: 'whistle-podu', name: 'Whistle Podu', href: `${PROMPT_BASE}/whistle-podu` },
+  { id: 'only-ww', name: 'Only WW', href: `${PROMPT_BASE}/only-ww` },
+  { id: 'the-image-that-isnt-an-image', name: "THE IMAGE THAT ISN'T AN IMAGE", href: `${PROMPT_BASE}/the-image-that-isnt-an-image` },
+  { id: 'the-bearer', name: 'THE BEARER', href: `${PROMPT_BASE}/the-bearer` },
+  { id: 'a-comedy-of-accuracy', name: 'A comedy of accuracy', href: `${PROMPT_BASE}/a-comedy-of-accuracy` },
+  { id: 'the-third-tung', name: 'THE THIRD TUNG', href: `${PROMPT_BASE}/the-third-tung` },
+  { id: 'redline-echo', name: 'REDLINE ECHO', href: `${PROMPT_BASE}/redline-echo` },
+  { id: 'the-hollow-chime', name: 'THE HOLLOW CHIME', href: `${PROMPT_BASE}/the-hollow-chime` },
 ]
 
-function isLevelComplete(levelId) {
-  return loadProgress().completed.includes(levelId)
+const FILE_ICON = `
+  <svg class="file-icon" viewBox="0 0 22 28" fill="none" aria-hidden="true">
+    <path d="M13 1H4.5C3.12 1 2 2.12 2 3.5v21C2 25.88 3.12 27 4.5 27h13c1.38 0 2.5-1.12 2.5-2.5V9L13 1Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M13 1v8h8" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+    <line x1="6.5" y1="14.5" x2="15.5" y2="14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="6.5" y1="18.5" x2="12.5" y2="18.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  </svg>
+`
+
+function getCompletedLevels() {
+  try {
+    const raw = localStorage.getItem('cyfernode_clueless_completed_levels')
+    if (raw) return JSON.parse(raw)
+  } catch {}
+  return []
 }
 
 function renderLevels() {
-  const grid = document.getElementById('level-grid')
-  if (!grid) return
+  const container = document.getElementById('level-list')
+  if (!container) return
+  const completed = getCompletedLevels()
 
-  const progress = loadProgress()
-
-  grid.innerHTML = LEVELS.map(function (level, index) {
-    const unlocked = isLevelUnlocked(progress, level.id)
-    const complete = progress.completed.includes(level.id)
-    const isFinal = index === LEVELS.length - 1
-    const status = complete ? 'Done' : unlocked ? 'Open' : 'Locked'
-    const classes = [
-      'level-card',
-      isFinal ? 'is-final' : '',
-      complete ? 'is-complete' : '',
-      unlocked ? '' : 'is-locked',
-    ].filter(Boolean).join(' ')
-
-    const inner = [
-      '<span class="level-meta">',
-      `<span class="level-num">${level.num}</span>`,
-      `<span class="level-name">${level.name}</span>`,
-      '</span>',
-      `<span class="level-status">${status}</span>`,
-    ].join('')
-
-    if (unlocked) {
-      return `<a class="${classes}" href="${level.href}">${inner}</a>`
-    }
-
-    return `<button type="button" class="${classes}" disabled>${inner}</button>`
+  container.innerHTML = LEVELS.map(level => {
+    const isDone = completed.includes(level.id)
+    return `
+      <li>
+        <a class="file-link ${isDone ? 'is-completed' : ''}" href="${level.href}">
+          ${FILE_ICON}
+          ${isDone ? '<span class="tick-badge" title="Completed"><i class="fa-solid fa-check"></i></span>' : ''}
+          <span>${level.name}</span>
+        </a>
+      </li>
+    `
   }).join('')
 }
 
-const slug = location.pathname.replace(/\/$/, '').split('/').pop() || ''
-const event = window.getCyfernodeEventByPromptSlug(slug)
-const panel = document.getElementById('prompt-panel')
-const notFound = document.getElementById('prompt-not-found')
+// UI State
+let activeCooldown = 0
+let cooldownTimer = null
+let verifiedSchoolCode = ''
+let verifiedEmail = ''
 
-if (!event) {
-  document.title = 'Prompt not found - Cyfernode 5.0'
-  notFound.hidden = false
-} else {
-  const PROMPT_UNLOCK_TIME = new Date(event.unlockTime || '2026-09-27T00:00:00+05:30').getTime()
-  if (Date.now() < PROMPT_UNLOCK_TIME) {
-    window.location.replace('/prompts')
+function updateAuthNav() {
+  const container = document.getElementById('auth-status-container')
+  if (!container) return
+
+  const session = getCluelessSession()
+  if (session?.profile?.schoolCode) {
+    container.innerHTML = `
+      <div class="user-pill">
+        <span class="code">${session.profile.schoolCode}</span>
+        <button type="button" class="signout-link" id="btn-signout">Sign out</button>
+      </div>
+    `
+    document.getElementById('btn-signout')?.addEventListener('click', () => {
+      clearCluelessSession()
+      updateAuthNav()
+    })
+  } else {
+    container.innerHTML = `
+      <button type="button" class="nav-link-btn" id="btn-open-auth">
+        Authenticate
+      </button>
+    `
+    document.getElementById('btn-open-auth')?.addEventListener('click', () => openAuthModal())
+  }
+}
+
+// Sidebar Drawer
+const sidebarDrawer = document.getElementById('sidebar-drawer')
+const sidebarBackdrop = document.getElementById('sidebar-backdrop')
+const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn')
+const sidebarCloseBtn = document.getElementById('sidebar-close-btn')
+
+function openSidebar() {
+  sidebarDrawer?.classList.add('is-open')
+  sidebarBackdrop?.classList.add('is-open')
+  sidebarBackdrop?.setAttribute('aria-hidden', 'false')
+}
+
+function closeSidebar() {
+  sidebarDrawer?.classList.remove('is-open')
+  sidebarBackdrop?.classList.remove('is-open')
+  sidebarBackdrop?.setAttribute('aria-hidden', 'true')
+}
+
+sidebarToggleBtn?.addEventListener('click', openSidebar)
+sidebarCloseBtn?.addEventListener('click', closeSidebar)
+sidebarBackdrop?.addEventListener('click', closeSidebar)
+
+// Auth Modal
+const authModal = document.getElementById('auth-modal')
+const authError = document.getElementById('auth-error')
+const authNotice = document.getElementById('auth-notice')
+const formDetails = document.getElementById('auth-form-details')
+const formPasskey = document.getElementById('auth-form-passkey')
+
+function showAuthError(msg) {
+  authError.textContent = msg
+  authError.hidden = !msg
+}
+
+function showAuthNotice(msg) {
+  authNotice.textContent = msg
+  authNotice.hidden = !msg
+}
+
+function openAuthModal() {
+  showAuthError('')
+  showAuthNotice('')
+  formDetails.hidden = false
+  formPasskey.hidden = true
+  authModal.classList.add('is-open')
+  authModal.setAttribute('aria-hidden', 'false')
+  document.getElementById('input-school-code')?.focus()
+}
+
+function closeAuthModal() {
+  authModal.classList.remove('is-open')
+  authModal.setAttribute('aria-hidden', 'true')
+}
+
+document.getElementById('auth-modal-close')?.addEventListener('click', closeAuthModal)
+authModal?.addEventListener('click', (e) => {
+  if (e.target === authModal) closeAuthModal()
+})
+
+// Form Step 1: Request Passkey
+formDetails?.addEventListener('submit', async (e) => {
+  e.preventDefault()
+  showAuthError('')
+  showAuthNotice('')
+
+  const codeInput = document.getElementById('input-school-code')
+  const emailInput = document.getElementById('input-email')
+  const btn = document.getElementById('btn-request-passkey')
+
+  const code = (codeInput.value || '').trim().toUpperCase()
+  const email = (emailInput.value || '').trim().toLowerCase()
+
+  if (!code.match(/^CYN\d{1,3}$/)) {
+    showAuthError('Enter a valid school code (CYN00 to CYN100).')
     return
   }
 
-  document.title = `${event.name} Prompt - Cyfernode 5.0`
-  document.getElementById('prompt-category').textContent = event.category
-  document.getElementById('prompt-title').textContent = event.name
-  panel.hidden = false
-  renderLevels()
+  btn.disabled = true
+  btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Checking...`
+
+  try {
+    const res = await requestPasskey(code, email)
+    verifiedSchoolCode = code
+    verifiedEmail = email
+
+    showAuthNotice(`Passkey sent to ${email}.`)
+    formDetails.hidden = true
+    formPasskey.hidden = false
+    document.getElementById('input-passkey')?.focus()
+    startCooldown(60)
+  } catch (err) {
+    showAuthError(err.message || 'Verification failed. Only registered Clue-Less teams can log in.')
+  } finally {
+    btn.disabled = false
+    btn.innerHTML = `<span>Request Passkey</span> <i class="fa-solid fa-arrow-right"></i>`
+  }
+})
+
+// Form Step 2: Verify Passkey
+formPasskey?.addEventListener('submit', async (e) => {
+  e.preventDefault()
+  showAuthError('')
+  showAuthNotice('')
+
+  const passkeyInput = document.getElementById('input-passkey')
+  const btn = document.getElementById('btn-verify-passkey')
+  const passkey = (passkeyInput.value || '').trim()
+
+  if (passkey.length !== 4) {
+    showAuthError('Enter the 4-digit passkey.')
+    return
+  }
+
+  btn.disabled = true
+  btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...`
+
+  try {
+    await verifyPasskey(verifiedSchoolCode, verifiedEmail, passkey)
+    updateAuthNav()
+    closeAuthModal()
+  } catch (err) {
+    showAuthError(err.message || 'Invalid passkey.')
+  } finally {
+    btn.disabled = false
+    btn.innerHTML = `<span>Authenticate</span> <i class="fa-solid fa-unlock"></i>`
+  }
+})
+
+// Resend passkey button
+document.getElementById('btn-resend-passkey')?.addEventListener('click', async () => {
+  if (activeCooldown > 0) return
+  showAuthError('')
+  try {
+    await requestPasskey(verifiedSchoolCode, verifiedEmail)
+    showAuthNotice(`New passkey sent to ${verifiedEmail}.`)
+    startCooldown(60)
+  } catch (err) {
+    showAuthError(err.message || 'Could not resend passkey.')
+  }
+})
+
+function startCooldown(seconds) {
+  activeCooldown = seconds
+  const resendBtn = document.getElementById('btn-resend-passkey')
+  const timerLabel = document.getElementById('resend-timer')
+  if (resendBtn) resendBtn.disabled = true
+
+  if (cooldownTimer) clearInterval(cooldownTimer)
+  cooldownTimer = setInterval(() => {
+    activeCooldown--
+    if (timerLabel) timerLabel.textContent = activeCooldown > 0 ? `(${activeCooldown}s)` : ''
+    if (activeCooldown <= 0) {
+      clearInterval(cooldownTimer)
+      if (resendBtn) resendBtn.disabled = false
+    }
+  }, 1000)
+}
+
+// Render Realtime Authenticated Teams in Sidebar
+function renderTeamsList(teams) {
+  const badge = document.getElementById('teams-badge')
+  const countSub = document.getElementById('sidebar-count')
+  const list = document.getElementById('schools-list-container')
+  
+  if (badge) badge.textContent = String(teams.length)
+  if (countSub) countSub.textContent = `${teams.length} logged in`
+
+  if (!list) return
+  if (!teams || teams.length === 0) {
+    list.innerHTML = `<div class="no-schools">No schools authenticated yet.</div>`
+    return
+  }
+
+  list.innerHTML = teams.map(team => `
+    <div class="school-row">
+      <div class="school-info">
+        <div class="school-code-wrap">
+          <span class="school-live-dot"></span>
+          <span class="school-code">${team.school_code}</span>
+        </div>
+        <span class="school-name">${team.school_name || 'School ' + team.school_code}</span>
+      </div>
+      <div class="school-score">${team.score ?? 0}</div>
+    </div>
+  `).join('')
+}
+
+// Initialize
+updateAuthNav()
+renderLevels()
+subscribeToCluelessTeams(renderTeamsList)
+
+const slug = location.pathname.replace(/\/$/, '').split('/').pop() || ''
+const event = window.getCyfernodeEventByPromptSlug ? window.getCyfernodeEventByPromptSlug(slug) : null
+const panel = document.getElementById('prompt-panel')
+const notFound = document.getElementById('prompt-not-found')
+
+if (slug && !event) {
+  document.title = 'Prompt not found - Cyfernode 5.0'
+  if (notFound) notFound.hidden = false
+} else {
+  if (event) {
+    document.title = `${event.name} Prompt - Cyfernode 5.0`
+    const catEl = document.getElementById('prompt-category')
+    const titleEl = document.getElementById('prompt-title')
+    if (catEl) catEl.textContent = event.category
+    if (titleEl) titleEl.textContent = event.name
+  }
+  if (panel) panel.hidden = false
 }
 </script>
 </body>

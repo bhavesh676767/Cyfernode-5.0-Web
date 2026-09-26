@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A comedy of accuracy - Cyfernode 5.0</title>
+<meta name="description" content="A comedy of accuracy">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700,800,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --text: #111114;
+  --muted: rgba(17, 17, 20, 0.44);
+  --orange: #d24500;
+  --font-sans: 'Satoshi', system-ui, sans-serif;
+  --font-mono: 'Consolas', 'Courier New', monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100%;
+  background: #fff;
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+#exit-btn {
+  position: fixed;
+  top: 28px;
+  left: 28px;
+  z-index: 800;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.15s ease;
+}
+
+#exit-btn:hover {
+  color: var(--orange);
+}
+
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 100px 24px 60px;
+}
+
+.panel {
+  width: min(100%, 580px);
+}
+
+.clue-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.clue-heading {
+  font-size: clamp(2rem, 4.5vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  color: var(--text);
+}
+
+.clue-subheading {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.clue-quote {
+  font-size: 16px;
+  font-style: italic;
+  color: rgba(17, 17, 20, 0.82);
+  line-height: 1.6;
+  border-left: 2px solid var(--text);
+  padding-left: 14px;
+}
+
+.clue-line {
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(17, 17, 20, 0.75);
+}
+
+/* Cipher display */
+.cipher-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 16px;
+  background: #111114;
+  border-radius: 8px;
+  margin: 6px 0;
+}
+
+.cipher-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.cipher-word {
+  display: flex;
+  gap: 4px;
+}
+
+.cipher-rune {
+  width: 24px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 700;
+  color: #ff9858;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  user-select: none;
+}
+
+.cipher-tag {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Minimal Input */
+.input-line {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid var(--text);
+  padding: 6px 0;
+  margin-top: 16px;
+}
+
+.input-prompt {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-right: 12px;
+  user-select: none;
+}
+
+.raw-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  outline: none;
+}
+
+.status-echo {
+  font-size: 13px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  min-height: 20px;
+  margin-top: 8px;
+  transition: opacity 0.2s ease;
+}
+
+.status-echo.success {
+  color: #10b981;
+}
+
+.status-echo.error {
+  color: #b91c1c;
+}
+
+/* Completion */
+.done-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.done-tag {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--muted);
+}
+
+.done-title {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.done-link {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--orange);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.top-reset-btn {
+  position: fixed;
+  top: 28px;
+  right: 28px;
+  z-index: 800;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.15s ease;
+}
+
+.top-reset-btn:hover {
+  color: var(--text);
+}
+
+@media (max-width: 768px) {
+  #exit-btn {
+    top: 24px;
+    left: 20px;
+  }
+  .top-reset-btn {
+    top: 24px;
+    right: 20px;
+  }
+  .page {
+    padding: 96px 16px 40px;
+  }
+}
+</style>
+</head>
+<body>
+<!-- LOCK:START -->
+<div id="lock-overlay" style="position:fixed;inset:0;background:#08080b;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;">
+  <div style="font-family:'Consolas',monospace;font-size:10px;letter-spacing:0.18em;color:rgba(255,255,255,0.25);text-transform:uppercase;">Cyfernode 5.0 · Clue-Less</div>
+  <div style="font-family:'Satoshi',system-ui,sans-serif;font-size:clamp(2rem,6vw,3rem);font-weight:900;color:#fff;letter-spacing:-0.04em;line-height:1;">LOCKED</div>
+  <div style="font-family:'Consolas',monospace;font-size:12px;color:rgba(255,255,255,0.35);text-align:center;margin-top:4px;">Opens at 12:00 PM &nbsp;·&nbsp; 27 Sep 2026</div>
+  <div id="lock-countdown" style="font-family:'Consolas',monospace;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;color:#d24500;letter-spacing:0.08em;margin-top:12px;">--:--:--</div>
+  <div style="font-family:'Consolas',monospace;font-size:10px;color:rgba(255,255,255,0.15);margin-top:24px;letter-spacing:0.08em;">HH &nbsp; MM &nbsp; SS</div>
+</div>
+<script>
+(function(){
+  var UNLOCK = new Date('2026-09-27T12:00:00+05:30').getTime();
+  var overlay = document.getElementById('lock-overlay');
+  var cd = document.getElementById('lock-countdown');
+  if (!overlay) return;
+  function tick() {
+    var now = Date.now();
+    var diff = UNLOCK - now;
+    if (diff <= 0) { overlay.remove(); return; }
+    var h = Math.floor(diff / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    var s = Math.floor((diff % 60000) / 1000);
+    cd.textContent = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }
+  tick();
+  var iv = setInterval(function(){ tick(); if (Date.now() >= UNLOCK) clearInterval(iv); }, 1000);
+})();
+</script>
+<!-- LOCK:END -->
+
+<a href="/prompts/clue-less-prompt" id="exit-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
+<button type="button" id="reset-btn" class="top-reset-btn" title="Reset level progress">Reset</button>
+
+<main class="page">
+  <article class="panel" id="viewport"></article>
+</main>
+
+<script type="module">
+const STORAGE_KEY = 'cyfernode_clueless_accuracy_stage'
+
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function clean(str) {
+  return String(str || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '')
+}
+
+const RUNES = {
+  'A': 'ᚪ', 'B': 'ᛒ', 'C': 'ᚲ', 'D': 'ᛞ', 'E': 'ᛖ',
+  'F': 'ᚠ', 'G': 'ᚷ', 'H': 'ᚺ', 'I': 'ᛁ', 'J': 'ᛃ',
+  'K': 'ᚲ', 'L': 'ᛚ', 'M': 'ᛗ', 'N': 'ᚾ', 'O': 'ᛟ',
+  'P': 'ᛈ', 'Q': 'ᛩ', 'R': 'ᚱ', 'S': 'ᛊ', 'T': 'ᛏ',
+  'U': 'ᚢ', 'V': 'ᚡ', 'W': 'ṹ', 'X': 'ᛪ', 'Y': 'ᛦ',
+  'Z': 'ᛎ', '0': '⓪', '1': '①', '2': '②', '3': '③',
+  '4': '④', '5': '⑤', '6': '⑥', '7': '⑦', '8': '⑧', '9': '⑨'
+}
+
+function renderRunes(words) {
+  const wordsHtml = words.map(word => {
+    const glyphs = word.split('').map(char => `<span class="cipher-rune">${RUNES[char] || char}</span>`).join('')
+    return `<div class="cipher-word">${glyphs}</div>`
+  }).join('<span style="color:rgba(255,255,255,0.25);font-size:14px;">•</span>')
+
+  return `
+    <div class="cipher-box">
+      <div class="cipher-row">${wordsHtml}</div>
+      <div class="cipher-tag">[GENSHIN SYMBOL CIPHER]</div>
+    </div>
+  `
+}
+
+const STAGES = [
+  // Stage 1
+  {
+    id: 1,
+    title: 'XI <!-- 11 --> JINPING',
+    quotes: ['“As voiced by a chronicler of…”'],
+    validHashes: [
+      'dd32b00a26f6a420942a60546957f13c8ed4ed6849366584d0270ac653d54b23',
+      '9b7ecc6eeb83abf9ade10fe38865df4499be3568dcc507ae2ec3b44989cb0093',
+      'a4aaa3b3bb4d5366d4ad539fd00d59a04f6b00f7b5ae83a697ed9dab5fb79faa',
+      '0dca2472c8eb5b877f5e828b25c366b94e970131e8212b8e48629c0e8a167e1b'
+    ],
+    next: 1.5,
+  },
+  // Stage 1.5
+  {
+    id: 1.5,
+    title: 'XI <!-- 11 --> JINPING',
+    quotes: [
+      '“Accuracy, it seems, was never their strongest virtue.”',
+      'The number beside the name.',
+    ],
+    validHashes: [
+      '17057013652043f033655cb83d71ffc0d2423034c4f47d5bbb32bb61b3be4448',
+      '4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb8',
+      'e979074ebd5633a7263aa48c4b7dea055a769115fbc0a7de459f8a74cd2efd2b'
+    ],
+    next: 2,
+  },
+  // Stage 2
+  {
+    id: 2,
+    title: 'XI <!-- 11 -->',
+    quotes: [
+      '“Not a number.\nNot quite a name.\nYet someone once made both of them the same.”',
+      '“The eleventh Jinping was not alone.”\n“And the man who once made revolution famous seems to have suffered the same fate.”',
+    ],
+    validHashes: [
+      '8491b48cf88278c95ef079c6de4fd7af1d61a2f4c819a66d87ee666005129f8c',
+      'c0ff93ea8927a7366db0331e5fd9d19f438614c305b66cd24d7c873f77b63b7b',
+      '29ba5ce100f3bbf7a9469c1635a4b0f484b12b86168bed8d2b6dd0bc05e2f8a3',
+      '250fccd5f5f76c7c866647d737ea3af37a8404744a5fc7c2628245194242304d',
+      'f19d661caa2f054d992440bdf97dd81915c36f1a402c6bfdc66ac95993d47c2f',
+      '8900978761c95c583793de1fce8fdb9b99d8c2a57233281650a1cfe5a824b7a5'
+    ],
+    next: 3,
+  },
+  // Stage 3
+  {
+    id: 3,
+    title: 'VI',
+    quotes: [
+      '“Six, but make it television.”',
+      '“Where six becomes a network,\na Khan becomes a king.”',
+    ],
+    validHashes: [
+      'd08f4129f4e6c56e250ab661dcc760bc6886436427d5bbe18f4733a065e26c12',
+      '264717e2eb106e904db5873cf97d67bb375c9b2ff8798d6de98eb759ff283ce6',
+      '475ed320aec97114636c3564f7df6f3a0624bdbfdc163b5d6b62c65575279de8',
+      'd53be28c56afa3d4c72aca92afe62d9bc9d27e485961778310751a72147da2d0'
+    ],
+    next: 4,
+  },
+  // Stage 4
+  {
+    id: 4,
+    title: 'SHAH RUKH KHAN',
+    quotes: ['“A king of Bollywood.\nA house.\nA love story.\nAnd, apparently, an inception.”'],
+    subheading: 'DILWALE',
+    subquotes: ['“But this was no ordinary Dilwale.”'],
+    validHashes: [
+      '22f83076aa7a9955ce280140369a92974477e316c2bf997dc8e1390d9432fc6c',
+      '4d96be30ef9e0ad1c65e616c7241c6f3e8b53fa6c9bc95651184183b3d42cca3',
+      'f4482939d91a358c6f6e99f6fd9639eb7ef317fddfd196cdfc1c3e59afdc9847'
+    ],
+    next: 5,
+  },
+  // Stage 5
+  {
+    id: 5,
+    title: '/INCEPTION',
+    quotes: ['“You have reached the beginning.”'],
+    isCipher: true,
+    cipherWords: ['SUBJECT', 'PROPERTY', '343'],
+    validHashes: [
+      '4616efed91b5abba55afdabaafd76e7af958abdb16c80a81da70c6be7476aef9',
+      '1c2938d5de04b8d0f60f0d07823bf616dfff4ce369738c56ef5d04813eedba46',
+      '3c15285c04fff40024bb8714b93e58178bf8d3bebe6943178e1c5412957b7aa1'
+    ],
+    next: 6,
+  },
+  // Stage 6
+  {
+    id: 6,
+    title: 'SUBJECT PROPERTY 343',
+    quotes: ['“Three hundred forty-three subjects.\nOne speaks the loudest.”'],
+    validHashes: [
+      '819754613db7e75fd81c4166c6a29769944532a2730be1e4eff02402e07e9e28',
+      'be312a133aab82627f46d23b181b4ef0837601415664603c33f8d78361ca91b6',
+      '6ab6036d07c9b36729e2325bf09cd08354e191dcf7350d0474bd1b879a7983b5',
+      '6e6ae88da42a3ac9bccc11719625f85ada11dbc4fb0260e9f2fa731ff9d73243'
+    ],
+    next: 7,
+  },
+  // Stage 7
+  {
+    id: 7,
+    title: '/PLAYBOICARTI',
+    quotes: ['“What is said here is not necessarily true.\nWhat is written here need not have been written here.”'],
+    subheading: 'LIB OF BABEL',
+    subquotes: [
+      '“A library containing everything that could possibly be written.”',
+      '“taking stupid seriously anjeermom”',
+    ],
+    validHashes: [
+      'ec22bbe9d74cc518ff82da43e0fe4064084158a553e0c9c13ae274ce5f59536e',
+      'b8bef439c443c31f4d82097d89fb0263b633c909579418d3f9759d817755430a',
+      '2e39956e45fcfcacdb074d252a12eda174a5617113fe05470743f3653d0ab143'
+    ],
+    next: 8,
+  },
+  // Stage 8
+  {
+    id: 8,
+    title: 'ANJEERMOM',
+    lines: [
+      'ANJEER &rarr; FIG',
+      'MOM &rarr; MA',
+      'FIG + MA',
+    ],
+    validHashes: [
+      '5b79d0d574eedd091c02692026ecfa1c617af2432c0a9b401e623e67d78a179c',
+      'd9ceb9e2c9dc3d032052205f8ecbc45222ab69b6adb9dbdaefb52f0bf20d62f8'
+    ],
+    next: 9,
+  },
+  // Stage 9
+  {
+    id: 9,
+    title: 'FIGMA',
+    quotes: ['“Someone has taken stupidity seriously.”'],
+    subheading: 'TAKING STUPID SERIOUSLY',
+    validHashes: [
+      '528e0a9e6721a7dcd226d2f5c0317d37572082089778d54ff4a9c8ca30d7f168',
+      'f7d2caa2346f24236b5776a7c424061f8d19f5a0020af49644d05acdcf449ce1'
+    ],
+    next: 'CLEAR',
+  },
+]
+
+let currentStage = parseFloat(localStorage.getItem(STORAGE_KEY)) || 1
+
+function setStage(val) {
+  currentStage = val
+  localStorage.setItem(STORAGE_KEY, String(val))
+}
+
+function render() {
+  const container = document.getElementById('viewport')
+  if (!container) return
+
+  if (currentStage === 'CLEAR') {
+    container.innerHTML = `
+      <div class="done-stack">
+        <span class="done-tag">[RECORDED]</span>
+        <h1 class="done-title">SOREN IVERSON</h1>
+        <p class="clue-line">Accuracy restored.</p>
+        <a href="/prompts/clue-less-prompt" class="done-link">&larr; Return</a>
+      </div>
+    `
+    return
+  }
+
+  const stage = STAGES.find(s => s.id === currentStage) || STAGES[0]
+
+  const quotesHtml = (stage.quotes || []).map(q => 
+    `<div class="clue-quote">${q.replace(/\n/g, '<br>')}</div>`
+  ).join('')
+
+  const subquotesHtml = (stage.subquotes || []).map(q => 
+    `<div class="clue-quote">${q.replace(/\n/g, '<br>')}</div>`
+  ).join('')
+
+  const linesHtml = (stage.lines || []).map(l => 
+    `<div class="clue-line" style="font-weight: 700; font-size: 16px;">${l}</div>`
+  ).join('')
+
+  container.innerHTML = `
+    <div class="clue-stack">
+      <h1 class="clue-heading">${stage.title}</h1>
+      ${quotesHtml}
+      ${stage.subheading ? `<div class="clue-subheading">${stage.subheading}</div>` : ''}
+      ${subquotesHtml}
+      ${linesHtml}
+      ${stage.isCipher ? renderRunes(stage.cipherWords) : ''}
+
+      <form id="clue-form">
+        <div class="input-line">
+          <span class="input-prompt">&gt;</span>
+          <input 
+            type="text" 
+            class="raw-input" 
+            id="user-input" 
+            autocomplete="off" 
+            spellcheck="false" 
+            autofocus 
+          />
+        </div>
+        <div class="status-echo" id="echo"></div>
+      </form>
+    </div>
+  `
+
+  const form = document.getElementById('clue-form')
+  const input = document.getElementById('user-input')
+  const echo = document.getElementById('echo')
+
+  input?.focus()
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const val = clean(input.value)
+    if (!val) return
+
+    const hashed = await sha256(val);
+    const ok = stage.validHashes && stage.validHashes.includes(hashed);
+
+function markLevelCompleted(levelId) {
+  try {
+    const raw = localStorage.getItem('cyfernode_clueless_completed_levels')
+    const list = raw ? JSON.parse(raw) : []
+    if (!list.includes(levelId)) {
+      list.push(levelId)
+      localStorage.setItem('cyfernode_clueless_completed_levels', JSON.stringify(list))
+    }
+  } catch {}
+}
+
+    if (ok) {
+      echo.textContent = 'Correct.'
+      echo.className = 'status-echo success'
+      input.disabled = true
+      if (stage.next === 'CLEAR') {
+        markLevelCompleted('a-comedy-of-accuracy')
+        setStage('CLEAR')
+        setTimeout(() => {
+          document.body.style.transition = 'opacity 0.8s ease'
+          document.body.style.opacity = '0'
+          setTimeout(() => {
+            window.location.href = '/prompts/clue-less-prompt'
+          }, 800)
+        }, 3000)
+      } else {
+        setTimeout(() => {
+          setStage(stage.next)
+          render()
+        }, 3000)
+      }
+    } else {
+      echo.textContent = '...'
+      echo.className = 'status-echo error'
+      input.select()
+    }
+  })
+}
+
+document.getElementById('reset-btn')?.addEventListener('click', () => {
+  if (confirm('Reset level progress?')) {
+    setStage(1)
+    render()
+  }
+})
+
+render()
+</script>
+</body>
+</html>

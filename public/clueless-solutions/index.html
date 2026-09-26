@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clue-Less — Solutions</title>
+<meta name="description" content="Full solutions and walkthrough for all Clue-Less levels.">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700,800,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --text: #111114;
+  --muted: rgba(17,17,20,0.44);
+  --subtle: rgba(17,17,20,0.08);
+  --orange: #d24500;
+  --green: #059669;
+  --blue: #2563eb;
+  --bg: #ffffff;
+  --bg-page: #fafafa;
+  --border: rgba(17,17,20,0.09);
+  --font-sans: 'Satoshi', system-ui, sans-serif;
+  --font-mono: 'Consolas', 'Courier New', monospace;
+  --sidebar-w: 260px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-page);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Preloader */
+#preloader {
+  position: fixed; inset: 0;
+  background: #fff;
+  z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.preloader-spinner {
+  width: 30px; height: 30px;
+  border: 2px solid rgba(17,17,20,0.1);
+  border-top-color: var(--orange);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Layout */
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--sidebar-w);
+  background: #fff;
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 28px 0 40px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-header {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+
+.sidebar-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 16px;
+  transition: color 0.15s;
+}
+.sidebar-back:hover { color: var(--orange); }
+
+.sidebar-title {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.sidebar-subtitle {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 4px 12px;
+}
+
+.nav-section {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 14px 8px 6px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  color: rgba(17,17,20,0.7);
+  font-size: 13.5px;
+  font-weight: 600;
+  transition: background 0.12s, color 0.12s;
+  line-height: 1.3;
+}
+.nav-item:hover {
+  background: var(--subtle);
+  color: var(--text);
+}
+.nav-item .nav-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  min-width: 16px;
+}
+
+/* Main content */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  padding: 56px 60px 80px;
+  max-width: calc(var(--sidebar-w) + 860px);
+}
+
+/* Page header */
+.page-hero {
+  margin-bottom: 48px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-tag {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.page-title {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+
+.page-desc {
+  font-size: 15px;
+  line-height: 1.65;
+  color: rgba(17,17,20,0.6);
+  max-width: 560px;
+}
+
+/* Level cards */
+.level-section {
+  margin-bottom: 64px;
+  scroll-margin-top: 40px;
+}
+
+.level-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.level-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  background: var(--subtle);
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin-top: 5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.level-title {
+  font-size: 1.7rem;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  color: var(--text);
+}
+
+.level-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 20px 0;
+}
+
+/* Stage */
+.stage {
+  margin-bottom: 28px;
+}
+
+.stage-label {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.stage-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+/* Clue block */
+.clue-block {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+}
+
+.clue-label {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.clue-text {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: rgba(17,17,20,0.75);
+}
+
+.clue-text em {
+  font-style: italic;
+  color: rgba(17,17,20,0.9);
+}
+
+/* Step list */
+.step-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.step {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(17,17,20,0.78);
+}
+
+.step-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* Answer pill */
+.answer-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.answer-label {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.answer-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #111114;
+  color: #f4f4f5;
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 6px 14px;
+  border-radius: 6px;
+}
+
+.answer-pill.green {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1.5px solid #a7f3d0;
+}
+
+/* Cipher display */
+.cipher-display {
+  background: #111114;
+  color: #f4f4f5;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  padding: 14px 18px;
+  border-radius: 8px;
+  margin: 10px 0;
+  word-break: break-all;
+  line-height: 1.5;
+}
+
+.cipher-display .cipher-key {
+  color: #f59e0b;
+}
+
+.cipher-display .cipher-plain {
+  color: rgba(255,255,255,0.4);
+}
+
+/* Callout */
+.callout {
+  display: flex;
+  gap: 12px;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: 10px 0;
+}
+.callout.blue {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+.callout.red {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+.callout.green {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+}
+
+.callout-icon {
+  font-size: 15px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.callout-text {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: rgba(17,17,20,0.75);
+}
+
+.callout-text strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* Inline code */
+code {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  background: var(--subtle);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #b45309;
+}
+
+/* Table */
+.sol-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  margin: 10px 0;
+}
+.sol-table th {
+  text-align: left;
+  font-size: 10.5px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.sol-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  color: rgba(17,17,20,0.78);
+  line-height: 1.5;
+  vertical-align: top;
+}
+.sol-table td:first-child { font-weight: 700; color: var(--text); }
+
+/* Spoiler toggle */
+.spoiler-wrap {
+  margin-top: 20px;
+}
+
+.spoiler-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: var(--font-sans);
+}
+.spoiler-btn:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+.spoiler-body {
+  display: none;
+  margin-top: 14px;
+}
+.spoiler-body.open { display: block; }
+
+/* Level separator */
+.level-sep {
+  height: 1px;
+  background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
+  margin: 48px 0;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main {
+    margin-left: 0;
+    padding: 40px 20px 60px;
+  }
+}
+</style>
+</head>
+<body>
+<div id="preloader"><div class="preloader-spinner"></div></div>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="/prompts/clue-less-prompt" class="sidebar-back">
+        <i class="fa-solid fa-arrow-left"></i> Back to Clue-Less
+      </a>
+      <div class="sidebar-title">Solutions</div>
+      <div class="sidebar-subtitle">CLUE-LESS / ALL LEVELS</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Levels</div>
+      <a class="nav-item" href="#whistle-podu"><span class="nav-num">01</span> Whistle Podu</a>
+      <a class="nav-item" href="#only-ww"><span class="nav-num">02</span> Only WW</a>
+      <a class="nav-item" href="#the-image"><span class="nav-num">03</span> The Image That Isn't</a>
+      <a class="nav-item" href="#the-bearer"><span class="nav-num">04</span> The Bearer</a>
+      <a class="nav-item" href="#comedy"><span class="nav-num">05</span> A Comedy of Accuracy</a>
+      <a class="nav-item" href="#third-tung"><span class="nav-num">06</span> The Third Tung</a>
+      <a class="nav-item" href="#redline-echo"><span class="nav-num">07</span> Redline Echo</a>
+      <a class="nav-item" href="#hollow-chime"><span class="nav-num">08</span> The Hollow Chime</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <div class="page-hero">
+      <div class="page-tag">Cyfernode 5.0 · Clue-Less</div>
+      <h1 class="page-title">Solutions Walkthrough</h1>
+      <p class="page-desc">Step-by-step solutions for all 8 levels. Each entry shows the original clues, the solve path, and the final answer.</p>
+    </div>
+
+    <!-- ─────────────── LEVEL 1: WHISTLE PODU ─────────────── -->
+    <section class="level-section" id="whistle-podu">
+      <div class="level-header">
+        <span class="level-num">01</span>
+        <h2 class="level-title">Whistle Podu</h2>
+      </div>
+
+      <div class="clue-block">
+        <div class="clue-label">Original Clue</div>
+        <div class="clue-text"><em>"5 stars, 1 whistle"</em><br><br>The whistle cannot be blown from the stands. Speak to the dugout terminal.</div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-label">Solve Path</div>
+        <div class="step-list">
+          <div class="step"><div class="step-icon">1</div><div>Open DevTools (F12 → Console) on the Whistle Podu page.</div></div>
+          <div class="step"><div class="step-icon">2</div><div>Type <code>whistlePodu()</code> — or any alias: <code>whistle()</code>, <code>thala()</code>, <code>csk()</code>. The console returns a JWT-style token.</div></div>
+          <div class="step"><div class="step-icon">3</div><div>Base64url-decode the <strong>second segment</strong> of the token (between the two dots). It reveals: <code>{"key":"2010-2023","next":"/vault"}</code></div></div>
+          <div class="step"><div class="step-icon">4</div><div><strong>key</strong> is the range of CSK's IPL championships. That is the answer.</div></div>
+        </div>
+      </div>
+
+      <div class="callout blue">
+        <span class="callout-icon">💡</span>
+        <div class="callout-text"><strong>Reasoning:</strong> CSK (Chennai Super Kings) won 5 IPL titles. Their active title-winning years: 2010, 2011, 2018, 2021, 2023 → the span is <strong>2010–2023</strong>.</div>
+      </div>
+
+      <div class="answer-row">
+        <span class="answer-label">Answer</span>
+        <span class="answer-pill green">20102023</span>
+      </div>
+    </section>
+
+    <div class="level-sep"></div>
+
+    <!-- ─────────────── LEVEL 2: ONLY WW ─────────────── -->
+    <section class="level-section" id="only-ww">
+      <div class="level-header">
+        <span class="level-num">02</span>
+        <h2 class="level-title">Only WW</h2>
+      </div>
+
+      <div class="clue-block">
+        <div class="clue-label">Premise</div>
+        <div class="clue-text"><em>"A copper wall outside a cafeteria has been whispering since 1990. Most of it has been made to speak. One part still refuses. Somewhere nearby, something was put in the ground on purpose, and only two initials know where."</em></div>
+      </div>
+
+      <table class="sol-table">
+        <thead><tr><th>Stage</th><th>Clue</th><th>Answer</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Stage 1</td>
+            <td>Kryptos sculpture at CIA HQ. K2 is decrypted. The initials near the buried artefact are <strong>WW</strong> — William Webster, CIA Director who commissioned it. Answer: the sculpture's name.</td>
+            <td><code>kryptos</code></td>
+          </tr>
+          <tr>
+            <td>Stage 2</td>
+            <td>Vigenère cipher — key is <strong>ABSCISSA</strong> (word from K2's decoded text). Ciphertext: <code>BVJKID???????</code>. Decrypt with ABSCISSA to reveal the plaintext word.</td>
+            <td><code>abscissa</code></td>
+          </tr>
+          <tr>
+            <td>Stage 3 — BURIAL</td>
+            <td><em>"Only five people know I make tunes."</em> Aphex Twin and Fatboy Slim are documented red herrings. The anonymous electronic producer from South London is <strong>Burial</strong> (real name: William Bevan).</td>
+            <td><code>burial</code> or <code>willbevan</code></td>
+          </tr>
+          <tr>
+            <td>Stage 4 — /NOTAPHEXTWIN</td>
+            <td>February 2008 — The Independent traced the identity. Elliott School in Putney is the same school as Kieran Hebden (Four Tet). The alumni: <strong>William Bevan</strong>.</td>
+            <td><code>willbevan</code> or <code>williambevan</code></td>
+          </tr>
+          <tr>
+            <td>Stage 5 — THE CONFIRMATION</td>
+            <td>August 5, 2008 — Burial's official statement: <em>"My name's Will Bevan."</em></td>
+            <td><code>willbevan</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="answer-row">
+        <span class="answer-label">Final Answer</span>
+        <span class="answer-pill green">willbevan</span>
+      </div>
+    </section>
+
+    <div class="level-sep"></div>
+
+    <!-- ─────────────── LEVEL 3: THE IMAGE ─────────────── -->
+    <section class="level-section" id="the-image">
+      <div class="level-header">
+        <span class="level-num">03</span>
+        <h2 class="level-title">The Image That Isn't An Image</h2>
+      </div>
+
+      <div class="clue-block">
+        <div class="clue-label">Original Clue</div>
+        <div class="clue-text"><em>"LOOK CLOSER."</em><br><br>An image is shown. An audio file labelled <strong>FREQUENCY DISPATCH [17:04]</strong> plays.</div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-label">Solve Path</div>
+        <div class="step-list">
+          <div class="step"><div class="step-icon">1</div><div>Open the page source. Hidden HTML comments reveal: <code>&lt;!-- 17 04 --&gt;</code> and <code>&lt;!-- DSC_1704.jpg --&gt;</code>. The number <strong>1704</strong> appears everywhere.</div></div>
+          <div class="step"><div class="step-icon">2</div><div>The image <code>alt</code> attribute says <code>DSC_1704.jpg</code>. The audio player is labelled <strong>[17:04]</strong>. The image dimensions are <strong>1704 × 1136</strong>. Treat <code>17 04</code> as extraction coordinates.</div></div>
+          <div class="step"><div class="step-icon">3</div><div>Listen to <code>audio04.wav</code>. The audio spells out a 4-character alphanumeric code.</div></div>
+          <div class="step"><div class="step-icon">4</div><div>The answer is an all-caps 4-character code that the audio and the coordinate clues both point to.</div></div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <span class="callout-icon">🔊</span>
+        <div class="callout-text"><strong>Note:</strong> The answer is entered in uppercase. The clean function on this level converts to uppercase before hashing.</div>
+      </div>
+
+      <div class="answer-row">
+        <span class="answer-label">Answer</span>
+        <span class="answer-pill green">7QA9</span>
+      </div>
+    </section>
+
+    <div class="level-sep"></div>
+
+    <!-- ─────────────── LEVEL 4: THE BEARER ─────────────── -->
+    <section class="level-section" id="the-bearer">
+      <div class="level-header">
+        <span class="level-num">04</span>
+        <h2 class="level-title">The Bearer</h2>
+      </div>
+
+      <div class="clue-block">
+        <div class="clue-label">Premise</div>
+        <div class="clue-text">A 13-stage chain rooted in a Victorian painter's self-portrait. Each answer is extracted from the previous one. Final answer: the company that absorbed everything.</div>
+      </div>
+
+      <table class="sol-table">
+        <thead><tr><th>Stage</th><th>Clue / Logic</th><th>Answer</th></tr></thead>
+        <tbody>
+          <tr><td>1 — THE PORTRAIT</td><td>Self-portrait shown. Identify the Victorian painter.</td><td><code>fredericleighton</code></td></tr>
+          <tr><td>2 — THE PROCESSION</td><td>His most famous painting — a religious procession in ancient Greece.</td><td><code>daphnephoria</code></td></tr>
+          <tr><td>3 — THE NINTH</td><td>Which letter of the alphabet is the 9th? Auto-reveals the letter <strong>O</strong>.</td><td><code>9</code></td></tr>
+          <tr><td>4 — APOLLO</td><td>Daphnephoria depicts the worship of which Greek god?</td><td><code>apollo</code></td></tr>
+          <tr><td>5 — LAUREL</td><td>Apollo is symbolised by which plant?</td><td><code>laurel</code></td></tr>
+          <tr><td>6 — DAPHNEPHOROS</td><td>The Greek epithet meaning "laurel-bearer" — the procession's name.</td><td><code>daphnephoros</code></td></tr>
+          <tr><td>7 — SUN</td><td>Apollo is primarily the god of what?</td><td><code>sun</code></td></tr>
+          <tr><td>8 — SUNLIGHT</td><td>A soap brand named after Apollo's domain, created by the Lever Brothers.</td><td><code>sunlight</code></td></tr>
+          <tr><td>9 — WILLIAM LEVER</td><td>Who founded Lever Brothers and created Sunlight Soap?</td><td><code>williamlever</code></td></tr>
+          <tr><td>10 — PORT SUNLIGHT</td><td>The model village Lever built for his factory workers near Liverpool.</td><td><code>portsunlight</code></td></tr>
+          <tr><td>11 — GALLERY NAME</td><td>The art gallery in Port Sunlight named after him.</td><td><code>ladyleverartgallery</code></td></tr>
+          <tr><td>11b — ELIZABETH HULME</td><td>Lady Lever's real name (his wife).</td><td><code>elizabethhulme</code></td></tr>
+          <tr><td>12 — LEVERHULME</td><td>Lever married Hulme. His peerage title combines both names.</td><td><code>leverhulme</code></td></tr>
+          <tr><td>13 — UNILEVER</td><td>Lever Brothers merged with Margarine Unie to form what company?</td><td><code>unilever</code></td></tr>
+          <tr><td>FINAL</td><td>From the very first stage — the painter who started the chain. His name was in his hands all along.</td><td><code>fredericleighton</code></td></tr>
+        </tbody>
+      </table>
+
+      <div class="answer-row">
+        <span class="answer-label">Final Answer</span>
+        <span class="answer-pill green">fredericleighton</span>
+      </div>
+    </section>
+
+    <div class="level-sep"></div>
+
+    <!-- ─────────────── LEVEL 5: A COMEDY OF ACCURACY ─────────────── -->
+    <section class="level-section" id="comedy">
+      <div class="level-header">
+        <span class="level-num">05</span>
+        <h2 class="level-title">A Comedy of Accuracy</h2>
+      </div>
+
+      <div class="clue-block">
+        <div class="clue-label">Premise</div>
+        <div class="clue-text">A chain of inaccuracies — famous numbers misattributed, names confused, things labelled wrongly. Each stage corrects an error. Final answer: the person who was "taking stupid seriously."</div>
+      </div>
+
+      <table class="sol-table">
+        <thead><tr><th>Stage</th><th>Clue / Logic</th><th>Answer</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>1 — XI JINPING</td>
+            <td><em>"As voiced by a chronicler of…"</em> — Who voiced Xi Jinping in a famous political satire series? Answer: the show's name.</td>
+            <td><code>southpark</code></td>
+          </tr>
+          <tr>
+            <td>1.5</td>
+            <td><em>"Accuracy was never their strongest virtue."</em> — South Park's episode count for Xi's face: they labelled him as <strong>Season 19</strong>. The number beside the name.</td>
+            <td><code>19</code></td>
+          </tr>
+          <tr>
+            <td>2 — XI (11)</td>
+            <td><em>"The eleventh Jinping was not alone… and the man who made revolution famous suffered the same fate."</em> — There were 11 leaders named Xi. Lenin was famously mislabelled in stock photos. Who was confused for Lenin?</td>
+            <td><code>trotsky</code> or <code>leontrotsky</code></td>
+          </tr>
+          <tr>
+            <td>3 — VI (6)</td>
+            <td><em>"Six, but make it television. Where six becomes a network, a Khan becomes a king."</em> — What is the sixth major Indian TV network? Or: Six + Khan = ?</td>
+            <td><code>6</code> → <code>sab</code> or <code>sabtvnetwork</code></td>
+          </tr>
+          <tr>
+            <td>4 — SHAH RUKH KHAN</td>
+            <td><em>"A king of Bollywood. A house. A love story. And, apparently, an inception."</em> — Dilwale (his film). But "no ordinary Dilwale."</td>
+            <td><code>dulhanialejayenge</code> or <code>ddlj</code></td>
+          </tr>
+          <tr>
+            <td>5 — /INCEPTION</td>
+            <td>Genshin Symbol Cipher shown: words <strong>SUBJECT PROPERTY 343</strong> rendered in runes. Decode the runes to read the plaintext.</td>
+            <td><code>subjectproperty343</code></td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td><em>"Three hundred forty-three subjects. One speaks the loudest."</em> — Halo's Subject 343 refers to the Guilty Spark AI. Its designation.</td>
+            <td><code>343guiltypark</code> or <code>guiltypark</code></td>
+          </tr>
+          <tr>
+            <td>7 — /PLAYBOICARTI</td>
+            <td><em>"Lib of Babel"</em> and <em>"taking stupid seriously anjeermom"</em> — a Playboi Carti lyric/meme. Who said "taking stupid seriously"?</td>
+            <td><code>soren</code> or <code>soreniverson</code></td>
+          </tr>
+          <tr>
+            <td>8 — ANJEERMOM</td>
+            <td>ANJEER = Fig. MOM = Ma. FIG + MA = FIGMA.</td>
+            <td><code>figma</code></td>
+          </tr>
+          <tr>
+            <td>9 — FIGMA</td>
+            <td><em>"Someone has taken stupidity seriously."</em> — Figma's creative director who made a viral post about "taking stupid seriously."</td>
+            <td><code>soreniverson</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="answer-row">
+        <span class="answer-label">Final Answer</span>
+        <span class="answer-pill green">soreniverson</span>
+      </div>
+    </section>
+
+    <div class="level-sep"></div>
+
+    <!-- ─────────────── LEVEL 6: THE THIRD TUNG ─────────────── -->
+    <section class="level-section" id="third-tung">
+      <div class="level-header">
+        <span class="level-num">06</span>
+        <h2 class="level-title">The Third Tung</h2>
+      </div>
+
+      <div class="clue-block">
+        <div class="clue-label">Premise</div>
+        <div class="clue-text">A late-night Indonesian neighbourhood watch (Siskamling / Pos Ronda). Sounds are struck on a hollow wooden instrument — a slit drum. Three strikes signals a specific message.</div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-label">Stage 1 — THE PHOTOGRAPH</div>
+        <div class="step-list">
+          <div class="step"><div class="step-icon">1</div><div>An image shows a 3 AM neighbourhood scene. <em>"Some warnings are repeated because the first one was ignored."</em></div></div>
+          <div class="step"><div class="step-icon">2</div><div>In Indonesian Siskamling tradition, the drum is struck a certain number of times to signal different events. Select (highlight) the invisible white text below the image — it reads: <em>"suara ketukan di pos ronda tengah malam: tiga kali bunyi bilah bambu berongga bergetar..."</em></div></div>
+          <div class="step"><div class="step-icon">3</div><div>Count: <strong>tiga kali</strong> = three times. The code book for pos ronda: 3 strikes = <strong>Bahaya</strong> (Danger) / Sahur. The answer is the number.</div></div>
+        </div>
+        <div class="answer-row">
+          <span class="answer-label">Stage 1 Answer</span>
+          <span class="answer-pill">3</span>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-label">Stage 2 — THE COUNTING</div>
+        <div class="step-list">
+          <div class="step"><div class="step-icon">1</div><div>Shown: <strong>TUNG TUNG TUNG</strong>. <em>"Tell what the sound was counting."</em></div></div>
+          <div class="step"><div class="step-icon">2</div><div>The answer is not the number of tings — it's <em>what instrument is making the sound</em>. Hover the clue hint; select the hidden text near the pos ronda sign in the background.</div></div>
+          <div class="step"><div class="step-icon">3</div><div>The hollow wooden slit drum used in Indonesian night watch is called a <strong>kentungan</strong> (or pentungan).</div></div>
+        </div>
+        <div class="answer-row">
+          <span class="answer-label">Stage 2 Answer (Final)</span>
+          <span class="answer-pill green">kentungan</span>
+        </div>
+      </div>
+
+      <div class="callout red">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-text"><strong>Trap:</strong> Typing "sahur", "pocong", "tungtungsahur" or creature-related words triggers a red herring warning. The creature is a decoy.</div>
+      </div>
+
+      <div class="answer-row">
+        <span class="answer-label">Final Answer</span>
+        <span class="answer-pill green">kentungan</span>
+      </div>
+    </section>
+
+    <div class="level-sep"></div>
+
+    <!-- ─────────────── LEVEL 7: REDLINE ECHO ─────────────── -->
+    <section class="level-section" id="redline-echo">
+      <div class="level-header">
+        <span class="level-num">07</span>
+        <h2 class="level-title">Redline Echo</h2>
+      </div>
+
+      <div class="clue-block">
+        <div class="clue-label">Premise</div>
+        <div class="clue-text">A Formula 1 puzzle. Starts with a driver, escalates through a famous race and its track's dual nicknames, then requires breaking a two-layer cipher.</div>
+      </div>
+
+      <table class="sol-table">
+        <thead><tr><th>Stage</th><th>Clue / Logic</th><th>Answer</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Stage 1 — REDLINE ECHO</td>
+            <td>An image of a Formula 1 driver. <em>"Identify him. Follow his numbers."</em> — It's Lewis Hamilton. His career grand prix wins.</td>
+            <td><code>lewishamilton</code> or <code>105</code></td>
+          </tr>
+          <tr>
+            <td>Stage 2 — 105</td>
+            <td>Rain-shot image. <em>"Something's hidden here. Key: mercedes."</em> — A steganography or trivia question about Hamilton's win tally at Mercedes.</td>
+            <td><code>mercedes</code> or win count variant</td>
+          </tr>
+          <tr>
+            <td>Stage 3 — /SENNA</td>
+            <td>Four clues: a Brazilian flag inside a German one, a Portuguese phrase, an IMDb link (tt1587310 = Rush, 2013), and a Notting Hill bet. Three are real, one is a decoy. The film <strong>Rush</strong> depicts the 1976 Niki Lauda vs James Hunt rivalry.</td>
+            <td><code>rush</code></td>
+          </tr>
+          <tr>
+            <td>Stage 4 — /NURBURGRING</td>
+            <td>The track has two real nicknames — choose your path.</td>
+            <td>Branch A: <strong>greenhell</strong> · Branch B: <strong>widowmaker</strong></td>
+          </tr>
+          <tr>
+            <td>Branch A — THE GREEN HELL</td>
+            <td><em>"Bergwerk is German for 'mine'."</em> A famous historic Australian gold mine lease nicknamed after it. Two words combined.</td>
+            <td><code>goldenmile</code></td>
+          </tr>
+          <tr>
+            <td>Branch B — THE WIDOWMAKER</td>
+            <td>Ciphertext: <code>iwkzzzutlziwxlaimdkvciyfzfd</code>. Two layers: Layer 1 = Vigenère with the mine key (<code>goldenmile</code>). Layer 2 = Affine (a=5, b=8, inverse: x = 21·(y−8) mod 26). Read the resulting scene.</td>
+            <td>Decoded scene name</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout blue">
+        <span class="callout-icon">🔧</span>
+        <div class="callout-text"><strong>Affine decode formula:</strong> For each letter y (0-indexed), compute <code>x = 21 × (y − 8) mod 26</code>. First undo the Vigenère with key <code>goldenmile</code>.</div>
+      </div>
+
+      <div class="answer-row">
+        <span class="answer-label">Final Answer (Branch completion)</span>
+        <span class="answer-pill green">bergwerk</span>
+      </div>
+    </section>
+
+    <div class="level-sep"></div>
+
+    <!-- ─────────────── LEVEL 8: THE HOLLOW CHIME ─────────────── -->
+    <section class="level-section" id="hollow-chime">
+      <div class="level-header">
+        <span class="level-num">08</span>
+        <h2 class="level-title">The Hollow Chime</h2>
+      </div>
+
+      <div class="clue-block">
+        <div class="clue-label">Premise</div>
+        <div class="clue-text">Three ASMR audio files. Each has a matching ciphertext file. The audio tells you <em>which cipher and key to use</em>. Decrypt each ciphertext. All three decoded answers point to one person.</div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-label">Transmission 01 — The Radio Repair Shop</div>
+        <div class="clue-block">
+          <div class="clue-label">Assets</div>
+          <div class="clue-text">Audio: <code>radio_repair_shop_asmr.mp3</code> &nbsp;·&nbsp; Ciphertext file: <code>tape_scrap_0x1A.dat</code></div>
+        </div>
+        <div class="cipher-display">
+          Ciphertext: <span class="cipher-key">ZDURIWKHZRUOGV</span><br>
+          Cipher: <span style="color:rgba(255,255,255,0.5)">Caesar (shift +3)</span><br>
+          Shift back by 3 → <span class="cipher-key">WAROFTHERWORLDS</span>
+        </div>
+        <div class="callout">
+          <span class="callout-icon">📻</span>
+          <div class="callout-text"><strong>Logic:</strong> The audio references the most panic-inducing broadcast in history — Orson Welles' 1938 radio play <em>War of the Worlds</em>. The repair shop makes "three taps, three clockwise turns" — shift of 3. Caesar cipher, shift −3.</div>
+        </div>
+        <div class="answer-row"><span class="answer-label">Decoded</span><span class="answer-pill">WAROFTHERWORLDS → War of the Worlds</span></div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-label">Bridge — Found Note (Interlude)</div>
+        <div class="cipher-display">
+          Ciphertext: <span class="cipher-key">OLLPULIGSVSVOKVIH</span><br>
+          Cipher: <span style="color:rgba(255,255,255,0.5)">Atbash (A↔Z, B↔Y…)</span><br>
+          Decoded → <span class="cipher-key">LOOKFORTHEHELPERS</span>
+        </div>
+        <div class="callout">
+          <span class="callout-icon">🏘️</span>
+          <div class="callout-text"><strong>Logic:</strong> <em>"Look for the helpers"</em> is a famous quote by <strong>Fred Rogers</strong> (Mr. Rogers). The 1938 broadcast caused panic; Mr. Rogers' voice only ever calmed people. Hint: check <code>/mrrogers</code>.</div>
+        </div>
+        <div class="answer-row"><span class="answer-label">Bridge Answer</span><span class="answer-pill">mrrogers</span></div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-label">Transmission 02 — The Painting Roleplay</div>
+        <div class="clue-block">
+          <div class="clue-label">Assets</div>
+          <div class="clue-text">Audio: <code>Bob Ross Painting Roleplay.mp3</code> &nbsp;·&nbsp; Ciphertext file: <code>easel_scrap_0x4F.log</code></div>
+        </div>
+        <div class="cipher-display">
+          Ciphertext: <span class="cipher-key">IRJHFMZNLSFRWUPEVHLZ</span><br>
+          Cipher: <span style="color:rgba(255,255,255,0.5)">Vigenère, key = BRUSH</span><br>
+          Decoded → <span class="cipher-key">BOBROSSPAINTING</span>
+        </div>
+        <div class="callout">
+          <span class="callout-icon">🖌️</span>
+          <div class="callout-text"><strong>Logic:</strong> The 5-letter tool mentioned repeatedly throughout the painting roleplay is a <strong>brush</strong>. That is the Vigenère key. Apply it to decrypt.</div>
+        </div>
+        <div class="answer-row"><span class="answer-label">Decoded</span><span class="answer-pill">BOBROSSPAINTING → Bob Ross</span></div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-label">Transmission 03 — The Fireplace Story</div>
+        <div class="clue-block">
+          <div class="clue-label">Assets</div>
+          <div class="clue-text">Audio: <code>Fireplace Bedtime Story.mp3</code> &nbsp;·&nbsp; Ciphertext file: <code>ash_scrap_0x9C.txt</code></div>
+        </div>
+        <div class="cipher-display">
+          Ciphertext: <span class="cipher-key">RIFFYISSWXCVZU</span><br>
+          Cipher: <span style="color:rgba(255,255,255,0.5)">Affine (a=5, b=8, a⁻¹=21)</span><br>
+          Formula: x = 21 × (y − 8) mod 26<br>
+          Decoded → <span class="cipher-key">BOBROSSSCENERY</span>
+        </div>
+        <div class="callout">
+          <span class="callout-icon">🔥</span>
+          <div class="callout-text"><strong>Logic:</strong> The audio whispers constants <em>a=5, b=8</em> in the embers. Affine cipher inverse formula: <code>x = 21 × (y − 8) mod 26</code>. The result again points to Bob Ross.</div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-label">Final Stage — THE MAN IN THE SCENERY</div>
+        <div class="clue-block">
+          <div class="clue-label">Convergence</div>
+          <div class="clue-text"><em>"Three voices, three tools of comfort — a radio, a paintbrush, a fireplace. All quietly pointing at one man who spent thirty years turning mistakes into scenery."</em></div>
+        </div>
+        <div class="step-list">
+          <div class="step"><div class="step-icon">✓</div><div>Transmission 1: War of the Worlds → panic-inducing broadcast → opposite is <strong>Bob Ross</strong></div></div>
+          <div class="step"><div class="step-icon">✓</div><div>Transmission 2: Vigenère key = BRUSH → decoded text says <strong>Bob Ross Painting</strong></div></div>
+          <div class="step"><div class="step-icon">✓</div><div>Transmission 3: Affine decryption → <strong>Bob Ross Scenery</strong></div></div>
+        </div>
+      </div>
+
+      <div class="answer-row">
+        <span class="answer-label">Final Answer</span>
+        <span class="answer-pill green">bobross</span>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  const preloader = document.getElementById('preloader');
+  if (preloader) {
+    preloader.style.opacity = '0';
+    preloader.style.visibility = 'hidden';
+    setTimeout(() => preloader.remove(), 300);
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REDLINE ECHO - Cyfernode 5.0</title>
+<meta name="description" content="REDLINE ECHO">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700,800,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --text: #111114;
+  --muted: rgba(17, 17, 20, 0.44);
+  --orange: #d24500;
+  --red: #dc2626;
+  --font-sans: 'Satoshi', system-ui, sans-serif;
+  --font-mono: 'Consolas', 'Courier New', monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100%;
+  background: #fff;
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Preloader */
+#preloader {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.preloader-spinner {
+  width: 32px;
+  height: 32px;
+  border: 2px solid rgba(17, 17, 20, 0.1);
+  border-top-color: var(--red);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+#exit-btn {
+  position: fixed;
+  top: 28px;
+  left: 28px;
+  z-index: 800;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.15s ease;
+}
+
+#exit-btn:hover {
+  color: var(--red);
+}
+
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 100px 24px 60px;
+}
+
+.panel {
+  width: min(100%, 580px);
+}
+
+.clue-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.clue-tag {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.clue-heading {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: var(--text);
+}
+
+.clue-quote {
+  font-size: 16px;
+  font-style: italic;
+  color: rgba(17, 17, 20, 0.84);
+  line-height: 1.6;
+  border-left: 2px solid var(--text);
+  padding-left: 14px;
+}
+
+.clue-line {
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(17, 17, 20, 0.75);
+}
+
+.level-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #000;
+}
+
+.level-image {
+  width: 100%;
+  max-height: 380px;
+  object-fit: contain;
+  display: block;
+}
+
+.transcript-card {
+  background: #111114;
+  color: #e4e4e7;
+  padding: 18px 20px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.transcript-card .time {
+  color: #f87171;
+  font-weight: 700;
+  margin-right: 8px;
+}
+
+.cipher-highlight {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 16px 20px;
+  background: #111114;
+  color: #ff9858;
+  border-radius: 6px;
+  word-break: break-all;
+  user-select: all;
+}
+
+.branch-nav {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.branch-btn {
+  flex: 1;
+  padding: 12px 14px;
+  background: #f4f4f5;
+  border: 1px solid rgba(17, 17, 20, 0.1);
+  border-radius: 6px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.branch-btn:hover {
+  background: #111114;
+  color: #fff;
+}
+
+.hint-trigger {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--muted);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+.hint-box {
+  background: #fafafa;
+  border-left: 2px dashed var(--muted);
+  padding: 10px 14px;
+  font-size: 13px;
+  font-family: var(--font-mono);
+  color: rgba(17, 17, 20, 0.7);
+  line-height: 1.5;
+  display: none;
+}
+
+/* Minimal Input */
+.input-line {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid var(--text);
+  padding: 6px 0;
+  margin-top: 14px;
+}
+
+.input-prompt {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-right: 12px;
+  user-select: none;
+}
+
+.raw-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  outline: none;
+}
+
+.status-echo {
+  font-size: 13px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  min-height: 20px;
+  margin-top: 6px;
+  transition: opacity 0.2s ease;
+  line-height: 1.4;
+}
+
+.status-echo.success {
+  color: #10b981;
+}
+
+.status-echo.error {
+  color: #b91c1c;
+}
+
+/* Completion */
+.done-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.done-tag {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--muted);
+}
+
+.done-title {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.done-link {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--red);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.top-reset-btn {
+  position: fixed;
+  top: 28px;
+  right: 28px;
+  z-index: 800;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.15s ease;
+}
+
+.top-reset-btn:hover {
+  color: var(--text);
+}
+
+@media (max-width: 768px) {
+  #exit-btn {
+    top: 24px;
+    left: 20px;
+  }
+  .top-reset-btn {
+    top: 24px;
+    right: 20px;
+  }
+  .page {
+    padding: 96px 16px 40px;
+  }
+}
+</style>
+</head>
+<body>
+<!-- LOCK:START -->
+<div id="lock-overlay" style="position:fixed;inset:0;background:#08080b;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;">
+  <div style="font-family:'Consolas',monospace;font-size:10px;letter-spacing:0.18em;color:rgba(255,255,255,0.25);text-transform:uppercase;">Cyfernode 5.0 · Clue-Less</div>
+  <div style="font-family:'Satoshi',system-ui,sans-serif;font-size:clamp(2rem,6vw,3rem);font-weight:900;color:#fff;letter-spacing:-0.04em;line-height:1;">LOCKED</div>
+  <div style="font-family:'Consolas',monospace;font-size:12px;color:rgba(255,255,255,0.35);text-align:center;margin-top:4px;">Opens at 12:00 PM &nbsp;·&nbsp; 27 Sep 2026</div>
+  <div id="lock-countdown" style="font-family:'Consolas',monospace;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;color:#d24500;letter-spacing:0.08em;margin-top:12px;">--:--:--</div>
+  <div style="font-family:'Consolas',monospace;font-size:10px;color:rgba(255,255,255,0.15);margin-top:24px;letter-spacing:0.08em;">HH &nbsp; MM &nbsp; SS</div>
+</div>
+<script>
+(function(){
+  var UNLOCK = new Date('2026-09-27T12:00:00+05:30').getTime();
+  var overlay = document.getElementById('lock-overlay');
+  var cd = document.getElementById('lock-countdown');
+  if (!overlay) return;
+  function tick() {
+    var now = Date.now();
+    var diff = UNLOCK - now;
+    if (diff <= 0) { overlay.remove(); return; }
+    var h = Math.floor(diff / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    var s = Math.floor((diff % 60000) / 1000);
+    cd.textContent = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }
+  tick();
+  var iv = setInterval(function(){ tick(); if (Date.now() >= UNLOCK) clearInterval(iv); }, 1000);
+})();
+</script>
+<!-- LOCK:END -->
+
+<div id="preloader">
+  <div class="preloader-spinner"></div>
+</div>
+
+<a href="/prompts/clue-less-prompt" id="exit-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
+<button type="button" id="reset-btn" class="top-reset-btn" title="Reset level progress">Reset</button>
+
+<main class="page">
+  <article class="panel" id="viewport"></article>
+</main>
+
+<script type="module">
+// Preloader
+window.addEventListener('DOMContentLoaded', () => {
+  const preloader = document.getElementById('preloader');
+  if (preloader) {
+    preloader.style.opacity = '0';
+    preloader.style.visibility = 'hidden';
+    setTimeout(() => preloader.remove(), 300);
+  }
+});
+
+const STORAGE_KEY = 'cyfernode_clueless_redline_stage'
+
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function clean(str) {
+  return String(str || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '')
+}
+
+const STAGES = [
+  // Stage 1
+  {
+    id: 'stage-1',
+    tag: 'STAGE 01 / REDLINE',
+    title: 'REDLINE ECHO',
+    image: '/lewis.png',
+    quotes: [
+      '“Identify him. Follow his numbers.”',
+    ],
+    validHashes: [
+      '1253e9373e781b7500266caa55150e08e210bc8cd8cc70d89985e3600155e860',
+      'b8846be2818ecb4ec9ae9c52e489ed3a7cd902fc45982868e480cb7ee143923b',
+      'af46e05550799de1acfc03103259107c785d65f9a4562e2056cdbe246fb63e86'
+    ],
+    next: 'stage-2',
+  },
+
+  // Stage 2
+  {
+    id: 'stage-2',
+    tag: 'STAGE 02',
+    title: 'STAGE 02',
+    image: '/rain_shot.png',
+    quotes: [
+      '“Something\'s hidden here. Key: mercedes”',
+    ],
+    validHashes: [
+      '4a2a663f1b4a1cfba87dd56990edec880eecd3d8f189adad8084ed8514609014',
+      '420ec863a6bbb72fc03ec663a58fa0e6bd5af479755d9ce8d94c266acaf3194e',
+      'd75890d2b43bdf7769809f99fb4cc1f09d5dfea0e25a6ab77a8c26e550e2067e'
+    ],
+    next: 'stage-3',
+  },
+
+  // Stage 3
+  {
+    id: 'stage-3',
+    tag: 'STAGE 03',
+    title: 'STAGE 03',
+    image: '/flags_scrap_0x3B.png',
+    quotes: [
+      '1. A Brazilian flag, layered inside a German one.',
+      '2. “a chuva sempre limpa”',
+      '3. <a href="https://www.imdb.com/title/tt1587310/" target="_blank" rel="noopener noreferrer" style="color:var(--red);text-decoration:underline;">IMDb: tt1587310 (2013)</a>',
+      '4. Somewhere in Notting Hill, a bet was placed.',
+    ],
+    hint: 'One of these four clues is a decoy. The film holds the rivalry.',
+    validHashes: [
+      '2d1fd0086934aca9129323fd90ba6b15f8bf49189888307a3a0a743e9211d084',
+      'b13a37c2e4d2093b9f5311c9d2371ede93f21b23106e90b4277b92d1212160e1',
+      '4c3aada37cf7fd3819b2da502a15f78f7ce5a2ce6d584b630344ff00dffc74ac',
+      '000d0b0c1030bfce8a6829d8abd6a2b7e30aab6105fae508df57777da599bd47',
+      '342548f767206093b600ffcdcd1b68a9f0ea5a0ad8cbcf133c67614cc5510bcc'
+    ],
+    next: 'stage-4',
+  },
+
+  // Stage 4
+  {
+    id: 'stage-4',
+    tag: 'STAGE 04',
+    title: 'STAGE 04',
+    quotes: [
+      decodeURIComponent(escape(atob('UnVzaCBkcmFtYXRpemVzIHRoZSBoaXN0b3JpYyAxOTc2IEdlcm1hbiBHcmFuZCBQcml4IHJpdmFscnkgYXQgdGhlIE7DvHJidXJncmluZywgd2hlcmUgYSBjYXRhc3Ryb3BoaWMgY3Jhc2ggb2NjdXJyZWQgbmVhciB0aGUgQmVyZ3dlcmsgY29ybmVyLg=='))),
+      'The track has two real nicknames from two different eras. Choose your path.',
+    ],
+    isBranchSelect: true,
+    branchA: 'greenhell',
+    branchB: 'widowmaker',
+  },
+
+  // Stage 5A
+  {
+    id: 'greenhell',
+    tag: 'BRANCH A / /GREENHELL',
+    title: 'THE GREEN HELL',
+    isTranscript: true,
+    lines: [
+      '<span style="font-size:13px;color:rgba(17,17,20,0.55);">Flavor note: Bergwerk is German for \'mine\'.</span>',
+      '<span style="font-size:13px;font-style:italic;color:rgba(17,17,20,0.6);">Find the real-world place nicknamed for a historic mine lease.</span>',
+    ],
+    hint: 'Think of a historic Australian gold mine lease. (Two words combined)',
+    validHashes: [
+      '6c405237640f09a05b9070a4fca5866a4ef21c4a4b830cdb6343d925c8ea31a6',
+      '3f68e4c0b1264c3b7cf97aad942426a419aa5b2f6282ac730275fcb1e6438cb5'
+    ],
+    next: 'widowmaker',
+  },
+
+  // Stage 5B
+  {
+    id: 'widowmaker',
+    tag: 'BRANCH B / /WIDOWMAKER',
+    title: 'THE WIDOWMAKER',
+    isCipher: true,
+    cipherText: 'iwkzzzutlziwxlaimdkvciyfzfd',
+    quotes: [
+      '“This has been through two layers. You\'ll need what the mine gave you.”',
+    ],
+    hint: 'Layer 1: Vigenère with the mine key. Layer 2: Affine (a=5, b=8). Read the resulting scene.',
+    validHashes: [
+      'b5200fbc5f85ceb8c5415e2a61e308b65479096eb002c40ec415d54c5c77e7a9',
+      'b8cca97395d6540ab952aee96f21521c2688b804d97357697e9dd7d0b49b6bb2',
+      '517fe84a4d53acd1bc236b2306592061b0cca8f23f8904c0234ee8fce8c3e5ac',
+      'dddc9f3c9ddfc15dcc7f9a5b92a1eba54b853d7a773de658c4e9978d0af93d09'
+    ],
+    next: 'CLEAR',
+  },
+]
+
+let currentStage = localStorage.getItem(STORAGE_KEY) || 'start'
+
+function setStage(val) {
+  currentStage = val
+  localStorage.setItem(STORAGE_KEY, String(val))
+}
+
+function markLevelCompleted(levelId) {
+  try {
+    const raw = localStorage.getItem('cyfernode_clueless_completed_levels')
+    const list = raw ? JSON.parse(raw) : []
+    if (!list.includes(levelId)) {
+      list.push(levelId)
+      localStorage.setItem('cyfernode_clueless_completed_levels', JSON.stringify(list))
+    }
+  } catch {}
+}
+
+function fadeAndRedirect() {
+  document.body.style.transition = 'opacity 0.8s ease'
+  document.body.style.opacity = '0'
+  setTimeout(() => {
+    window.location.href = '/prompts/clue-less-prompt'
+  }, 800)
+}
+
+function render() {
+  const container = document.getElementById('viewport')
+  if (!container) return
+
+  if (currentStage === 'CLEAR') {
+    container.innerHTML = `
+      <div class="done-stack">
+        <span class="done-tag">[RECORDED]</span>
+        <h1 class="done-title">REDLINE ECHO</h1>
+        <p class="clue-line">Keanu Reeves on the bench. The cipher is unbroken no more.</p>
+        <a href="/prompts/clue-less-prompt" class="done-link">&larr; Return</a>
+      </div>
+    `
+    return
+  }
+
+  const stage = STAGES.find(s => String(s.id) === String(currentStage)) || STAGES[0]
+
+  const tagHtml = stage.tag ? `<div class="clue-tag">${stage.tag}</div>` : ''
+  const headingHtml = stage.title ? `<h1 class="clue-heading">${stage.title}</h1>` : ''
+
+  const imageHtml = stage.image
+    ? `<div class="level-image-wrapper">
+         <img src="${stage.image}" alt="" class="level-image">
+       </div>`
+    : ''
+
+  const quotesHtml = (stage.quotes || []).map(q =>
+    `<div class="clue-quote">${q.replace(/\n/g, '<br>')}</div>`
+  ).join('')
+
+  const linesHtml = (stage.lines || []).map(l =>
+    `<div class="clue-line">${l}</div>`
+  ).join('')
+
+  let transcriptHtml = ''
+  if (stage.isTranscript) {
+    transcriptHtml = `
+      <div class="transcript-card">
+        <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:8px;">PIT-WALL RADIO TRANSCRIPT — 01/08/1976</div>
+        ${decodeURIComponent(escape(atob('PGRpdj48c3BhbiBjbGFzcz0idGltZSI+WzE0OjMyXTwvc3Bhbj4gIi4uLmNhciBpcyBvZmYsIHJlcGVhdCwgY2FyIGlzIG9mZiBhdCBCZXJnd2VyaywgaGVhdnkgaW1wYWN0IG5lYXIgdGhlIGJhcnJpZXIuLi4iPC9kaXY+')))}
+        <div><span class="time">[14:33]</span> "Bergwerk — that's the mine. Somebody needs eyes down there NOW."</div>
+      </div>
+    `
+  }
+
+  let cipherHtml = ''
+  if (stage.isCipher) {
+    cipherHtml = `
+      <div class="cipher-highlight">${stage.cipherText}</div>
+    `
+  }
+
+  let branchSelectHtml = ''
+  if (stage.isBranchSelect) {
+    branchSelectHtml = `
+      <div class="branch-nav">
+        <button type="button" class="branch-btn" id="btn-branch-a">BRANCH A: The Green Hell</button>
+        <button type="button" class="branch-btn" id="btn-branch-b">BRANCH B: The Widowmaker</button>
+      </div>
+    `
+  }
+
+  let hintComment = ''
+  if (stage.hint) {
+    hintComment = `<!-- [TRANSMISSION HINT]: ${stage.hint} -->`
+    console.log("%c📻 [PIT-WALL RADIO HINT]: " + stage.hint, "color: rgba(220, 38, 38, 0.7); font-family: monospace; font-size: 11px;");
+  }
+
+  const inputHtml = stage.isBranchSelect ? '' : `
+    <form id="clue-form">
+      <div class="input-line">
+        <span class="input-prompt">&gt;</span>
+        <input
+          type="text"
+          class="raw-input"
+          id="user-input"
+          placeholder="answer..."
+          autocomplete="off"
+          spellcheck="false"
+          autofocus
+        />
+      </div>
+      <div class="status-echo" id="echo"></div>
+    </form>
+  `
+
+  container.innerHTML = `
+    
+    ${hintComment}
+    <div class="clue-stack">
+      ${tagHtml}
+      ${headingHtml}
+      ${imageHtml}
+      ${quotesHtml}
+      ${transcriptHtml}
+      ${cipherHtml}
+      ${linesHtml}
+      ${branchSelectHtml}
+      ${inputHtml}
+    </div>
+  `
+
+  // Branch buttons
+  document.getElementById('btn-branch-a')?.addEventListener('click', () => {
+    setStage('greenhell')
+    render()
+  })
+  document.getElementById('btn-branch-b')?.addEventListener('click', () => {
+    setStage('widowmaker')
+    render()
+  })
+
+  const form = document.getElementById('clue-form')
+  const input = document.getElementById('user-input')
+  const echo = document.getElementById('echo')
+
+  input?.focus()
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const val = clean(input.value)
+    if (!val) return
+
+    const hashed = await sha256(val);
+    const ok = stage.validHashes && stage.validHashes.includes(hashed);
+
+    if (ok) {
+      echo.textContent = 'Correct.'
+      echo.className = 'status-echo success'
+      input.disabled = true
+
+      if (stage.next === 'CLEAR') {
+        markLevelCompleted('redline-echo')
+        setStage('CLEAR')
+        setTimeout(() => {
+          fadeAndRedirect()
+        }, 3000)
+      } else {
+        setTimeout(() => {
+          setStage(stage.next)
+          render()
+        }, 3000)
+      }
+    } else {
+      echo.textContent = '...'
+      echo.className = 'status-echo error'
+      input.select()
+    }
+  })
+}
+
+document.getElementById('reset-btn')?.addEventListener('click', () => {
+  if (confirm('Reset level progress?')) {
+    setStage('start')
+    render()
+  }
+})
+
+render()
+</script>
+</body>
+</html>

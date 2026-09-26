@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>/mrrogers - The Hollow Chime</title>
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700,800,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --text: #111114;
+  --muted: rgba(17, 17, 20, 0.44);
+  --teal: #0d9488;
+  --font-sans: 'Satoshi', system-ui, sans-serif;
+  --font-mono: 'Consolas', 'Courier New', monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100%;
+  background: #fff;
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom selection styling */
+::selection {
+  background: #111114;
+  color: #f59e0b;
+}
+
+#exit-btn {
+  position: fixed;
+  top: 28px;
+  left: 28px;
+  z-index: 800;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.15s ease;
+}
+
+#exit-btn:hover {
+  color: var(--teal);
+}
+
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 100px 24px 60px;
+}
+
+.panel {
+  width: min(100%, 540px);
+}
+
+.card {
+  border-left: 2px solid var(--text);
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+
+.cipher-scrap {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--text);
+  user-select: all;
+}
+
+.subtext {
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(17, 17, 20, 0.75);
+  font-style: italic;
+}
+
+.hidden-tip {
+  color: #fff;
+  user-select: text;
+  font-size: 12px;
+}
+</style>
+</head>
+<body>
+<a href="/prompts/clue-less-prompt/the-hollow-chime" id="exit-btn"><i class="fa-solid fa-arrow-left"></i> The Hollow Chime</a>
+
+<main class="page">
+  <article class="panel">
+    <!-- Atbash: A<->Z, B<->Y, C<->X ... -->
+    <!-- Decodes to: LOOKFORTHEHELPERS -->
+    <div class="card">
+      <div class="tag">FOUND SCRAP NOTE</div>
+      <div class="cipher-scrap">OLLPULIGSVSVOKVIH</div>
+      <p class="subtext">“When I was a boy and I would see scary things in the news, my mother would say to me...”</p>
+      <span class="hidden-tip">mirror the alphabet from end to end (A↔Z)</span>
+    </div>
+  </article>
+</main>
+
+<script type="module">
+console.log(
+  "%c🪞 [ATBASH MIRROR]\n%cReverse each letter across the alphabet (A -> Z, B -> Y, C -> X...)\nResult reveals the helper.",
+  "color: #0d9488; font-weight: bold; font-family: monospace; font-size: 12px;",
+  "color: #94a3b8; font-family: monospace; font-size: 11px;"
+);
+</script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify - Whistle Podu</title>
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700,800,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --text: #111114;
+  --muted: rgba(17, 17, 20, 0.44);
+  --orange: #d24500;
+  --font-sans: 'Satoshi', system-ui, sans-serif;
+  --font-mono: 'Consolas', 'Courier New', monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100%;
+  background: #fff;
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Preloader */
+#preloader {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.preloader-spinner {
+  width: 32px;
+  height: 32px;
+  border: 2px solid rgba(17, 17, 20, 0.1);
+  border-top-color: var(--orange);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 80px 24px;
+}
+
+.panel {
+  width: min(100%, 480px);
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 20px;
+}
+
+.input-line {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid var(--text);
+  padding: 8px 0;
+}
+
+.input-prompt {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 700;
+  margin-right: 12px;
+  user-select: none;
+}
+
+.raw-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  outline: none;
+}
+
+.status-echo {
+  font-size: 13px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  min-height: 24px;
+  margin-top: 10px;
+  line-height: 1.4;
+}
+
+.status-echo.success {
+  color: #10b981;
+}
+
+.status-echo.error {
+  color: #b91c1c;
+}
+</style>
+</head>
+<body>
+<div id="preloader">
+  <div class="preloader-spinner"></div>
+</div>
+
+<main class="page">
+  <div class="panel">
+    <h1 class="title">FINAL VERIFICATION</h1>
+    <form id="checker-form">
+      <div class="input-line">
+        <span class="input-prompt">&gt;</span>
+        <input
+          type="text"
+          class="raw-input"
+          id="verify-input"
+          placeholder="enter final answer..."
+          autocomplete="off"
+          spellcheck="false"
+          autofocus
+        />
+      </div>
+      <div class="status-echo" id="echo"></div>
+    </form>
+  </div>
+</main>
+
+<script type="module">
+window.addEventListener('DOMContentLoaded', () => {
+  const preloader = document.getElementById('preloader');
+  if (preloader) {
+    preloader.style.opacity = '0';
+    preloader.style.visibility = 'hidden';
+    setTimeout(() => preloader.remove(), 300);
+  }
+});
+
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function clean(str) {
+  return String(str || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '');
+}
+
+const form = document.getElementById('checker-form');
+const input = document.getElementById('verify-input');
+const echo = document.getElementById('echo');
+
+function markLevelCompleted(levelId) {
+  try {
+    const raw = localStorage.getItem('cyfernode_clueless_completed_levels');
+    const list = raw ? JSON.parse(raw) : [];
+    if (!list.includes(levelId)) {
+      list.push(levelId);
+      localStorage.setItem('cyfernode_clueless_completed_levels', JSON.stringify(list));
+    }
+  } catch {}
+}
+
+form?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const val = clean(input.value);
+  if (!val) return;
+
+  const TARGET_HASH = 'ed269be483b1a64be9df89a97af66c6c676dc352bd26edc68fe652cc9d9b3628';
+  const hashed = await sha256(val);
+  if (hashed === TARGET_HASH) {
+    echo.textContent = 'Correct.';
+    echo.className = 'status-echo success';
+    input.disabled = true;
+    markLevelCompleted('whistle-podu');
+    setTimeout(() => {
+      document.body.style.transition = 'opacity 0.8s ease';
+      document.body.style.opacity = '0';
+      setTimeout(() => {
+        window.location.href = '/prompts/clue-less-prompt';
+      }, 800);
+    }, 3000);
+  } else {
+    echo.textContent = 'not quite';
+    echo.className = 'status-echo error';
+    input.select();
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vault - Whistle Podu</title>
+<meta name="description" content="Whistle Podu Vault">
+<meta name="theme-color" content="#0d0d11">
+<link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700,800,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --yellow: #f59e0b;
+  --font-sans: 'Satoshi', system-ui, sans-serif;
+  --font-mono: 'Consolas', 'Courier New', monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100%;
+  background: #08080b;
+  color: #f4f4f5;
+  font-family: var(--font-sans);
+  display: grid;
+  place-items: center;
+}
+
+/* Preloader */
+#preloader {
+  position: fixed;
+  inset: 0;
+  background: #08080b;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.preloader-spinner {
+  width: 32px;
+  height: 32px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--yellow);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.vault-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px;
+  text-align: center;
+}
+
+.csk-crest {
+  width: 140px;
+  height: 140px;
+  filter: drop-shadow(0 0 25px rgba(245, 158, 11, 0.35));
+  opacity: 0.9;
+  transition: transform 0.3s ease;
+}
+
+.csk-crest:hover {
+  transform: scale(1.04);
+}
+
+.vault-status {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.25);
+}
+</style>
+
+<!-- VAULT METADATA -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "name": "YellowArmyVault",
+  "encrypted_payload": "D2JBTEMAARUABFZSQU44EQQNAxZUKRMBGFQtDw8OBg1DQGtUSEMdFBscBE5bVEo2BBhUGw5MEhEaCAMUB1dBQUEgAARMKxsDBB5DWGJBTEMVHQUFDlZSQU5OFRsSCRUHRxYECAccDQlMGQcTHwRaHwAaQ1hiQUxDAAcOAENOSEM1BBgEDhoEVCsIHAkRGkNAa1RIQw8IBAAEHj4fDRhOW1RKU1xQREVTXFNHSk1mQVRKFAINGwsKMxUVD0NWQVYAAB4NEQ0PHwIbGgROawk="
+}
+</script>
+</head>
+<body>
+<div id="preloader">
+  <div class="preloader-spinner"></div>
+</div>
+
+<main class="vault-container">
+  <svg class="csk-crest" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Roaring Lion & Whistle Crest Outline -->
+    <path d="M50 5 L88 22 L88 65 L50 95 L12 65 L12 22 Z" stroke="#f59e0b" stroke-width="2.5" fill="rgba(245, 158, 11, 0.04)"/>
+    <path d="M50 14 L80 28 L80 62 L50 86 L20 62 L20 28 Z" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.3"/>
+    <circle cx="50" cy="50" r="18" stroke="#f59e0b" stroke-width="2"/>
+    <path d="M42 46 Q50 36 58 46 Q54 60 42 46 Z" fill="#f59e0b"/>
+    <circle cx="50" cy="50" r="4" fill="#08080b"/>
+    <path d="M36 68 L64 68 M40 72 L60 72" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/>
+  </svg>
+  <div class="vault-status">VAULT / SEALED</div>
+</main>
+
+<script type="module">
+window.addEventListener('DOMContentLoaded', () => {
+  const preloader = document.getElementById('preloader');
+  if (preloader) {
+    preloader.style.opacity = '0';
+    preloader.style.visibility = 'hidden';
+    setTimeout(() => preloader.remove(), 300);
+  }
+});
+
+console.log(
+  "%c🦁 [VAULT RECORD INTERCEPTED]\n%cThe secret is locked inside this document's structured data (application/ld+json).\nKey: The 5-letter moniker of the eternal #7 captain (repeating XOR).",
+  "color: #f59e0b; font-weight: bold; font-size: 13px; font-family: monospace;",
+  "color: #94a3b8; font-size: 11px; font-family: monospace;"
+);
+</script>
+</body>
+</html>

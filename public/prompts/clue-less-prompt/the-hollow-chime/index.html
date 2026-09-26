@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE HOLLOW CHIME - Cyfernode 5.0</title>
+<meta name="description" content="THE HOLLOW CHIME">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700,800,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --text: #111114;
+  --muted: rgba(17, 17, 20, 0.44);
+  --orange: #d24500;
+  --teal: #0d9488;
+  --font-sans: 'Satoshi', system-ui, sans-serif;
+  --font-mono: 'Consolas', 'Courier New', monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100%;
+  background: #fff;
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Selection reveal styling */
+::selection {
+  background: #111114;
+  color: #f59e0b;
+}
+
+/* Preloader */
+#preloader {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.preloader-spinner {
+  width: 32px;
+  height: 32px;
+  border: 2px solid rgba(17, 17, 20, 0.1);
+  border-top-color: var(--teal);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+#exit-btn {
+  position: fixed;
+  top: 28px;
+  left: 28px;
+  z-index: 800;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.15s ease;
+}
+
+#exit-btn:hover {
+  color: var(--orange);
+}
+
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 100px 24px 60px;
+}
+
+.panel {
+  width: min(100%, 580px);
+}
+
+.clue-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.clue-tag {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+
+.clue-heading {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: var(--text);
+}
+
+.clue-quote {
+  font-size: 16px;
+  font-style: italic;
+  color: rgba(17, 17, 20, 0.84);
+  line-height: 1.6;
+  border-left: 2px solid var(--text);
+  padding-left: 14px;
+}
+
+.clue-line {
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(17, 17, 20, 0.75);
+}
+
+/* Audio Player Box */
+.audio-card {
+  background: #111114;
+  border-radius: 8px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: #fff;
+}
+
+.audio-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.audio-player {
+  width: 100%;
+  height: 36px;
+  outline: none;
+  filter: invert(0.9) hue-rotate(180deg);
+}
+
+.file-link {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--teal);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cipher-card {
+  background: #f4f4f5;
+  border: 1px solid rgba(17, 17, 20, 0.1);
+  border-radius: 6px;
+  padding: 14px 16px;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text);
+  user-select: all;
+  text-align: center;
+}
+
+/* Hidden selectable text */
+.hidden-select-tip {
+  color: #fff;
+  user-select: text;
+  font-size: 12px;
+  display: inline;
+}
+
+/* Minimal Input */
+.input-line {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid var(--text);
+  padding: 6px 0;
+  margin-top: 14px;
+}
+
+.input-prompt {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-right: 12px;
+  user-select: none;
+}
+
+.raw-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  outline: none;
+}
+
+.status-echo {
+  font-size: 13px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  min-height: 20px;
+  margin-top: 6px;
+  transition: opacity 0.2s ease;
+  line-height: 1.4;
+}
+
+.status-echo.success {
+  color: #10b981;
+}
+
+.status-echo.error {
+  color: #b91c1c;
+}
+
+/* Completion */
+.done-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.done-tag {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--muted);
+}
+
+.done-title {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.done-link {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--orange);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.top-reset-btn {
+  position: fixed;
+  top: 28px;
+  right: 28px;
+  z-index: 800;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.15s ease;
+}
+
+.top-reset-btn:hover {
+  color: var(--text);
+}
+
+@media (max-width: 768px) {
+  #exit-btn {
+    top: 24px;
+    left: 20px;
+  }
+  .top-reset-btn {
+    top: 24px;
+    right: 20px;
+  }
+  .page {
+    padding: 96px 16px 40px;
+  }
+}
+</style>
+</head>
+<body>
+<!-- LOCK:START -->
+<div id="lock-overlay" style="position:fixed;inset:0;background:#08080b;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;">
+  <div style="font-family:'Consolas',monospace;font-size:10px;letter-spacing:0.18em;color:rgba(255,255,255,0.25);text-transform:uppercase;">Cyfernode 5.0 · Clue-Less</div>
+  <div style="font-family:'Satoshi',system-ui,sans-serif;font-size:clamp(2rem,6vw,3rem);font-weight:900;color:#fff;letter-spacing:-0.04em;line-height:1;">LOCKED</div>
+  <div style="font-family:'Consolas',monospace;font-size:12px;color:rgba(255,255,255,0.35);text-align:center;margin-top:4px;">Opens at 12:00 PM &nbsp;·&nbsp; 27 Sep 2026</div>
+  <div id="lock-countdown" style="font-family:'Consolas',monospace;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;color:#d24500;letter-spacing:0.08em;margin-top:12px;">--:--:--</div>
+  <div style="font-family:'Consolas',monospace;font-size:10px;color:rgba(255,255,255,0.15);margin-top:24px;letter-spacing:0.08em;">HH &nbsp; MM &nbsp; SS</div>
+</div>
+<script>
+(function(){
+  var UNLOCK = new Date('2026-09-27T12:00:00+05:30').getTime();
+  var overlay = document.getElementById('lock-overlay');
+  var cd = document.getElementById('lock-countdown');
+  if (!overlay) return;
+  function tick() {
+    var now = Date.now();
+    var diff = UNLOCK - now;
+    if (diff <= 0) { overlay.remove(); return; }
+    var h = Math.floor(diff / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    var s = Math.floor((diff % 60000) / 1000);
+    cd.textContent = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }
+  tick();
+  var iv = setInterval(function(){ tick(); if (Date.now() >= UNLOCK) clearInterval(iv); }, 1000);
+})();
+</script>
+<!-- LOCK:END -->
+
+<div id="preloader">
+  <div class="preloader-spinner"></div>
+</div>
+
+<a href="/prompts/clue-less-prompt" id="exit-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
+<button type="button" id="reset-btn" class="top-reset-btn" title="Reset level progress">Reset</button>
+
+<main class="page">
+  <article class="panel" id="viewport"></article>
+</main>
+
+<script type="module">
+// Preloader dismissal
+window.addEventListener('DOMContentLoaded', () => {
+  const preloader = document.getElementById('preloader');
+  if (preloader) {
+    preloader.style.opacity = '0';
+    preloader.style.visibility = 'hidden';
+    setTimeout(() => preloader.remove(), 300);
+  }
+});
+
+const STORAGE_KEY = 'cyfernode_clueless_hollow_chime_stage'
+
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function clean(str) {
+  return String(str || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '')
+}
+
+/*
+  DEVTOOLS CONSOLE BROADCAST (Oblique hints)
+*/
+console.log(
+  "%c🎙️ [THE HOLLOW CHIME — FREQUENCY BROADCAST]\n" +
+  "%c• Stage 1: Three taps, three clockwise turns. Undo the shift.\n" +
+  "• Bridge: Look for the helpers in the neighborhood (/mrrogers).\n" +
+  "• Stage 2: The five-letter tool that brushes every corner.\n" +
+  "• Stage 3: Two constants in the embers: a=5, b=8 (x = 21 * (y - 8) mod 26).",
+  "color: #0d9488; font-family: monospace; font-size: 12px; font-weight: bold;",
+  "color: #94a3b8; font-family: monospace; font-size: 11px;"
+);
+
+const STAGES = [
+  // Stage 1 — Transmission 01: The Radio Repair Shop
+  {
+    id: 1,
+    tag: 'TRANSMISSION 01 / ASMR',
+    title: 'THE RADIO REPAIR SHOP',
+    audio: '/radio_repair_shop_asmr.mp3',
+    textFile: '/tape_scrap_0x1A.dat',
+    fileLabel: 'tape_scrap_0x1A.dat',
+    subtext: 'Not every famous broadcast was meant to cause panic.',
+    hiddenTip: 'three clicks back: shift -3',
+    comment: 'Listen closely to the clicks and turns of the frequency.',
+    validHashes: [
+      '824f0ba2e1acb186b1c53433ad556e2f8593fe8167e8dc254a62cd1d1f4c2c3b',
+      '18f7ce0cdefd9f479b6c14d3760f22aedc0501566a6aaa25189ec894029f4866',
+      'e53e88e5f5f1774acc06f9f331e95247baef6076610dfed3d4876bf169054f28'
+    ],
+    next: 1.5,
+  },
+
+  // Bridge — Found Note
+  {
+    id: 1.5,
+    tag: 'INTERLUDE / FOUND NOTE',
+    title: 'LOOK FOR THE HELPERS',
+    cipherText: 'OLLPULIGSVSVOKVIH',
+    quotes: [
+      'The 1938 broadcast caused mass panic — a voice on air making people afraid instead of calm.',
+      'Whose voice on air only ever calmed people down?',
+    ],
+    hiddenTip: 'mirror of the alphabet (A↔Z)',
+    comment: 'Reflect the message from the other end of the neighborhood.',
+    validHashes: [
+      'bbc000b9a3a8291a476f70f350e11de11ebb783d718369f85cb247b293ca54ec',
+      '12e464d403da8992bf4fd88fc4a9c2c17e6923dafc9257682bc384af5cc7bdcb',
+      '6915221f54a5c1024681bf24114f0efea60bb7568695ce47cf9c28239cc26f87',
+      '05d28061fe98016837891eb549c2dd4c806da6e56e26c30ec5c7c5ba7b80eae0'
+    ],
+    next: 2,
+  },
+
+  // Stage 2 — Transmission 02: The Painting Roleplay
+  {
+    id: 2,
+    tag: 'TRANSMISSION 02 / ASMR',
+    title: 'THE PAINTING ROLEPLAY',
+    audio: '/Bob Ross Painting Roleplay.mp3',
+    textFile: '/easel_scrap_0x4F.log',
+    fileLabel: 'easel_scrap_0x4F.log',
+    subtext: 'Listen to the tool that keeps touching the canvas.',
+    hiddenTip: '5-letter repeated instrument is the Vigenère key',
+    comment: 'The instrument touching every corner carries the key.',
+    validHashes: [
+      'ee9d4ee8cdf5b3253cb4864193bf09b24837916d1719f9e23997a92f84c78598',
+      '84bbcf82ef00400d06391e854cb3800bb3ff4a2da4bd48882f36e4bc795ef4a2'
+    ],
+    next: 3,
+  },
+
+  // Stage 3 — Transmission 03: The Fireplace Story
+  {
+    id: 3,
+    tag: 'TRANSMISSION 03 / ASMR',
+    title: 'THE FIREPLACE STORY',
+    audio: '/Fireplace Bedtime Story.mp3',
+    textFile: '/ash_scrap_0x9C.txt',
+    fileLabel: 'ash_scrap_0x9C.txt',
+    subtext: 'A whispered sequence at the edge of sleep.',
+    hiddenTip: 'Affine formula: a=5, b=8, a⁻¹=21',
+    comment: 'Constants in the embers illuminate the path.',
+    validHashes: [
+      '476f387ccf6075f16d533481e652a41787c1d6c514107e404e856db4b55a728b',
+      '48b22e3a0ca4a4cddf5809ba18c200a2a3019d35a5fa76137cd7126a1075e852'
+    ],
+    next: 4,
+  },
+
+  // Final Stage
+  {
+    id: 4,
+    tag: 'EPILOGUE / THE HOLLOW CHIME',
+    title: 'THE MAN IN THE SCENERY',
+    quotes: [
+      'Three voices, three tools of comfort — a radio, a paintbrush, a fireplace.',
+      'All quietly pointing at one man who spent thirty years turning mistakes into scenery.',
+    ],
+    hiddenTip: 'the gentle master of wet-on-wet scenery',
+    validHashes: [
+      '7fcea003c49eed3af3831cbb2f0221b7fc2c45373832a70d9c1381357d6cd451',
+      '7fcea003c49eed3af3831cbb2f0221b7fc2c45373832a70d9c1381357d6cd451'
+    ],
+    next: 'CLEAR',
+  },
+]
+
+let currentStage = localStorage.getItem(STORAGE_KEY) || 1
+currentStage = isNaN(currentStage) ? currentStage : parseFloat(currentStage)
+
+function setStage(val) {
+  currentStage = val
+  localStorage.setItem(STORAGE_KEY, String(val))
+}
+
+function markLevelCompleted(levelId) {
+  try {
+    const raw = localStorage.getItem('cyfernode_clueless_completed_levels')
+    const list = raw ? JSON.parse(raw) : []
+    if (!list.includes(levelId)) {
+      list.push(levelId)
+      localStorage.setItem('cyfernode_clueless_completed_levels', JSON.stringify(list))
+    }
+  } catch {}
+}
+
+function fadeAndRedirect() {
+  document.body.style.transition = 'opacity 0.8s ease'
+  document.body.style.opacity = '0'
+  setTimeout(() => {
+    window.location.href = '/prompts/clue-less-prompt'
+  }, 800)
+}
+
+function render() {
+  const container = document.getElementById('viewport')
+  if (!container) return
+
+  if (currentStage === 'CLEAR') {
+    container.innerHTML = `
+      <div class="done-stack">
+        <span class="done-tag">[RECORDED]</span>
+        <h1 class="done-title">BOB ROSS</h1>
+        <p class="clue-line">“There are no mistakes, only happy accidents.”</p>
+        <a href="/prompts/clue-less-prompt" class="done-link">&larr; Return</a>
+      </div>
+    `
+    return
+  }
+
+  const stage = STAGES.find(s => s.id === currentStage) || STAGES[0]
+
+  const tagHtml = stage.tag ? `<div class="clue-tag">${stage.tag}</div>` : ''
+  const headingHtml = stage.title ? `<h1 class="clue-heading">${stage.title}</h1>` : ''
+
+  let audioHtml = ''
+  if (stage.audio) {
+    audioHtml = `
+      <div class="audio-card">
+        <div class="audio-header">
+          <span>AUDIO RECORDING</span>
+          <a href="${encodeURI(stage.textFile)}" target="_blank" class="file-link"><i class="fa-regular fa-file-lines"></i> ${stage.fileLabel || stage.textFile.replace('/','')}</a>
+        </div>
+        <audio controls class="audio-player" src="${encodeURI(stage.audio)}"></audio>
+      </div>
+    `
+  }
+
+  let cipherHtml = ''
+  if (stage.cipherText) {
+    cipherHtml = `
+      <div class="cipher-card">${stage.cipherText}</div>
+    `
+  }
+
+  let subtextHtml = ''
+  if (stage.subtext) {
+    subtextHtml = `
+      <div class="clue-line" style="font-style: italic;">
+        ${stage.subtext}
+        <span class="hidden-select-tip">${stage.hiddenTip || ''}</span>
+      </div>
+    `
+  }
+
+  const quotesHtml = (stage.quotes || []).map(q =>
+    `<div class="clue-quote">${q.replace(/\n/g, '<br>')}</div>`
+  ).join('')
+
+  container.innerHTML = `
+    <!-- [THE HOLLOW CHIME ARCHIVE] -->
+    <!-- ${stage.comment || 'Listen closely to the recording.'} -->
+    <div class="clue-stack">
+      ${tagHtml}
+      ${headingHtml}
+      ${audioHtml}
+      ${cipherHtml}
+      ${subtextHtml}
+      ${quotesHtml}
+
+      <form id="clue-form">
+        <div class="input-line">
+          <span class="input-prompt">&gt;</span>
+          <input
+            type="text"
+            class="raw-input"
+            id="user-input"
+            placeholder="answer..."
+            autocomplete="off"
+            spellcheck="false"
+            autofocus
+          />
+        </div>
+        <div class="status-echo" id="echo"></div>
+      </form>
+    </div>
+  `
+
+  const form = document.getElementById('clue-form')
+  const input = document.getElementById('user-input')
+  const echo = document.getElementById('echo')
+
+  input?.focus()
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const val = clean(input.value)
+    if (!val) return
+
+    const hashed = await sha256(val);
+    const ok = stage.validHashes && stage.validHashes.includes(hashed);
+
+    if (ok) {
+      echo.textContent = 'Correct.'
+      echo.className = 'status-echo success'
+      input.disabled = true
+
+      if (stage.next === 'CLEAR') {
+        markLevelCompleted('the-hollow-chime')
+        setStage('CLEAR')
+        setTimeout(() => {
+          fadeAndRedirect()
+        }, 3000)
+      } else {
+        setTimeout(() => {
+          setStage(stage.next)
+          render()
+        }, 3000)
+      }
+    } else {
+      echo.textContent = '...'
+      echo.className = 'status-echo error'
+      input.select()
+    }
+  })
+}
+
+document.getElementById('reset-btn')?.addEventListener('click', () => {
+  if (confirm('Reset level progress?')) {
+    setStage(1)
+    render()
+  }
+})
+
+render()
+</script>
+</body>
+</html>
