@@ -6,10 +6,24 @@ export const SUPABASE_URL = 'https://stjjvgnewkswzwmmzyoh.supabase.co'
 export const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0amp2Z25ld2tzd3p3bW16eW9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NTM2NDgsImV4cCI6MjEwMzMyOTY0OH0.l_vf_ovBAbMP_iIn_easi8ztLkC13SJr-JxuWtdM9ng'
 const ENDPOINT = `${SUPABASE_URL}/functions/v1/clueless-access`
 const SESSION_KEY = 'cyfernode-clueless-auth'
+const DEVICE_KEY = 'cyfernode-clueless-device'
+
+function getCluelessDeviceId() {
+  try {
+    let deviceId = localStorage.getItem(DEVICE_KEY)
+    if (!deviceId) {
+      deviceId = crypto.randomUUID()
+      localStorage.setItem(DEVICE_KEY, deviceId)
+    }
+    return deviceId
+  } catch {
+    throw new Error('This browser cannot store the device identity required for Clue-Less access.')
+  }
+}
 
 export function getCluelessSession() {
   try {
-    const raw = sessionStorage.getItem(SESSION_KEY)
+    const raw = localStorage.getItem(SESSION_KEY) || sessionStorage.getItem(SESSION_KEY)
     if (!raw) return null
     return JSON.parse(raw)
   } catch {
@@ -20,6 +34,7 @@ export function getCluelessSession() {
 export function setCluelessSession(sessionData) {
   try {
     sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionData))
+    localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData))
   } catch {
     // ignore
   }
@@ -28,6 +43,7 @@ export function setCluelessSession(sessionData) {
 export function clearCluelessSession() {
   try {
     sessionStorage.removeItem(SESSION_KEY)
+    localStorage.removeItem(SESSION_KEY)
   } catch {
     // ignore
   }
@@ -81,7 +97,14 @@ export function requestPasskey(schoolCode, email) {
 }
 
 export async function verifyPasskey(schoolCode, email, passkey) {
-  const result = await callCluelessAccess('verify-passkey', { schoolCode, email, passkey })
+  const currentSession = getCluelessSession()
+  const result = await callCluelessAccess('verify-passkey', {
+    schoolCode,
+    email,
+    passkey,
+    deviceId: getCluelessDeviceId(),
+    existingToken: currentSession?.token || '',
+  })
   if (result.ok && result.token) {
     setCluelessSession({
       token: result.token,
@@ -89,6 +112,32 @@ export async function verifyPasskey(schoolCode, email, passkey) {
     })
   }
   return result
+}
+
+export async function validateCluelessSession(session = getCluelessSession()) {
+  if (!session?.token || !session?.profile?.schoolCode) return false
+  try {
+    const result = await callCluelessAccess('heartbeat', {
+      token: session.token,
+      schoolCode: session.profile.schoolCode,
+    })
+    return Boolean(result.ok)
+  } catch {
+    return false
+  }
+}
+
+export async function heartbeatCluelessSession(session = getCluelessSession()) {
+  if (!session?.token || !session?.profile?.schoolCode) return false
+  try {
+    await callCluelessAccess('heartbeat', {
+      token: session.token,
+      schoolCode: session.profile.schoolCode,
+    })
+    return true
+  } catch {
+    return false
+  }
 }
 
 export async function fetchActiveTeams() {

@@ -395,6 +395,187 @@ html, body {
   font-weight: 500;
 }
 
+/* Live Scoreboard Section */
+.scoreboard-section {
+  margin-top: 48px;
+  border-top: 1px solid var(--border);
+  padding-top: 32px;
+}
+
+.scoreboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.scoreboard-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.scoreboard-live-beacon {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  display: inline-block;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: beacon-pulse 2s infinite;
+}
+
+@keyframes beacon-pulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.scoreboard-heading {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--text);
+}
+
+.scoreboard-count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  background: rgba(17, 17, 20, 0.05);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.scoreboard-sync-status {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #10b981;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.scoreboard-table-wrap {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.scoreboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.scoreboard-table th {
+  background: #fbfbfb;
+  text-align: left;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.scoreboard-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  color: rgba(17, 17, 20, 0.85);
+  vertical-align: middle;
+}
+
+.scoreboard-table tr:last-child td {
+  border-bottom: none;
+}
+
+.scoreboard-table tr.is-you {
+  background: rgba(210, 69, 0, 0.04);
+}
+
+.rank-badge {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.rank-badge.top-1 { color: #d97706; font-weight: 900; }
+.rank-badge.top-2 { color: #64748b; font-weight: 800; }
+.rank-badge.top-3 { color: #b45309; font-weight: 800; }
+
+.team-code-badge {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  background: #111114;
+  color: #f4f4f5;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.you-pill {
+  font-size: 9.5px;
+  font-family: var(--font-sans);
+  background: var(--orange);
+  color: #fff;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-left: 6px;
+}
+
+.school-name-cell {
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.school-sub-user {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.points-cell {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.pts-unit {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-left: 2px;
+}
+
+.scoreboard-empty {
+  text-align: center;
+  padding: 36px 16px;
+  color: var(--muted);
+  font-size: 13.5px;
+}
+
 /* Minimal Auth Modal */
 .modal-overlay {
   position: fixed;
@@ -621,6 +802,33 @@ html, body {
     </header>
     <div class="prompt-body" id="prompt-body">
       <ul class="file-list" id="level-list" aria-label="Hunt levels"></ul>
+
+      <!-- Live Scoreboard Section -->
+      <section class="scoreboard-section" id="scoreboard-section">
+        <div class="scoreboard-header">
+          <div class="scoreboard-title-wrap">
+            <span class="scoreboard-live-beacon" title="Live realtime feed"></span>
+            <h2 class="scoreboard-heading">Live Scoreboard</h2>
+            <span class="scoreboard-count" id="scoreboard-count">0 Teams</span>
+          </div>
+          <span class="scoreboard-sync-status"><i class="fa-solid fa-bolt"></i> Realtime Sync</span>
+        </div>
+        <div class="scoreboard-table-wrap">
+          <table class="scoreboard-table">
+            <thead>
+              <tr>
+                <th style="width: 44px;">#</th>
+                <th>School Code</th>
+                <th>Institution</th>
+                <th style="text-align: right;">Points</th>
+              </tr>
+            </thead>
+            <tbody id="scoreboard-tbody">
+              <tr><td colspan="4" class="scoreboard-empty">Waiting for authenticated schools...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   </article>
 
@@ -700,6 +908,7 @@ html, body {
 import {
   getCluelessSession,
   clearCluelessSession,
+  isCluelessLoggedIn,
   requestPasskey,
   verifyPasskey,
   subscribeToCluelessTeams,
@@ -739,19 +948,35 @@ function renderLevels() {
   const container = document.getElementById('level-list')
   if (!container) return
   const completed = getCompletedLevels()
+  const authed = isCluelessLoggedIn()
 
   container.innerHTML = LEVELS.map(level => {
     const isDone = completed.includes(level.id)
     return `
       <li>
-        <a class="file-link ${isDone ? 'is-completed' : ''}" href="${level.href}">
+        <a class="file-link ${isDone ? 'is-completed' : ''}" 
+           href="${authed ? level.href : '#'}"
+           data-level-href="${level.href}"
+           title="${authed ? '' : 'Authentication Required: School code required'}">
           ${FILE_ICON}
           ${isDone ? '<span class="tick-badge" title="Completed"><i class="fa-solid fa-check"></i></span>' : ''}
           <span>${level.name}</span>
+          ${!authed ? '<span style="margin-left:auto;font-size:11px;color:var(--muted);opacity:0.6;"><i class="fa-solid fa-lock"></i></span>' : ''}
         </a>
       </li>
     `
   }).join('')
+
+  // Bind click handlers to prompt for authentication if not logged in
+  container.querySelectorAll('a.file-link').forEach(a => {
+    a.addEventListener('click', (e) => {
+      if (!isCluelessLoggedIn()) {
+        e.preventDefault()
+        openAuthModal()
+        showAuthNotice('School authentication required: Please authenticate your school code (CYN00 to CYN100) to access this level.')
+      }
+    })
+  })
 }
 
 // UI State
@@ -775,6 +1000,7 @@ function updateAuthNav() {
     document.getElementById('btn-signout')?.addEventListener('click', () => {
       clearCluelessSession()
       updateAuthNav()
+      renderLevels()
     })
   } else {
     container.innerHTML = `
@@ -905,6 +1131,8 @@ formPasskey?.addEventListener('submit', async (e) => {
   try {
     await verifyPasskey(verifiedSchoolCode, verifiedEmail, passkey)
     updateAuthNav()
+    renderLevels()
+    syncMyScore()
     closeAuthModal()
   } catch (err) {
     showAuthError(err.message || 'Invalid passkey.')
@@ -944,39 +1172,114 @@ function startCooldown(seconds) {
   }, 1000)
 }
 
-// Render Realtime Authenticated Teams in Sidebar
+// Sync current user's locally completed levels to Supabase
+function syncMyScore() {
+  const session = getCluelessSession()
+  if (!session?.profile?.schoolCode) return
+  const completed = getCompletedLevels()
+  const score = completed.length * 100
+  fetch(`${SUPABASE_URL}/rest/v1/rpc/update_clueless_score`, {
+    method: 'POST',
+    headers: {
+      apikey: SUPABASE_ANON_KEY,
+      authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      p_school_code: session.profile.schoolCode,
+      p_score: score,
+      p_current_level: completed.slice(-1)[0] || 'start'
+    })
+  }).catch(() => {})
+}
+
+// Render Realtime Authenticated Teams in Scoreboard and Sidebar
 function renderTeamsList(teams) {
   const badge = document.getElementById('teams-badge')
   const countSub = document.getElementById('sidebar-count')
   const list = document.getElementById('schools-list-container')
+  const mainBadge = document.getElementById('scoreboard-count')
+  const mainTbody = document.getElementById('scoreboard-tbody')
   
-  if (badge) badge.textContent = String(teams.length)
-  if (countSub) countSub.textContent = `${teams.length} logged in`
+  const currentSession = getCluelessSession()
+  const mySchoolCode = currentSession?.profile?.schoolCode || ''
 
-  if (!list) return
-  if (!teams || teams.length === 0) {
-    list.innerHTML = `<div class="no-schools">No schools authenticated yet.</div>`
-    return
+  const sortedTeams = (teams || []).slice().sort((a, b) => {
+    const sDiff = (b.score || 0) - (a.score || 0)
+    if (sDiff !== 0) return sDiff
+    return new Date(b.last_active_at || 0) - new Date(a.last_active_at || 0)
+  })
+
+  if (badge) badge.textContent = String(sortedTeams.length)
+  if (countSub) countSub.textContent = `${sortedTeams.length} logged in`
+  if (mainBadge) mainBadge.textContent = `${sortedTeams.length} Team${sortedTeams.length === 1 ? '' : 's'}`
+
+  // 1. Render in Main Page Scoreboard Table
+  if (mainTbody) {
+    if (sortedTeams.length === 0) {
+      mainTbody.innerHTML = `<tr><td colspan="4" class="scoreboard-empty">No teams have authenticated yet. Log in with your school code to appear on the leaderboard.</td></tr>`
+    } else {
+      mainTbody.innerHTML = sortedTeams.map((team, idx) => {
+        const isMe = mySchoolCode && team.school_code === mySchoolCode
+        const rank = idx + 1
+        const rankClass = rank === 1 ? 'top-1' : (rank === 2 ? 'top-2' : (rank === 3 ? 'top-3' : ''))
+        return `
+          <tr class="${isMe ? 'is-you' : ''}">
+            <td><span class="rank-badge ${rankClass}">#${rank}</span></td>
+            <td>
+              <span class="team-code-badge">${team.school_code}</span>
+              ${isMe ? '<span class="you-pill">YOU</span>' : ''}
+            </td>
+            <td>
+              <div class="school-name-cell">${team.school_name || 'School ' + team.school_code}</div>
+              ${team.user_name ? `<div class="school-sub-user">${team.user_name}</div>` : ''}
+            </td>
+            <td class="points-cell">
+              <span>${team.score ?? 0}</span><span class="pts-unit">pts</span>
+            </td>
+          </tr>
+        `
+      }).join('')
+    }
   }
 
-  list.innerHTML = teams.map(team => `
-    <div class="school-row">
-      <div class="school-info">
-        <div class="school-code-wrap">
-          <span class="school-live-dot"></span>
-          <span class="school-code">${team.school_code}</span>
-        </div>
-        <span class="school-name">${team.school_name || 'School ' + team.school_code}</span>
-      </div>
-      <div class="school-score">${team.score ?? 0}</div>
-    </div>
-  `).join('')
+  // 2. Render in Sidebar Drawer
+  if (list) {
+    if (sortedTeams.length === 0) {
+      list.innerHTML = `<div class="no-schools">No schools authenticated yet.</div>`
+    } else {
+      list.innerHTML = sortedTeams.map(team => {
+        const isMe = mySchoolCode && team.school_code === mySchoolCode
+        return `
+          <div class="school-row ${isMe ? 'is-current-school' : ''}" style="${isMe ? 'background:rgba(210,69,0,0.06);border-radius:8px;' : ''}">
+            <div class="school-info">
+              <div class="school-code-wrap">
+                <span class="school-live-dot"></span>
+                <span class="school-code">${team.school_code}</span>
+                ${isMe ? '<span class="you-pill" style="font-size:9px;padding:0 4px;">YOU</span>' : ''}
+              </div>
+              <span class="school-name">${team.school_name || 'School ' + team.school_code}</span>
+            </div>
+            <div class="school-score">${team.score ?? 0}</div>
+          </div>
+        `
+      }).join('')
+    }
+  }
 }
 
 // Initialize
 updateAuthNav()
 renderLevels()
+syncMyScore()
 subscribeToCluelessTeams(renderTeamsList)
+
+// Auto-open auth modal if redirected with ?auth=1
+const urlParams = new URLSearchParams(window.location.search)
+if ((urlParams.has('auth') || location.hash === '#auth') && !isCluelessLoggedIn()) {
+  openAuthModal()
+  showAuthNotice('School authentication required: Please authenticate your school code (CYN00 to CYN100) to participate.')
+}
 
 const slug = location.pathname.replace(/\/$/, '').split('/').pop() || ''
 const event = window.getCyfernodeEventByPromptSlug ? window.getCyfernodeEventByPromptSlug(slug) : null

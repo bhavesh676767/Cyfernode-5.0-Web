@@ -1,6 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- CLUELESS_AUTH:START -->
+<script>
+(function() {
+  function hasValidAuth() {
+    try {
+      var raw = sessionStorage.getItem('cyfernode-clueless-auth') || localStorage.getItem('cyfernode-clueless-auth');
+      if (raw) {
+        var sess = JSON.parse(raw);
+        if (sess && (sess.token || sess.profile) && (sess.profile && sess.profile.schoolCode)) {
+          return true;
+        }
+      }
+    } catch(e) {}
+    return false;
+  }
+
+  if (!hasValidAuth()) {
+    try {
+      sessionStorage.setItem('cyfernode_clueless_auth_required', '1');
+    } catch(e) {}
+    window.location.replace('/prompts/clue-less-prompt?auth=required');
+  }
+})();
+</script>
+<!-- CLUELESS_AUTH:END -->
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Only WW - Cyfernode 5.0</title>
@@ -245,13 +271,13 @@ html, body {
 <div id="lock-overlay" style="position:fixed;inset:0;background:#08080b;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;">
   <div style="font-family:'Consolas',monospace;font-size:10px;letter-spacing:0.18em;color:rgba(255,255,255,0.25);text-transform:uppercase;">Cyfernode 5.0 · Clue-Less</div>
   <div style="font-family:'Satoshi',system-ui,sans-serif;font-size:clamp(2rem,6vw,3rem);font-weight:900;color:#fff;letter-spacing:-0.04em;line-height:1;">LOCKED</div>
-  <div style="font-family:'Consolas',monospace;font-size:12px;color:rgba(255,255,255,0.35);text-align:center;margin-top:4px;">Opens at 12:00 PM &nbsp;·&nbsp; 27 Sep 2026</div>
+  <div style="font-family:'Consolas',monospace;font-size:12px;color:rgba(255,255,255,0.35);text-align:center;margin-top:4px;">Opens at 12:10 PM &nbsp;·&nbsp; 27 Sep 2026</div>
   <div id="lock-countdown" style="font-family:'Consolas',monospace;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;color:#d24500;letter-spacing:0.08em;margin-top:12px;">--:--:--</div>
   <div style="font-family:'Consolas',monospace;font-size:10px;color:rgba(255,255,255,0.15);margin-top:24px;letter-spacing:0.08em;">HH &nbsp; MM &nbsp; SS</div>
 </div>
 <script>
 (function(){
-  var UNLOCK = new Date('2026-09-27T12:00:00+05:30').getTime();
+  var UNLOCK = new Date('2026-09-27T12:10:00+05:30').getTime();
   var overlay = document.getElementById('lock-overlay');
   var cd = document.getElementById('lock-countdown');
   if (!overlay) return;
@@ -269,6 +295,38 @@ html, body {
 })();
 </script>
 <!-- LOCK:END -->
+
+<!-- AUTH_GATE:START -->
+<div id="clueless-auth-gate" style="display:none;position:fixed;inset:0;background:#08080b;z-index:99998;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;">
+  <div style="font-family:'Consolas',monospace;font-size:10px;letter-spacing:0.18em;color:rgba(255,255,255,0.3);text-transform:uppercase;">Cyfernode 5.0 · Clue-Less</div>
+  <div style="font-family:'Satoshi',system-ui,sans-serif;font-size:clamp(1.8rem,5vw,2.4rem);font-weight:900;color:#fff;letter-spacing:-0.03em;line-height:1.1;">AUTHENTICATION REQUIRED</div>
+  <div style="font-family:'Satoshi',system-ui,sans-serif;font-size:14px;color:rgba(255,255,255,0.65);max-width:440px;line-height:1.6;margin-top:4px;">
+    You must authenticate with your registered school code (CYN00–CYN100) to participate in Clue-Less.
+  </div>
+  <a href="/prompts/clue-less-prompt?auth=1" id="auth-gate-btn" style="display:inline-flex;align-items:center;gap:8px;background:#d24500;color:#fff;font-family:'Satoshi',sans-serif;font-weight:700;font-size:14px;padding:12px 24px;border-radius:8px;text-decoration:none;margin-top:10px;transition:opacity 0.15s;">
+    <span>Authenticate with School Code</span>
+    <i class="fa-solid fa-arrow-right"></i>
+  </a>
+</div>
+<script>
+(function(){
+  try {
+    var raw = localStorage.getItem('cyfernode-clueless-auth') || sessionStorage.getItem('cyfernode-clueless-auth');
+    var sess = raw ? JSON.parse(raw) : null;
+    var authed = Boolean(sess && sess.token && sess.profile && sess.profile.schoolCode);
+    if (!authed) {
+      var gate = document.getElementById('clueless-auth-gate');
+      if (gate) gate.style.display = 'flex';
+      window.addEventListener('DOMContentLoaded', function(){
+        var inputs = document.querySelectorAll('input, button:not(#auth-gate-btn)');
+        inputs.forEach(function(el){ el.disabled = true; });
+      });
+    }
+  } catch(e) {}
+})();
+</script>
+<!-- AUTH_GATE:END -->
+
 
 <a href="/prompts/clue-less-prompt" id="exit-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
 <button type="button" id="reset-btn" class="top-reset-btn" title="Reset level progress">Reset</button>
@@ -413,13 +471,28 @@ function setStage(val) {
 
 function markLevelCompleted(levelId) {
   try {
-    const raw = localStorage.getItem('cyfernode_clueless_completed_levels')
-    const list = raw ? JSON.parse(raw) : []
+    const raw = localStorage.getItem('cyfernode_clueless_completed_levels');
+    const list = raw ? JSON.parse(raw) : [];
     if (!list.includes(levelId)) {
-      list.push(levelId)
-      localStorage.setItem('cyfernode_clueless_completed_levels', JSON.stringify(list))
+      list.push(levelId);
+      localStorage.setItem('cyfernode_clueless_completed_levels', JSON.stringify(list));
     }
-  } catch {}
+    const rawAuth = localStorage.getItem('cyfernode-clueless-auth') || sessionStorage.getItem('cyfernode-clueless-auth');
+    const auth = rawAuth ? JSON.parse(rawAuth) : null;
+    if (auth && auth.profile && auth.profile.schoolCode) {
+      const code = auth.profile.schoolCode;
+      const score = list.length * 100;
+      fetch('https://stjjvgnewkswzwmmzyoh.supabase.co/rest/v1/rpc/update_clueless_score', {
+        method: 'POST',
+        headers: {
+          apikey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0amp2Z25ld2tzd3p3bW16eW9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NTM2NDgsImV4cCI6MjEwMzMyOTY0OH0.l_vf_ovBAbMP_iIn_easi8ztLkC13SJr-JxuWtdM9ng',
+          authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0amp2Z25ld2tzd3p3bW16eW9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NTM2NDgsImV4cCI6MjEwMzMyOTY0OH0.l_vf_ovBAbMP_iIn_easi8ztLkC13SJr-JxuWtdM9ng',
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({ p_school_code: code, p_score: score, p_current_level: levelId })
+      }).catch(function(){});
+    }
+  } catch(e) {}
 }
 
 function fadeAndRedirect() {

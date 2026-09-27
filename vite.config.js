@@ -23,6 +23,17 @@ const STANDALONE_ROUTES = [
     document: '/team/index.html',
     aliases: new Set(['/team', '/team/', '/team.html']),
   },
+  {
+    document: '/clueless-solutions/index.html',
+    aliases: new Set([
+      '/clueless-solutions',
+      '/clueless-solutions/',
+      '/clueless-solutions.html',
+      '/prompts/clueless-solutions',
+      '/prompts/clueless-solutions/',
+      '/prompts/clueless-solutions.html',
+    ]),
+  },
 ]
 
 /**

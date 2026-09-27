@@ -11,6 +11,9 @@ const BANNER_IMAGE_URL = 'https://i.ibb.co/Lzsh2Rth/banner-email-cyfernode.jpg'
 const DISCORD_INVITE_URL = 'https://discord.gg/bkqrUAAnvc'
 const SITE_URL = 'https://cyfernode.com'
 
+/** Maximum number of distinct devices allowed per school code */
+const MAX_DEVICES_PER_SCHOOL = 2
+
 type Role = 'student' | 'teacher_in_charge'
 
 function json(req: Request, body: Record<string, unknown>, status = 200) {
@@ -198,6 +201,7 @@ async function resolveCluelessIdentity(
         email,
         school,
         registration: teacherRow,
+        teamName: String(teacherRow.team_name || '').trim(),
       },
     }
   }
@@ -224,6 +228,7 @@ async function resolveCluelessIdentity(
       email,
       school,
       registration: matchingReg,
+      teamName: String(matchingReg.team_name || '').trim(),
     },
   }
 }
@@ -240,6 +245,80 @@ async function attemptRow(admin: ReturnType<typeof adminClient>, schoolCode: str
     return null
   }
   return data
+}
+
+/**
+ * Returns all registered device IDs for a school code.
+ */
+async function getSchoolDevices(admin: ReturnType<typeof adminClient>, schoolCode: string) {
+  const { data, error } = await admin
+    .from('clue_less_devices')
+    .select('id, device_id, last_seen_at')
+    .eq('school_code', schoolCode)
+  if (error) return []
+  return data || []
+}
+
+/**
+ * Registers a device for a school, enforcing the max-2 device limit.
+ * Returns { ok: true } if allowed, { ok: false, error } if at capacity.
+ * Existing devices (previously registered) are always allowed through.
+ */
+async function registerDevice(
+  admin: ReturnType<typeof adminClient>,
+  schoolCode: string,
+  deviceId: string,
+) {
+  const devices = await getSchoolDevices(admin, schoolCode)
+  const isExisting = devices.some((d) => d.device_id === deviceId)
+
+  if (isExisting) {
+    // Known device — just update last_seen_at
+    await admin
+      .from('clue_less_devices')
+      .update({ last_seen_at: new Date().toISOString() })
+      .eq('school_code', schoolCode)
+      .eq('device_id', deviceId)
+    return { ok: true, deviceCount: devices.length }
+  }
+
+  if (devices.length >= MAX_DEVICES_PER_SCHOOL) {
+    return {
+      ok: false,
+      error: `This school code (${schoolCode}) has already been authenticated on ${MAX_DEVICES_PER_SCHOOL} devices. A maximum of ${MAX_DEVICES_PER_SCHOOL} devices are allowed per team. Please use a device that has already logged in, or contact the organizers.`,
+    }
+  }
+
+  // New device — insert
+  await admin.from('clue_less_devices').insert({
+    school_code: schoolCode,
+    device_id: deviceId,
+    last_seen_at: new Date().toISOString(),
+  })
+
+  return { ok: true, deviceCount: devices.length + 1 }
+}
+
+/**
+ * Refreshes the `active` count on clue_less_teams based on devices seen
+ * in the last 2 minutes (heartbeat window).
+ */
+async function refreshActiveCount(admin: ReturnType<typeof adminClient>, schoolCode: string) {
+  const threshold = new Date(Date.now() - 2 * 60 * 1000).toISOString() // 2 min window
+  const { count } = await admin
+    .from('clue_less_devices')
+    .select('id', { count: 'exact', head: true })
+    .eq('school_code', schoolCode)
+    .gte('last_seen_at', threshold)
+
+  await admin
+    .from('clue_less_teams')
+    .update({
+      active: count ?? 0,
+      last_active_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    })
+    .eq('school_code', schoolCode)
 }
 
 Deno.serve(async (req: Request) => {
@@ -361,9 +440,13 @@ Deno.serve(async (req: Request) => {
       const code = normalizeSchoolCode(body.schoolCode)
       const email = normalizeEmail(body.email)
       const enteredPasskey = String(body.passkey ?? '').trim()
+      const deviceId = String(body.deviceId ?? '').trim()
 
       if (!code || !email || !enteredPasskey) {
         return fail(req, 'School code, email, and 4-digit passkey are required.')
+      }
+      if (!deviceId) {
+        return fail(req, 'Device identity is missing. Please refresh and try again.')
       }
 
       const school = await loadSchool(admin, code)
@@ -394,6 +477,13 @@ Deno.serve(async (req: Request) => {
         return fail(req, 'Invalid passkey. Please check the 4-digit code sent to your email.')
       }
 
+      // ── Device limit check ────────────────────────────────────────────────────
+      const deviceResult = await registerDevice(admin, code, deviceId)
+      if (!deviceResult.ok) {
+        return fail(req, deviceResult.error || 'Device limit reached.')
+      }
+      // ─────────────────────────────────────────────────────────────────────────
+
       // Passkey verified! Reset attempts
       try {
         await admin.from('clue_less_verification_attempts').upsert({
@@ -407,16 +497,21 @@ Deno.serve(async (req: Request) => {
         // ignore
       }
 
+      // Pull teamname from registration
+      const teamName = resolved.identity.teamName || school.school_name
+
       // Upsert into clue_less_teams (Realtime table)
       const nowIso = new Date().toISOString()
       try {
         await admin.from('clue_less_teams').upsert({
           school_code: code,
           school_name: school.school_name,
+          teamname: teamName,
           email,
           user_name: resolved.identity.name,
           role: resolved.identity.role,
           logged_in: true,
+          active: deviceResult.deviceCount ?? 1,
           last_active_at: nowIso,
           updated_at: nowIso,
         }, { onConflict: 'school_code' })
@@ -446,6 +541,7 @@ Deno.serve(async (req: Request) => {
         profile: {
           schoolCode: code,
           schoolName: school.school_name,
+          teamName,
           email,
           name: resolved.identity.name,
           role: resolved.identity.role,
@@ -453,10 +549,53 @@ Deno.serve(async (req: Request) => {
       })
     }
 
+    if (action === 'heartbeat') {
+      const token = String(body.token ?? '').trim()
+      const code = normalizeSchoolCode(body.schoolCode)
+      const deviceId = String(body.deviceId ?? '').trim()
+
+      if (!token || !code) return fail(req, 'Token and schoolCode are required.')
+
+      const tokenHash = await sha256(token)
+      const { data: sessionRow, error: sErr } = await admin
+        .from('clue_less_sessions')
+        .select('id, expires_at')
+        .eq('school_code', code)
+        .eq('token_hash', tokenHash)
+        .maybeSingle()
+
+      if (sErr || !sessionRow) return fail(req, 'Invalid or expired session.', 401)
+      if (new Date(sessionRow.expires_at).getTime() < Date.now()) {
+        return fail(req, 'Session expired. Please log in again.', 401)
+      }
+
+      // Update device last_seen_at if we have a deviceId
+      if (deviceId) {
+        try {
+          await admin
+            .from('clue_less_devices')
+            .update({ last_seen_at: new Date().toISOString() })
+            .eq('school_code', code)
+            .eq('device_id', deviceId)
+        } catch {
+          // ignore
+        }
+      }
+
+      // Refresh active count
+      try {
+        await refreshActiveCount(admin, code)
+      } catch {
+        // ignore
+      }
+
+      return json(req, { ok: true })
+    }
+
     if (action === 'list-teams') {
       const { data, error } = await admin
         .from('clue_less_teams')
-        .select('school_code, school_name, user_name, logged_in, score, current_level, levels_completed, last_active_at')
+        .select('school_code, school_name, teamname, user_name, logged_in, score, current_level, levels_completed, last_active_at, active')
         .order('score', { ascending: false })
         .order('last_active_at', { ascending: false })
 
