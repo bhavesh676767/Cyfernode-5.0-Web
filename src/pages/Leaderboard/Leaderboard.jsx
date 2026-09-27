@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import { Preloader } from '@/components/Preloader'
 import { supabase } from '@/lib/supabaseBrowser'
@@ -38,6 +38,11 @@ function elapsed(ts) {
   return `${h}h ago`
 }
 
+function countLevels(levels) {
+  if (Array.isArray(levels)) return levels.length
+  return Number.isFinite(Number(levels)) ? Number(levels) : 0
+}
+
 // ─── main component ───────────────────────────────────────────────────────────
 export function Leaderboard() {
   useDocumentTitle('Leaderboard · Clue-Less')
@@ -48,20 +53,22 @@ export function Leaderboard() {
   const [error, setError]       = useState(null)
   const [highlight, setHighlight] = useState(null)
   const [tick, setTick]         = useState(0)
-  const channelRef              = useRef(null)
-
   // ── fetch leaderboard ────────────────────────────────────────────────────────
   const fetchData = useCallback(async (silent = false) => {
     if (!silent) setLoading(true)
     try {
       const lbRes = await supabase
-        .from('clue_less_leaderboard')
-        .select('school_code,school_name,score,levels_solved,last_level_cleared,last_solve_time,last_active_at,updated_at')
+        .from('clue_less_teams')
+        .select('school_code,school_name,score,levels_completed,current_level,last_active_at,updated_at')
         .order('score', { ascending: false })
-        .order('last_solve_time', { ascending: true, nullsFirst: false })
+        .order('last_active_at', { ascending: false, nullsFirst: false })
 
       if (lbRes.error) throw lbRes.error
-      setRows(lbRes.data || [])
+      setRows((lbRes.data || []).map((team) => ({
+        ...team,
+        levels_solved: countLevels(team.levels_completed),
+        last_solve_time: team.last_active_at,
+      })))
       setLastRefresh(new Date())
       setError(null)
     } catch (err) {
@@ -80,7 +87,7 @@ export function Leaderboard() {
       .channel('leaderboard-live')
       .on(
         'postgres_changes',
-        { event: '*', schema: 'public', table: 'clue_less_leaderboard' },
+        { event: '*', schema: 'public', table: 'clue_less_teams' },
         (payload) => {
           const code = payload.new?.school_code || payload.old?.school_code
           if (code) {
@@ -92,7 +99,6 @@ export function Leaderboard() {
       )
       .subscribe()
 
-    channelRef.current = ch
     return () => { supabase.removeChannel(ch) }
   }, [fetchData])
 
@@ -144,7 +150,7 @@ export function Leaderboard() {
               <th className={styles.thSchool}>School / Team</th>
               <th className={styles.thScore}>Score</th>
               <th className={styles.thLevels}>Levels</th>
-              <th className={styles.thTime}>Last Solve</th>
+              <th className={styles.thTime}>Last Active</th>
             </tr>
           </thead>
           <tbody>
@@ -176,7 +182,7 @@ export function Leaderboard() {
 
                   {/* Score */}
                   <td className={styles.tdScore}>
-                    <span className={styles.scoreVal}>{row.score.toLocaleString()}</span>
+                    <span className={styles.scoreVal}>{Number(row.score || 0).toLocaleString()}</span>
                     <span className={styles.scorePts}>pts</span>
                   </td>
 
