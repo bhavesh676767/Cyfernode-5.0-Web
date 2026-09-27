@@ -2,7 +2,6 @@ import { Route, Routes } from 'react-router-dom'
 import { Home } from '@/pages/Home/Home'
 import { Submission } from '@/pages/Submission/Submission'
 import { Team } from '@/pages/Team/Team'
-import { Leaderboard } from '@/pages/Leaderboard/Leaderboard'
 
 /*
  * Every route other than "/" and "/team" is served by the Framer document, so React
@@ -12,7 +11,6 @@ import { Leaderboard } from '@/pages/Leaderboard/Leaderboard'
  * "/submission" is a React page. "/register" is intentionally absent; it is a
  * standalone document at public/register/index.html.
  *
- * "/leaderboard" is the live Clue-Less Wave 2 leaderboard.
  */
 export function AppRouter() {
   return (
@@ -20,7 +18,6 @@ export function AppRouter() {
       <Route path="/" element={<Home />} />
       <Route path="/team" element={<Team />} />
       <Route path="/submission" element={<Submission />} />
-      <Route path="/leaderboard" element={<Leaderboard />} />
     </Routes>
   )
 }

@@ -546,9 +546,80 @@ html, body, #preloader { background: #050505; color: var(--text); }
           crossorigin="anonymous"
         >
       </div>
+      <div class="listing-info">
+        <div class="answer-section">
+          <p class="answer-prompt">Where does this lead?</p>
+          <form id="form-stage1" autocomplete="off">
+            <div class="input-line">
+              <span class="input-prompt">&gt;</span>
+              <input class="raw-input" id="input-stage1" placeholder="your answer" spellcheck="false" autofocus>
+            </div>
+            <div class="status-echo" id="status-stage1" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="listing-section" id="stage-2">
+    <div class="listing-info">
+      <div class="answer-section">
+        <p class="answer-prompt">What estimates?</p>
+        <form id="form-stage2" autocomplete="off">
+          <div class="input-line">
+            <span class="input-prompt">&gt;</span>
+            <input class="raw-input" id="input-stage2" placeholder="your answer" spellcheck="false">
+          </div>
+          <div class="status-echo" id="status-stage2" aria-live="polite"></div>
+        </form>
+      </div>
     </div>
   </section>
 
 </div>
+<script>
+  const form1 = document.getElementById('form-stage1');
+  const input1 = document.getElementById('input-stage1');
+  const status1 = document.getElementById('status-stage1');
+  const form2 = document.getElementById('form-stage2');
+  const input2 = document.getElementById('input-stage2');
+  const status2 = document.getElementById('status-stage2');
+  const destinationHash = 'bd7ed7e38cc637de51b1f0be31db7140efd433ddc11cb9ac7e489d66d84aff04';
+  const estimatesHash = '4b292409cc08cf90d2df93779ea6b7f7785479b0c55e7b4beece2f1b4e7f0ffb';
+
+  async function hash(value) {
+    const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value));
+    return Array.from(new Uint8Array(bytes)).map(byte => byte.toString(16).padStart(2, '0')).join('');
+  }
+
+  form1.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const value = input1.value.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (!value) return;
+    if (await hash(value) !== destinationHash) {
+      status1.textContent = 'not quite';
+      input1.select();
+      return;
+    }
+    input1.disabled = true;
+    status1.textContent = 'Continue.';
+    document.getElementById('stage-2').style.display = 'block';
+    input2.focus();
+  });
+
+  form2.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const value = input2.value.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (!value) return;
+    if (await hash(value) !== estimatesHash) {
+      status2.textContent = 'not quite';
+      input2.select();
+      return;
+    }
+    input2.disabled = true;
+    status2.textContent = 'Proceeding…';
+    window.setTimeout(() => { window.location.assign('/prompts/clue-less-prompt/am-i-retarded/auction-estimates/'); }, 450);
+  });
+</script>
 </body>
 </html>
