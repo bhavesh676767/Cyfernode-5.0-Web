@@ -32,6 +32,7 @@ alter table clue_less_devices enable row level security;
 
 -- Public can read (needed to check device count on client — optional, keep locked if preferred)
 -- Only service_role can write (via Edge Function)
+drop policy if exists "Service role full access devices" on clue_less_devices;
 create policy "Service role full access devices"
   on clue_less_devices for all to service_role using (true);
 
