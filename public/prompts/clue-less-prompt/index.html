@@ -395,7 +395,14 @@ html, body {
   font-weight: 500;
 }
 
-/* Live Scoreboard Section */
+/* Leaderboard is intentionally hidden */
+#sidebar-toggle-btn,
+.sidebar-drawer,
+.sidebar-backdrop,
+.scoreboard-section {
+  display: none !important;
+}
+
 .scoreboard-section {
   margin-top: 48px;
   border-top: 1px solid var(--border);
@@ -788,10 +795,6 @@ html, body {
 <!-- Top Right Clean Navigation -->
 <nav class="top-right-nav">
   <div id="auth-status-container"></div>
-  <button type="button" id="sidebar-toggle-btn" class="nav-link-btn" title="View schools & scores">
-    <span>Schools</span>
-    <span id="teams-badge" class="count-badge">0</span>
-  </button>
 </nav>
 
 <main class="page">
@@ -802,32 +805,6 @@ html, body {
     </header>
     <div class="prompt-body" id="prompt-body">
       <ul class="file-list" id="level-list" aria-label="Hunt levels"></ul>
-
-      <!-- Live Scoreboard Section -->
-      <section class="scoreboard-section" id="scoreboard-section">
-        <div class="scoreboard-header">
-          <div class="scoreboard-title-wrap">
-            <span class="scoreboard-live-beacon" title="Live realtime feed"></span>
-            <h2 class="scoreboard-heading">Live Scoreboard</h2>
-            <span class="scoreboard-count" id="scoreboard-count">0 Teams</span>
-          </div>
-          <span class="scoreboard-sync-status"><i class="fa-solid fa-bolt"></i> Realtime Sync</span>
-        </div>
-        <div class="scoreboard-table-wrap">
-          <table class="scoreboard-table">
-            <thead>
-              <tr>
-                <th style="width: 44px;">#</th>
-                <th>Team</th>
-                <th style="text-align: right;">Points</th>
-              </tr>
-            </thead>
-            <tbody id="scoreboard-tbody">
-              <tr><td colspan="4" class="scoreboard-empty">Waiting for authenticated schools...</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
     </div>
   </article>
 
@@ -836,25 +813,6 @@ html, body {
     <p><a href="/prompts">Return to prompts</a></p>
   </div>
 </main>
-
-<!-- Slide-out Sidebar Drawer for Schools & Live Scores -->
-<div class="sidebar-backdrop" id="sidebar-backdrop" aria-hidden="true"></div>
-<aside class="sidebar-drawer" id="sidebar-drawer" aria-label="Schools Leaderboard">
-  <div class="sidebar-header">
-    <div class="sidebar-title-group">
-      <h2 class="sidebar-title">Schools</h2>
-      <span class="sidebar-sub" id="sidebar-count">0 logged in</span>
-    </div>
-    <button type="button" class="sidebar-close" id="sidebar-close-btn" aria-label="Close sidebar">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
-  </div>
-  <div class="sidebar-content">
-    <div id="schools-list-container" class="school-list">
-      <div class="no-schools">No schools authenticated yet.</div>
-    </div>
-  </div>
-</aside>
 
 <!-- Minimal Authentication Modal -->
 <div class="modal-overlay" id="auth-modal" aria-hidden="true">
