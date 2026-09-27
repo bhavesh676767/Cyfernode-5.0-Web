@@ -42,10 +42,6 @@ function showTeamSolvedState({ completedIds = [], solvesMap = {} }) {
   notice.style.cssText = 'position:fixed;z-index:99999;top:16px;left:16px;right:16px;max-width:560px;margin:auto;'
   notice.innerHTML = buildSolvedCard(levelId, solvesMap[levelId], true)
   document.body.append(notice)
-
-  document.querySelectorAll('input, button[type="submit"]').forEach((control) => {
-    control.disabled = true
-  })
 }
 
 async function completeTeamLevel(levelId) {
