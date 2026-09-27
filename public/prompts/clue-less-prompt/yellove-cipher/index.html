@@ -216,6 +216,25 @@ html, body {
 <body>
 <div id="preloader">
   <div class="preloader-spinner"></div>
+<script>
+  (function() {
+    function hideLoader() {
+      var p = document.getElementById('preloader');
+      if (p) {
+        p.style.opacity = '0';
+        p.style.visibility = 'hidden';
+        setTimeout(function() { if (p && p.parentNode) p.parentNode.removeChild(p); }, 350);
+      }
+    }
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      setTimeout(hideLoader, 200);
+    } else {
+      window.addEventListener('DOMContentLoaded', hideLoader);
+      window.addEventListener('load', hideLoader);
+    }
+    setTimeout(hideLoader, 1200);
+  })();
+</script>
 </div>
 
 <main class="page">

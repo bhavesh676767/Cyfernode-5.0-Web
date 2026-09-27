@@ -395,12 +395,135 @@ html, body {
   font-weight: 500;
 }
 
-/* Leaderboard is intentionally hidden */
-#sidebar-toggle-btn,
-.sidebar-drawer,
-.sidebar-backdrop,
-.scoreboard-section {
-  display: none !important;
+/* Preloader */
+#preloader {
+  position: fixed; inset: 0;
+  background: #fff;
+  z-index: 999999;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.preloader-spinner {
+  width: 32px; height: 32px;
+  border: 2.5px solid rgba(17,17,20,0.1);
+  border-top-color: var(--orange);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Wave 2 Announcement Banner */
+.wave2-banner {
+  background: #09090d;
+  color: #fff;
+  border-radius: 16px;
+  padding: 36px 32px;
+  margin-bottom: 40px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.25);
+  position: relative;
+  overflow: hidden;
+}
+.wave2-banner::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #d24500, #ff8c42, #d24500);
+}
+.wave2-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.wave2-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(210,69,0,0.18);
+  border: 1px solid rgba(210,69,0,0.4);
+  color: #ff8c42;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+.wave2-pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff8c42;
+  animation: beacon-pulse 1.8s infinite;
+}
+.wave2-time-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.7);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+.wave2-heading {
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.wave2-sub {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.6);
+  max-width: 580px;
+  margin-bottom: 24px;
+}
+.wave2-countdown-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 16px 24px;
+  border-radius: 12px;
+}
+.wave2-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 68px;
+}
+.wave2-digit {
+  font-family: var(--font-mono);
+  font-size: clamp(2rem, 4.5vw, 2.8rem);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.wave2-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.12em;
+  margin-top: 6px;
+}
+.wave2-colon {
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  font-weight: 800;
+  color: rgba(255,255,255,0.3);
+  margin-top: -14px;
 }
 
 .scoreboard-section {
@@ -790,11 +913,39 @@ html, body {
 </style>
 </head>
 <body>
+<div id="preloader">
+  <div class="preloader-spinner"></div>
+</div>
+<script>
+  (function() {
+    function hideLoader() {
+      var p = document.getElementById('preloader');
+      if (p) {
+        p.style.opacity = '0';
+        p.style.visibility = 'hidden';
+        setTimeout(function() { if (p && p.parentNode) p.parentNode.removeChild(p); }, 350);
+      }
+    }
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      setTimeout(hideLoader, 200);
+    } else {
+      window.addEventListener('DOMContentLoaded', hideLoader);
+      window.addEventListener('load', hideLoader);
+    }
+    setTimeout(hideLoader, 1500);
+  })();
+</script>
+
 <a href="/prompts" id="exit-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
 
 <!-- Top Right Clean Navigation -->
 <nav class="top-right-nav">
   <div id="auth-status-container"></div>
+  <button type="button" id="sidebar-toggle-btn" class="nav-link-btn" title="View official standings">
+    <i class="fa-solid fa-trophy" style="color:var(--orange);"></i>
+    <span>Leaderboard</span>
+    <span id="teams-badge" class="count-badge">0</span>
+  </button>
 </nav>
 
 <main class="page">
@@ -804,7 +955,60 @@ html, body {
       <h1 class="title" id="prompt-title">Clue-Less</h1>
     </header>
     <div class="prompt-body" id="prompt-body">
-      <ul class="file-list" id="level-list" aria-label="Hunt levels"></ul>
+      <!-- Wave 2 Announcement & Countdown Component -->
+      <section class="wave2-banner" id="wave2-banner">
+        <div class="wave2-badge-row">
+          <span class="wave2-status-pill"><span class="wave2-pulse-dot"></span> WAVE 1 CONCLUDED</span>
+          <span class="wave2-time-pill"><i class="fa-regular fa-clock"></i> 6:00 PM IST · 27 SEP 2026</span>
+        </div>
+        <h2 class="wave2-heading">Wave 2 Commences In</h2>
+        <p class="wave2-sub">All Wave 1 levels are now sealed. Official verified scores are recorded on the leaderboard below. Stand by for the Wave 2 transmission at 6:00 PM IST.</p>
+        
+        <div class="wave2-countdown-container">
+          <div class="wave2-unit">
+            <span class="wave2-digit" id="w2-hours">00</span>
+            <span class="wave2-label">HOURS</span>
+          </div>
+          <span class="wave2-colon">:</span>
+          <div class="wave2-unit">
+            <span class="wave2-digit" id="w2-mins">00</span>
+            <span class="wave2-label">MINUTES</span>
+          </div>
+          <span class="wave2-colon">:</span>
+          <div class="wave2-unit">
+            <span class="wave2-digit" id="w2-secs">00</span>
+            <span class="wave2-label">SECONDS</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Live Scoreboard Section -->
+      <section class="scoreboard-section" id="scoreboard-section">
+        <div class="scoreboard-header">
+          <div class="scoreboard-title-wrap">
+            <span class="scoreboard-live-beacon" title="Live realtime feed"></span>
+            <h2 class="scoreboard-heading">Wave 2 Live Leaderboard</h2>
+            <span class="scoreboard-count" id="scoreboard-count">0 Teams</span>
+          </div>
+          <span class="scoreboard-sync-status"><i class="fa-solid fa-bolt"></i> Realtime Verified</span>
+        </div>
+        <div class="scoreboard-table-wrap">
+          <table class="scoreboard-table">
+            <thead>
+              <tr>
+                <th style="width: 44px;">#</th>
+                <th>Team / School</th>
+                <th style="text-align: center; width: 110px;">Solves</th>
+                <th style="text-align: center; width: 120px;">Time</th>
+                <th style="text-align: right; width: 110px;">Points</th>
+              </tr>
+            </thead>
+            <tbody id="scoreboard-tbody">
+              <tr><td colspan="5" class="scoreboard-empty">Waiting for Wave 2 submissions... All scores reset to 0.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   </article>
 
@@ -813,6 +1017,26 @@ html, body {
     <p><a href="/prompts">Return to prompts</a></p>
   </div>
 </main>
+
+<!-- Slide-out Sidebar Drawer for Schools & Live Scores -->
+<div class="sidebar-backdrop" id="sidebar-backdrop" aria-hidden="true"></div>
+<aside class="sidebar-drawer" id="sidebar-drawer" aria-label="Schools Leaderboard">
+  <div class="sidebar-header">
+    <div class="sidebar-title-group">
+      <h2 class="sidebar-title">Leaderboard</h2>
+      <span class="sidebar-sub" id="sidebar-count">0 logged in</span>
+    </div>
+    <button type="button" class="sidebar-close" id="sidebar-close-btn" aria-label="Close sidebar">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+  <div class="sidebar-content">
+    <div id="schools-list-container" class="school-list">
+      <div class="no-schools">Loading standings...</div>
+    </div>
+  </div>
+</aside>
+
 
 <!-- Minimal Authentication Modal -->
 <div class="modal-overlay" id="auth-modal" aria-hidden="true">
@@ -1142,36 +1366,60 @@ function renderTeamsList(teams) {
   const currentSession = getCluelessSession()
   const mySchoolCode = currentSession?.profile?.schoolCode || ''
 
+  function formatSolveTime(iso) {
+    if (!iso) return '<span style="color:var(--muted);opacity:0.4;">--:--</span>'
+    try {
+      const d = new Date(iso)
+      return d.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit' })
+    } catch {
+      return '<span style="color:var(--muted);opacity:0.4;">--:--</span>'
+    }
+  }
+
   const sortedTeams = (teams || []).slice().sort((a, b) => {
     const sDiff = (b.score || 0) - (a.score || 0)
     if (sDiff !== 0) return sDiff
-    return new Date(b.last_active_at || 0) - new Date(a.last_active_at || 0)
+    // Faster/earlier solve wins tie-breaker
+    const aTime = a.last_solve_time ? new Date(a.last_solve_time).getTime() : Infinity
+    const bTime = b.last_solve_time ? new Date(b.last_solve_time).getTime() : Infinity
+    if (aTime !== bTime) return aTime - bTime
+    return (a.school_code || '').localeCompare(b.school_code || '')
   })
 
   if (badge) badge.textContent = String(sortedTeams.length)
   if (countSub) countSub.textContent = `${sortedTeams.length} logged in`
   if (mainBadge) mainBadge.textContent = `${sortedTeams.length} Team${sortedTeams.length === 1 ? '' : 's'}`
 
-  // 1. Render in Main Page Scoreboard Table (team name primary, hover = school code)
+  // 1. Render in Main Page Scoreboard Table
   if (mainTbody) {
     if (sortedTeams.length === 0) {
-      mainTbody.innerHTML = `<tr><td colspan="3" class="scoreboard-empty">No teams have authenticated yet. Log in with your school code to appear on the leaderboard.</td></tr>`
+      mainTbody.innerHTML = `<tr><td colspan="5" class="scoreboard-empty">Waiting for Wave 2 submissions... All scores reset to 0.</td></tr>`
     } else {
       mainTbody.innerHTML = sortedTeams.map((team, idx) => {
         const isMe = mySchoolCode && team.school_code === mySchoolCode
         const rank = idx + 1
         const rankClass = rank === 1 ? 'top-1' : (rank === 2 ? 'top-2' : (rank === 3 ? 'top-3' : ''))
-        const displayName = team.teamname || team.school_name || team.school_code
+        const displayName = team.team_name || team.teamname || team.school_name || team.school_code
+        const solves = team.levels_solved ?? 0
         return `
           <tr class="${isMe ? 'is-you' : ''}">
             <td><span class="rank-badge ${rankClass}">#${rank}</span></td>
             <td>
-              <span
-                class="team-code-badge"
-                title="School Code: ${team.school_code}"
-                style="cursor:help;"
-              >${displayName}</span>
-              ${isMe ? '<span class="you-pill">YOU</span>' : ''}
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span
+                  class="team-code-badge"
+                  title="School Code: ${team.school_code}"
+                  style="cursor:help;"
+                >${displayName}</span>
+                ${isMe ? '<span class="you-pill">YOU</span>' : ''}
+              </div>
+              ${team.school_name && team.school_name !== displayName ? `<div style="font-size:11px;color:var(--muted);margin-top:2px;">${team.school_name} (${team.school_code})</div>` : ''}
+            </td>
+            <td style="text-align:center;">
+              <span style="font-family:var(--font-mono);font-size:12px;font-weight:700;background:rgba(17,17,20,0.05);padding:3px 8px;border-radius:4px;color:var(--text);">${solves}</span>
+            </td>
+            <td style="text-align:center;font-family:var(--font-mono);font-size:12px;color:var(--muted);">
+              ${formatSolveTime(team.last_solve_time)}
             </td>
             <td class="points-cell">
               <span>${team.score ?? 0}</span><span class="pts-unit">pts</span>
@@ -1182,14 +1430,15 @@ function renderTeamsList(teams) {
     }
   }
 
-  // 2. Render in Sidebar Drawer (team name bold, school code as subtitle)
+  // 2. Render in Sidebar Drawer
   if (list) {
     if (sortedTeams.length === 0) {
       list.innerHTML = `<div class="no-schools">No schools authenticated yet.</div>`
     } else {
       list.innerHTML = sortedTeams.map(team => {
         const isMe = mySchoolCode && team.school_code === mySchoolCode
-        const displayName = team.teamname || team.school_name || team.school_code
+        const displayName = team.team_name || team.teamname || team.school_name || team.school_code
+        const solves = team.levels_solved ?? 0
         return `
           <div class="school-row ${isMe ? 'is-current-school' : ''}" style="${isMe ? 'background:rgba(210,69,0,0.06);border-radius:8px;' : ''}">
             <div class="school-info">
@@ -1202,7 +1451,7 @@ function renderTeamsList(teams) {
                 >${displayName}</span>
                 ${isMe ? '<span class="you-pill" style="font-size:9px;padding:0 4px;">YOU</span>' : ''}
               </div>
-              <span class="school-name">${team.school_code}</span>
+              <span class="school-name">${team.school_code} · ${solves} Solves ${team.last_solve_time ? `(${formatSolveTime(team.last_solve_time)})` : ''}</span>
             </div>
             <div class="school-score">${team.score ?? 0}</div>
           </div>
@@ -1212,12 +1461,46 @@ function renderTeamsList(teams) {
   }
 }
 
+// Wave 2 Timer
+function initWave2Timer() {
+  const target = new Date('2026-09-27T18:00:00+05:30').getTime()
+  const hEl = document.getElementById('w2-hours')
+  const mEl = document.getElementById('w2-mins')
+  const sEl = document.getElementById('w2-secs')
+
+  function update() {
+    const now = Date.now()
+    const diff = Math.max(0, target - now)
+    const hrs = Math.floor(diff / (1000 * 60 * 60))
+    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+    const secs = Math.floor((diff % (1000 * 60)) / 1000)
+
+    if (hEl) hEl.textContent = String(hrs).padStart(2, '0')
+    if (mEl) mEl.textContent = String(mins).padStart(2, '0')
+    if (sEl) sEl.textContent = String(secs).padStart(2, '0')
+  }
+  update()
+  setInterval(update, 1000)
+}
+
+// Preloader Dismissal
+function dismissPreloader() {
+  const p = document.getElementById('preloader')
+  if (p) {
+    p.style.opacity = '0'
+    p.style.visibility = 'hidden'
+    setTimeout(() => p.remove(), 350)
+  }
+}
+window.addEventListener('load', dismissPreloader)
+if (document.readyState === 'complete') dismissPreloader()
+else setTimeout(dismissPreloader, 1000)
+
 // Initialize
 updateAuthNav()
-renderLevels()
+initWave2Timer()
 subscribeToCluelessTeams(renderTeamsList)
-subscribeToMySchoolSolves(() => renderLevels())
-syncMySchoolSolves().then(() => renderLevels()).catch(() => {})
+
 
 // Auto-open auth modal if redirected with ?auth=1
 const urlParams = new URLSearchParams(window.location.search)

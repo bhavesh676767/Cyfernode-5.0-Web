@@ -14,15 +14,9 @@ export const SOLVES_CACHE_KEY = 'cyfernode_clueless_solves_cache'
 
 // Client-side level config (mirrors server config — used for instant UI feedback)
 export const LEVEL_CONFIG = {
-  'whistle-podu':                   { order: 1, basePoints: 100, difficulty: 'Easy', name: 'Whistle Podu' },
-  'only-ww':                        { order: 2, basePoints: 150, difficulty: 'Easy', name: 'Only WW' },
-  'the-image-that-isnt-an-image':   { order: 3, basePoints: 220, difficulty: 'Medium', name: "THE IMAGE THAT ISN'T AN IMAGE" },
-  'the-bearer':                     { order: 4, basePoints: 300, difficulty: 'Medium', name: 'THE BEARER' },
-  'a-comedy-of-accuracy':           { order: 5, basePoints: 400, difficulty: 'Hard', name: 'A comedy of accuracy' },
-  'the-third-tung':                 { order: 6, basePoints: 525, difficulty: 'Hard', name: 'THE THIRD TUNG' },
-  'redline-echo':                   { order: 7, basePoints: 675, difficulty: 'Expert', name: 'REDLINE ECHO' },
-  'the-hollow-chime':               { order: 8, basePoints: 850, difficulty: 'Expert', name: 'THE HOLLOW CHIME' },
+  'am-i-retarded': { order: 1, basePoints: 500, difficulty: 'Hard', name: 'Am I Retar*ed?' },
 }
+
 
 export function getSession() {
   try {

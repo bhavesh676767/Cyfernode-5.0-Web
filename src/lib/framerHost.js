@@ -8,7 +8,7 @@ const FRAMER_SELECTORS = ['#main']
  * "/register" is not one of them: it is a standalone document served from
  * public/register/index.html and never reached through this app.
  */
-const REACT_PATHS = ['/submission']
+const REACT_PATHS = ['/submission', '/leaderboard']
 const REGISTER_PATH = '/register'
 const REGISTER_TRIGGER_SELECTOR = '.framer-1umqj66-container'
 const INVITE_TRIGGER_SELECTOR = '.framer-13hwuku-container'

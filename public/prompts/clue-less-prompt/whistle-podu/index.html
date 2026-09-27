@@ -230,14 +230,18 @@ html, body {
 <!-- LOCK:START -->
 <div id="lock-overlay" style="position:fixed;inset:0;background:#08080b;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;">
   <div style="font-family:'Consolas',monospace;font-size:10px;letter-spacing:0.18em;color:rgba(255,255,255,0.25);text-transform:uppercase;">Cyfernode 5.0 · Clue-Less</div>
-  <div style="font-family:'Satoshi',system-ui,sans-serif;font-size:clamp(2rem,6vw,3rem);font-weight:900;color:#fff;letter-spacing:-0.04em;line-height:1;">LOCKED</div>
-  <div style="font-family:'Consolas',monospace;font-size:12px;color:rgba(255,255,255,0.35);text-align:center;margin-top:4px;">Opens at 12:10 PM &nbsp;·&nbsp; 27 Sep 2026</div>
+  <div style="font-family:'Satoshi',system-ui,sans-serif;font-size:clamp(1.8rem,5vw,2.6rem);font-weight:900;color:#fff;letter-spacing:-0.03em;line-height:1.1;text-align:center;">WAVE 1 CONCLUDED</div>
+  <div style="font-family:'Consolas',monospace;font-size:12px;color:rgba(255,255,255,0.45);text-align:center;margin-top:4px;">Wave 2 Opens at 6:00 PM &nbsp;·&nbsp; 27 Sep 2026</div>
   <div id="lock-countdown" style="font-family:'Consolas',monospace;font-size:clamp(1.4rem,4vw,2rem);font-weight:700;color:#d24500;letter-spacing:0.08em;margin-top:12px;">--:--:--</div>
-  <div style="font-family:'Consolas',monospace;font-size:10px;color:rgba(255,255,255,0.15);margin-top:24px;letter-spacing:0.08em;">HH &nbsp; MM &nbsp; SS</div>
+  <div style="font-family:'Consolas',monospace;font-size:10px;color:rgba(255,255,255,0.2);margin-top:4px;letter-spacing:0.08em;">HH &nbsp; MM &nbsp; SS</div>
+  <a href="/prompts/clue-less-prompt" style="font-family:'Satoshi',sans-serif;font-size:13px;font-weight:700;color:#fff;background:rgba(255,255,255,0.1);padding:8px 18px;border-radius:6px;text-decoration:none;margin-top:16px;display:inline-flex;align-items:center;gap:6px;">
+    <i class="fa-solid fa-arrow-left"></i>
+    <span>Return to Leaderboard</span>
+  </a>
 </div>
 <script>
 (function(){
-  var UNLOCK = new Date('2026-09-27T12:10:00+05:30').getTime();
+  var UNLOCK = new Date('2026-09-27T18:00:00+05:30').getTime();
   var overlay = document.getElementById('lock-overlay');
   var cd = document.getElementById('lock-countdown');
   if (!overlay) return;
@@ -290,6 +294,25 @@ html, body {
 
 <div id="preloader">
   <div class="preloader-spinner"></div>
+<script>
+  (function() {
+    function hideLoader() {
+      var p = document.getElementById('preloader');
+      if (p) {
+        p.style.opacity = '0';
+        p.style.visibility = 'hidden';
+        setTimeout(function() { if (p && p.parentNode) p.parentNode.removeChild(p); }, 350);
+      }
+    }
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      setTimeout(hideLoader, 200);
+    } else {
+      window.addEventListener('DOMContentLoaded', hideLoader);
+      window.addEventListener('load', hideLoader);
+    }
+    setTimeout(hideLoader, 1200);
+  })();
+</script>
 </div>
 
 <a href="/prompts/clue-less-prompt" id="exit-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
@@ -388,219 +411,6 @@ form?.addEventListener('submit', async (e) => {
 
 document.getElementById('reset-btn')?.addEventListener('click', () => {
   if (confirm('Reset input?')) { input.value = ''; echo.textContent = ''; input.focus(); }
-});
-</script>
-</body>
-</html>
-
-  if (preloader) {
-    preloader.style.opacity = '0';
-    preloader.style.visibility = 'hidden';
-    setTimeout(() => preloader.remove(), 300);
-  }
-});
-
-async function sha256(message) {
-  const msgBuffer = new TextEncoder().encode(message);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-function clean(str) {
-  return String(str || '').trim().toLowerCase().replace(/[^a-z0-9]/g, '');
-}
-
-// Console Easter Egg
-function base64UrlEncode(str) {
-  return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-}
-const jwtHeader  = base64UrlEncode(JSON.stringify({ alg: "HS256", typ: "JWT" }));
-const jwtPayload = base64UrlEncode(JSON.stringify({ key: "2010-2023", next: "/vault" }));
-const jwtSig     = base64UrlEncode("whistle_podu_csk_signature_2024");
-const jwtToken   = `${jwtHeader}.${jwtPayload}.${jwtSig}`;
-
-function dispatchDugout() {
-  console.log("%c⚡ [DUGOUT TRANSMISSION DECODED]", "color:#f59e0b;font-weight:bold;font-family:monospace;font-size:14px;");
-  console.log("%cBase64url-decode the 2nd segment.", "color:#94a3b8;font-family:monospace;font-size:12px;");
-  return jwtToken;
-}
-window.whistlePodu = dispatchDugout;
-window.whistle = dispatchDugout;
-window.whistle_podu = dispatchDugout;
-window.dugout = dispatchDugout;
-window.csk = dispatchDugout;
-window.thala = dispatchDugout;
-
-console.log(
-  "%c⚡ [CHEPPAUK DUGOUT FREQUENCY OPEN]\n%cInvoke the whistle function in console: %cwhistlePodu()%c (or %cwhistle()%c)",
-  "color:#f59e0b;font-size:13px;font-weight:bold;font-family:monospace;",
-  "color:#94a3b8;font-family:monospace;font-size:11px;",
-  "color:#38bdf8;font-weight:bold;font-family:monospace;",
-  "color:#94a3b8;font-family:monospace;font-size:11px;",
-  "color:#38bdf8;font-weight:bold;font-family:monospace;",
-  "color:#94a3b8;font-family:monospace;font-size:11px;"
-);
-
-// ── New scoring module ─────────────────────────────────────────────────────
-import { markLevelCompleted, buildSolveBanner } from '/clue-less/scoring.js';
-
-const form  = document.getElementById('verify-form');
-const input = document.getElementById('user-input');
-const echo  = document.getElementById('echo');
-
-form?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const val = clean(input.value);
-  if (!val) return;
-
-  const TARGET_HASH = 'ed269be483b1a64be9df89a97af66c6c676dc352bd26edc68fe652cc9d9b3628';
-  const hashed = await sha256(val);
-
-  if (hashed === TARGET_HASH) {
-    input.disabled = true;
-    echo.textContent = 'Correct. Recording score…';
-    echo.className = 'status-echo success';
-
-    const result = await markLevelCompleted('whistle-podu');
-    echo.innerHTML = buildSolveBanner(result, 'whistle-podu');
-    echo.className = 'status-echo success';
-
-    setTimeout(() => {
-      document.body.style.transition = 'opacity 0.8s ease';
-      document.body.style.opacity = '0';
-      setTimeout(() => { window.location.href = '/prompts/clue-less-prompt'; }, 800);
-    }, 3500);
-  } else {
-    echo.textContent = 'not quite';
-    echo.className = 'status-echo error';
-    input.select();
-  }
-});
-
-document.getElementById('reset-btn')?.addEventListener('click', () => {
-  if (confirm('Reset input?')) { input.value = ''; echo.textContent = ''; input.focus(); }
-});
-</script>
-
-</body>
-</html>
-
-
-// Helper clean string
-async function sha256(message) {
-  const msgBuffer = new TextEncoder().encode(message);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-function clean(str) {
-  return String(str || '')
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]/g, '');
-}
-
-// Global Console Easter Egg: whistlePodu() and aliases
-function base64UrlEncode(str) {
-  return btoa(str)
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=+$/, '');
-}
-
-const jwtHeader = base64UrlEncode(JSON.stringify({ alg: "HS256", typ: "JWT" }));
-const jwtPayload = base64UrlEncode(JSON.stringify({ key: "2010-2023", next: "/vault" }));
-const jwtSig = base64UrlEncode("whistle_podu_csk_signature_2024");
-const jwtToken = `${jwtHeader}.${jwtPayload}.${jwtSig}`;
-
-function dispatchDugout() {
-  console.log("%c⚡ [DUGOUT TRANSMISSION DECODED]", "color: #f59e0b; font-weight: bold; font-family: monospace; font-size: 14px;");
-  console.log("%cPayload contains the key & the next coordinate. Base64url-decode the 2nd segment.", "color: #94a3b8; font-family: monospace; font-size: 12px;");
-  return jwtToken;
-}
-
-window.whistlePodu = dispatchDugout;
-window.whistle = dispatchDugout;
-window.whistle_podu = dispatchDugout;
-window.dugout = dispatchDugout;
-window.csk = dispatchDugout;
-window.thala = dispatchDugout;
-
-console.log(
-  "%c⚡ [CHEPPAUK DUGOUT FREQUENCY OPEN]\n%cAn encrypted transmission has been wired into this terminal.\nInvoke the whistle function in console: %cwhistlePodu()%c (or %cwhistle()%c)",
-  "color: #f59e0b; font-size: 13px; font-weight: bold; font-family: monospace;",
-  "color: #94a3b8; font-family: monospace; font-size: 11px;",
-  "color: #38bdf8; font-weight: bold; font-family: monospace;",
-  "color: #94a3b8; font-family: monospace; font-size: 11px;",
-  "color: #38bdf8; font-weight: bold; font-family: monospace;",
-  "color: #94a3b8; font-family: monospace; font-size: 11px;"
-);
-
-// Verification Form
-const form = document.getElementById('verify-form');
-const input = document.getElementById('user-input');
-const echo = document.getElementById('echo');
-
-function markLevelCompleted(levelId) {
-  try {
-    const raw = localStorage.getItem('cyfernode_clueless_completed_levels');
-    const list = raw ? JSON.parse(raw) : [];
-    if (!list.includes(levelId)) {
-      list.push(levelId);
-      localStorage.setItem('cyfernode_clueless_completed_levels', JSON.stringify(list));
-    }
-    const rawAuth = localStorage.getItem('cyfernode-clueless-auth') || sessionStorage.getItem('cyfernode-clueless-auth');
-    const auth = rawAuth ? JSON.parse(rawAuth) : null;
-    if (auth && auth.profile && auth.profile.schoolCode) {
-      const code = auth.profile.schoolCode;
-      const score = list.length * 100;
-      fetch('https://stjjvgnewkswzwmmzyoh.supabase.co/rest/v1/rpc/update_clueless_score', {
-        method: 'POST',
-        headers: {
-          apikey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0amp2Z25ld2tzd3p3bW16eW9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NTM2NDgsImV4cCI6MjEwMzMyOTY0OH0.l_vf_ovBAbMP_iIn_easi8ztLkC13SJr-JxuWtdM9ng',
-          authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0amp2Z25ld2tzd3p3bW16eW9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NTM2NDgsImV4cCI6MjEwMzMyOTY0OH0.l_vf_ovBAbMP_iIn_easi8ztLkC13SJr-JxuWtdM9ng',
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify({ p_school_code: code, p_score: score, p_current_level: levelId })
-      }).catch(function(){});
-    }
-  } catch(e) {}
-}
-
-form?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const val = clean(input.value);
-  if (!val) return;
-
-  const TARGET_HASH = 'ed269be483b1a64be9df89a97af66c6c676dc352bd26edc68fe652cc9d9b3628';
-  const hashed = await sha256(val);
-  if (hashed === TARGET_HASH) {
-    echo.textContent = 'Correct.';
-    echo.className = 'status-echo success';
-    input.disabled = true;
-    markLevelCompleted('whistle-podu');
-    setTimeout(() => {
-      document.body.style.transition = 'opacity 0.8s ease';
-      document.body.style.opacity = '0';
-      setTimeout(() => {
-        window.location.href = '/prompts/clue-less-prompt';
-      }, 800);
-    }, 3000);
-  } else {
-    echo.textContent = 'not quite';
-    echo.className = 'status-echo error';
-    input.select();
-  }
-});
-
-document.getElementById('reset-btn')?.addEventListener('click', () => {
-  if (confirm('Reset input?')) {
-    input.value = '';
-    echo.textContent = '';
-    input.focus();
-  }
 });
 </script>
 </body>

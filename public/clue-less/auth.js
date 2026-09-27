@@ -148,6 +148,25 @@ export async function heartbeatCluelessSession(session = getCluelessSession()) {
 }
 
 export async function fetchActiveTeams() {
+  // 1. Try dedicated official leaderboard table (score desc, earliest solve time first)
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/clue_less_leaderboard?select=*&order=score.desc,last_solve_time.asc.nullslast,last_active_at.asc`, {
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+    })
+    if (res.ok) {
+      const rows = await res.json()
+      if (Array.isArray(rows) && rows.length > 0) {
+        return rows
+      }
+    }
+  } catch {
+    // ignore and fallback
+  }
+
+  // 2. Fallback to clue_less_teams
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/clue_less_teams?select=*&order=score.desc,last_active_at.desc`, {
       headers: {
@@ -156,7 +175,6 @@ export async function fetchActiveTeams() {
       },
     })
     if (!res.ok) {
-      // Fallback to Edge function
       const fallback = await callCluelessAccess('list-teams')
       return fallback.teams || []
     }
@@ -172,7 +190,7 @@ export async function fetchActiveTeams() {
 }
 
 /**
- * Realtime subscription for Clue-Less teams table
+ * Realtime subscription for Clue-Less leaderboard table
  */
 export function subscribeToCluelessTeams(onUpdate) {
   let active = true
@@ -188,7 +206,16 @@ export function subscribeToCluelessTeams(onUpdate) {
       if (window.supabase && typeof window.supabase.createClient === 'function') {
         const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
         channel = client
-          .channel('clue_less_teams_channel')
+          .channel('clue_less_leaderboard_channel')
+          .on(
+            'postgres_changes',
+            { event: '*', schema: 'public', table: 'clue_less_leaderboard' },
+            async () => {
+              if (!active) return
+              const updated = await fetchActiveTeams()
+              if (active) onUpdate(updated)
+            }
+          )
           .on(
             'postgres_changes',
             { event: '*', schema: 'public', table: 'clue_less_teams' },
@@ -222,3 +249,4 @@ export function subscribeToCluelessTeams(onUpdate) {
     }
   }
 }
+

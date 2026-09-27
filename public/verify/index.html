@@ -3,27 +3,7 @@
 <head>
 <!-- CLUELESS_AUTH:START -->
 <script>
-(function() {
-  function hasValidAuth() {
-    try {
-      var raw = sessionStorage.getItem('cyfernode-clueless-auth') || localStorage.getItem('cyfernode-clueless-auth');
-      if (raw) {
-        var sess = JSON.parse(raw);
-        if (sess && (sess.token || sess.profile) && (sess.profile && sess.profile.schoolCode)) {
-          return true;
-        }
-      }
-    } catch(e) {}
-    return false;
-  }
-
-  if (!hasValidAuth()) {
-    try {
-      sessionStorage.setItem('cyfernode_clueless_auth_required', '1');
-    } catch(e) {}
-    window.location.replace('/prompts/clue-less-prompt?auth=required');
-  }
-})();
+window.location.replace('/prompts/clue-less-prompt');
 </script>
 <!-- CLUELESS_AUTH:END -->
 

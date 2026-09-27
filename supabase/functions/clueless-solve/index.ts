@@ -3,17 +3,11 @@ import { corsHeaders } from '../_shared/cors.ts'
 
 const ALLOW_HEADERS = 'authorization, x-client-info, apikey, content-type, x-clueless-session'
 
-// ─── Difficulty-based points (matches migration) ──────────────────────────────
+// ─── Difficulty-based points ───────────────────────────────────────────────────
 const LEVEL_CONFIG: Record<string, { order: number; basePoints: number; difficulty: string }> = {
-  'whistle-podu':                   { order: 1, basePoints: 100, difficulty: 'Easy' },
-  'only-ww':                        { order: 2, basePoints: 150, difficulty: 'Easy' },
-  'the-image-that-isnt-an-image':   { order: 3, basePoints: 220, difficulty: 'Medium' },
-  'the-bearer':                     { order: 4, basePoints: 300, difficulty: 'Medium' },
-  'a-comedy-of-accuracy':           { order: 5, basePoints: 400, difficulty: 'Hard' },
-  'the-third-tung':                 { order: 6, basePoints: 525, difficulty: 'Hard' },
-  'redline-echo':                   { order: 7, basePoints: 675, difficulty: 'Expert' },
-  'the-hollow-chime':               { order: 8, basePoints: 850, difficulty: 'Expert' },
+  'am-i-retarded': { order: 1, basePoints: 500, difficulty: 'Hard' },
 }
+
 
 // First-solver bonus: 1st → +100%, 2nd → +50%, 3rd → +25%, 4th+ → 0%
 function calcBonus(rank: number, base: number): number {
