@@ -89,11 +89,7 @@
 </head>
 <body>
   <main>
-    <section id="countdown-view" aria-live="polite">
-      <p>Revealing at midnight</p>
-      <div id="countdown" role="timer">--:--:--</div>
-    </section>
-    <section id="reveal-view" hidden aria-live="polite">
+    <section id="reveal-view" aria-live="polite">
       <ul id="school-codes">
         <li>CYN09</li>
         <li>CYN33</li>
@@ -102,33 +98,5 @@
       <p id="positions-date">Positions on 9th Oct 2026.</p>
     </section>
   </main>
-  <script>
-    const revealAt = new Date(2026, 8, 28, 0, 0, 0);
-    const countdownView = document.getElementById('countdown-view');
-    const revealView = document.getElementById('reveal-view');
-    const countdown = document.getElementById('countdown');
-
-    function updateCountdown() {
-      const remaining = revealAt.getTime() - Date.now();
-
-      if (remaining <= 0) {
-        countdownView.hidden = true;
-        revealView.hidden = false;
-        clearInterval(timer);
-        return;
-      }
-
-      const totalSeconds = Math.floor(remaining / 1000);
-      const hours = Math.floor(totalSeconds / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
-      countdown.textContent = [hours, minutes, seconds]
-        .map(value => String(value).padStart(2, '0'))
-        .join(':');
-    }
-
-    const timer = setInterval(updateCountdown, 1000);
-    updateCountdown();
-  </script>
 </body>
 </html>
