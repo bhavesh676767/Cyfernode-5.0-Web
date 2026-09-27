@@ -17,12 +17,14 @@ function getCluelessDeviceId() {
   try {
     let deviceId = localStorage.getItem(DEVICE_KEY)
     if (!deviceId) {
-      deviceId = crypto.randomUUID()
-      localStorage.setItem(DEVICE_KEY, deviceId)
+      deviceId = (typeof crypto !== 'undefined' && crypto.randomUUID)
+        ? crypto.randomUUID()
+        : 'dev-' + Math.random().toString(36).slice(2) + Date.now().toString(36)
+      try { localStorage.setItem(DEVICE_KEY, deviceId) } catch {}
     }
     return deviceId
   } catch {
-    throw new Error('This browser cannot store the device identity required for Clue-Less access.')
+    return 'dev-fallback-' + Math.random().toString(36).slice(2)
   }
 }
 

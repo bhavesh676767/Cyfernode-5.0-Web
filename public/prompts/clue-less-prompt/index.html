@@ -1080,6 +1080,11 @@ html, body {
         <button type="button" class="resend-link" id="btn-resend-passkey">Resend</button>
         <span id="resend-timer"></span>
       </div>
+      <div style="text-align:center;margin-top:14px;padding-top:10px;border-top:1px solid var(--border);">
+        <button type="button" class="resend-link" id="btn-back-to-details" style="font-size:12px;opacity:0.8;">
+          <i class="fa-solid fa-arrow-left"></i> Change School Code / Email
+        </button>
+      </div>
     </form>
   </div>
 </div>
@@ -1092,6 +1097,7 @@ import {
   isCluelessLoggedIn,
   requestPasskey,
   verifyPasskey,
+  fetchActiveTeams,
   subscribeToCluelessTeams,
   SUPABASE_URL,
   SUPABASE_ANON_KEY,
@@ -1185,6 +1191,7 @@ function updateAuthNav() {
       clearCluelessSession()
       updateAuthNav()
       renderLevels()
+      fetchActiveTeams().then(renderTeamsList).catch(() => {})
     })
   } else {
     container.innerHTML = `
@@ -1316,6 +1323,7 @@ formPasskey?.addEventListener('submit', async (e) => {
     await verifyPasskey(verifiedSchoolCode, verifiedEmail, passkey)
     updateAuthNav()
     renderLevels()
+    fetchActiveTeams().then(renderTeamsList).catch(() => {})
     closeAuthModal()
   } catch (err) {
     showAuthError(err.message || 'Invalid passkey.')
@@ -1323,6 +1331,15 @@ formPasskey?.addEventListener('submit', async (e) => {
     btn.disabled = false
     btn.innerHTML = `<span>Authenticate</span> <i class="fa-solid fa-unlock"></i>`
   }
+})
+
+// Back to Step 1 button
+document.getElementById('btn-back-to-details')?.addEventListener('click', () => {
+  formPasskey.hidden = true
+  formDetails.hidden = false
+  showAuthError('')
+  showAuthNotice('')
+  document.getElementById('input-school-code')?.focus()
 })
 
 // Resend passkey button
@@ -1376,14 +1393,40 @@ function renderTeamsList(teams) {
     }
   }
 
+  function getStarterRank(team) {
+    const code = (team.school_code || '').toUpperCase()
+    const name = (team.school_name || team.team_name || team.teamname || '').toLowerCase()
+    // 1st: Amity International School, Sector-46, Gurugram, Haryana (CYN33)
+    if (code === 'CYN33' || name.includes('amity international')) return 1
+    // 2nd: DPS SUSHANT LOK (CYN36)
+    if (code === 'CYN36' || name.includes('sushant lok')) return 2
+    // 3rd: Maharaja Aggarsain Adarsh Public School (CYN23)
+    if (code === 'CYN23' || name.includes('aggarsain')) return 3
+    return 999
+  }
+
   const sortedTeams = (teams || []).slice().sort((a, b) => {
+    // 1. Points / score: Higher score ranks higher once teams start solving
     const sDiff = (b.score || 0) - (a.score || 0)
     if (sDiff !== 0) return sDiff
-    // Faster/earlier solve wins tie-breaker
+
+    // 2. Tie-breaker when teams have solved: Earlier solve time ranks higher
     const aTime = a.last_solve_time ? new Date(a.last_solve_time).getTime() : Infinity
     const bTime = b.last_solve_time ? new Date(b.last_solve_time).getTime() : Infinity
-    if (aTime !== bTime) return aTime - bTime
-    return (a.school_code || '').localeCompare(b.school_code || '')
+    if (aTime !== Infinity || bTime !== Infinity) {
+      if (aTime !== bTime) return aTime - bTime
+    }
+
+    // 3. Starter leaderboard priority (when scores/solves are 0 or tied):
+    // 1st: Amity International, 2nd: DPS Sushant Lok, 3rd: Maharaja Aggarsain
+    const aStart = getStarterRank(a)
+    const bStart = getStarterRank(b)
+    if (aStart !== bStart) return aStart - bStart
+
+    // 4. Clean alphabetical order for remaining teams
+    const aName = a.school_name || a.team_name || a.teamname || a.school_code || ''
+    const bName = b.school_name || b.team_name || b.teamname || b.school_code || ''
+    return aName.localeCompare(bName)
   })
 
   if (badge) badge.textContent = String(sortedTeams.length)
