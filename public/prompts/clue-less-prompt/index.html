@@ -914,6 +914,7 @@ import {
   SUPABASE_URL,
   SUPABASE_ANON_KEY,
 } from '/clue-less/auth.js'
+import { subscribeToMySchoolSolves, syncMySchoolSolves } from '/clue-less/scoring.js'
 
 const PROMPT_BASE = '/prompts/clue-less-prompt'
 
@@ -1133,7 +1134,6 @@ formPasskey?.addEventListener('submit', async (e) => {
     await verifyPasskey(verifiedSchoolCode, verifiedEmail, passkey)
     updateAuthNav()
     renderLevels()
-    syncMyScore()
     closeAuthModal()
   } catch (err) {
     showAuthError(err.message || 'Invalid passkey.')
@@ -1171,27 +1171,6 @@ function startCooldown(seconds) {
       if (resendBtn) resendBtn.disabled = false
     }
   }, 1000)
-}
-
-// Sync current user's locally completed levels to Supabase
-function syncMyScore() {
-  const session = getCluelessSession()
-  if (!session?.profile?.schoolCode) return
-  const completed = getCompletedLevels()
-  const score = completed.length * 100
-  fetch(`${SUPABASE_URL}/rest/v1/rpc/update_clueless_score`, {
-    method: 'POST',
-    headers: {
-      apikey: SUPABASE_ANON_KEY,
-      authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-      'content-type': 'application/json'
-    },
-    body: JSON.stringify({
-      p_school_code: session.profile.schoolCode,
-      p_score: score,
-      p_current_level: completed.slice(-1)[0] || 'start'
-    })
-  }).catch(() => {})
 }
 
 // Render Realtime Authenticated Teams in Scoreboard and Sidebar
@@ -1278,8 +1257,9 @@ function renderTeamsList(teams) {
 // Initialize
 updateAuthNav()
 renderLevels()
-syncMyScore()
 subscribeToCluelessTeams(renderTeamsList)
+subscribeToMySchoolSolves(() => renderLevels())
+syncMySchoolSolves().then(() => renderLevels()).catch(() => {})
 
 // Auto-open auth modal if redirected with ?auth=1
 const urlParams = new URLSearchParams(window.location.search)

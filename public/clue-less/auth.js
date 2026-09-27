@@ -4,6 +4,11 @@
 
 export const SUPABASE_URL = 'https://stjjvgnewkswzwmmzyoh.supabase.co'
 export const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0amp2Z25ld2tzd3p3bW16eW9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NTM2NDgsImV4cCI6MjEwMzMyOTY0OH0.l_vf_ovBAbMP_iIn_easi8ztLkC13SJr-JxuWtdM9ng'
+
+if (typeof window !== 'undefined') {
+  window.SUPABASE_URL = SUPABASE_URL
+  window.SUPABASE_ANON_KEY = SUPABASE_ANON_KEY
+}
 const ENDPOINT = `${SUPABASE_URL}/functions/v1/clueless-access`
 const SESSION_KEY = 'cyfernode-clueless-auth'
 const DEVICE_KEY = 'cyfernode-clueless-device'

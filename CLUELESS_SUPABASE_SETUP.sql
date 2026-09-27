@@ -112,3 +112,7 @@ begin
   where school_code = p_school_code;
 end;
 $$ language plpgsql security definer;
+
+-- Restrict to service_role only (prevent client-side score tampering)
+revoke execute on function public.update_clueless_score(text, int, text) from public, anon, authenticated;
+grant execute on function public.update_clueless_score(text, int, text) to service_role;
