@@ -11,8 +11,7 @@ const BANNER_IMAGE_URL = 'https://i.ibb.co/Lzsh2Rth/banner-email-cyfernode.jpg'
 const DISCORD_INVITE_URL = 'https://discord.gg/bkqrUAAnvc'
 const SITE_URL = 'https://cyfernode.com'
 
-/** Maximum number of distinct devices allowed per school code */
-const MAX_DEVICES_PER_SCHOOL = 2
+
 
 type Role = 'student' | 'teacher_in_charge'
 
@@ -260,9 +259,8 @@ async function getSchoolDevices(admin: ReturnType<typeof adminClient>, schoolCod
 }
 
 /**
- * Registers a device for a school, enforcing the max-2 device limit.
- * Returns { ok: true } if allowed, { ok: false, error } if at capacity.
- * Existing devices (previously registered) are always allowed through.
+ * Registers a device for a school (no limit — unlimited devices per school).
+ * Just tracks the device for active count purposes.
  */
 async function registerDevice(
   admin: ReturnType<typeof adminClient>,
@@ -273,7 +271,6 @@ async function registerDevice(
   const isExisting = devices.some((d) => d.device_id === deviceId)
 
   if (isExisting) {
-    // Known device — just update last_seen_at
     await admin
       .from('clue_less_devices')
       .update({ last_seen_at: new Date().toISOString() })
@@ -282,14 +279,7 @@ async function registerDevice(
     return { ok: true, deviceCount: devices.length }
   }
 
-  if (devices.length >= MAX_DEVICES_PER_SCHOOL) {
-    return {
-      ok: false,
-      error: `This school code (${schoolCode}) has already been authenticated on ${MAX_DEVICES_PER_SCHOOL} devices. A maximum of ${MAX_DEVICES_PER_SCHOOL} devices are allowed per team. Please use a device that has already logged in, or contact the organizers.`,
-    }
-  }
-
-  // New device — insert
+  // New device — insert (no cap)
   await admin.from('clue_less_devices').insert({
     school_code: schoolCode,
     device_id: deviceId,
