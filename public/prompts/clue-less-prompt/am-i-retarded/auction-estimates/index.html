@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050505">
+  <title>Auction Estimates</title>
+  <script>
+  (function () {
+    try {
+      var raw = sessionStorage.getItem('cyfernode-clueless-auth') || localStorage.getItem('cyfernode-clueless-auth');
+      var session = raw ? JSON.parse(raw) : null;
+      if (!(session && session.token && session.profile && session.profile.schoolCode)) window.location.replace('/prompts/clue-less-prompt?auth=required');
+    } catch (error) { window.location.replace('/prompts/clue-less-prompt?auth=required'); }
+  })();
+  </script>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { min-height: 100vh; margin: 0; display: grid; place-items: center; padding: 24px; background: #050505; color: #f4f4f2; font-family: Georgia, 'Times New Roman', serif; }
+    main { width: min(100%, 640px); }
+    .eyebrow { margin: 0 0 22px; color: rgba(255,255,255,.48); font: 600 10px/1.2 Consolas, monospace; letter-spacing: .16em; text-transform: uppercase; }
+    .riddle { margin: 0; padding-left: 18px; border-left: 1px solid rgba(255,255,255,.65); font-size: clamp(1.05rem, 2.8vw, 1.3rem); font-style: italic; line-height: 1.85; }
+    form { display: flex; margin-top: 36px; border-bottom: 1px solid rgba(255,255,255,.7); }
+    label { padding: 13px 12px 13px 0; font: 600 14px Consolas, monospace; }
+    input { min-width: 0; flex: 1; border: 0; outline: 0; background: transparent; color: #fff; font: 14px Consolas, monospace; }
+    input::placeholder { color: rgba(255,255,255,.32); }
+    button { border: 0; background: transparent; color: #fff; cursor: pointer; font: 600 11px Consolas, monospace; letter-spacing: .12em; text-transform: uppercase; }
+    #status { min-height: 18px; margin-top: 10px; color: rgba(255,255,255,.52); font: 11px/1.5 Consolas, monospace; }
+    #status a { color: #fff; }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">Auction Estimates</p>
+    <p class="riddle">O Sotheby's, whose halls do treasures sleep<br>Beneath the gavel's solemn, gilded keep?<br>What postal cipher marks the ground<br>Where thy venerable house is found?<br>Speak not the street, nor borough, nor the door—<br>But only five or six digits, and no more.</p>
+    <form id="answer-form" autocomplete="off">
+      <label for="answer">&gt;</label>
+      <input id="answer" inputmode="numeric" placeholder="postal code" spellcheck="false" autofocus>
+      <button type="submit">Enter</button>
+    </form>
+    <div id="status" aria-live="polite"></div>
+  </main>
+  <script type="module">
+    import { markLevelCompleted, buildSolveBanner } from '/clue-less/scoring.js';
+    const hash = '17eb8859aab835857555cd9450004f4896a6958ced1d34615bbb295a75e22ed8';
+    const form = document.getElementById('answer-form');
+    const input = document.getElementById('answer');
+    const status = document.getElementById('status');
+    const sha256 = async value => Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))).map(byte => byte.toString(16).padStart(2, '0')).join('');
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      const value = input.value.trim().replace(/[^0-9]/g, '');
+      if (!value) return;
+      if (await sha256(value) !== hash) { status.textContent = 'not quite'; input.select(); return; }
+      input.disabled = true;
+      status.textContent = 'Correct. Recording score…';
+      const result = await markLevelCompleted('am-i-retarded');
+      status.innerHTML = buildSolveBanner(result, 'am-i-retarded');
+    });
+  </script>
+</body>
+</html>

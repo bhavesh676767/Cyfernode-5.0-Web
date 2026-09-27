@@ -14,7 +14,8 @@ export const SOLVES_CACHE_KEY = 'cyfernode_clueless_solves_cache'
 
 // Client-side level config (mirrors server config — used for instant UI feedback)
 export const LEVEL_CONFIG = {
-  'am-i-retarded': { order: 1, basePoints: 500, difficulty: 'Hard', name: 'Am I Retar*ed?' },
+  'am-i-retarded':      { order: 1, basePoints: 500, difficulty: 'Hard',   name: 'Am I Retar*ed?' },
+  'this-too-shall-pass': { order: 2, basePoints: 600, difficulty: 'Hard',   name: 'This Too Shall Pass' },
 }
 
 

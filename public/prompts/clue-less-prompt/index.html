@@ -487,44 +487,6 @@ html, body {
   max-width: 580px;
   margin-bottom: 24px;
 }
-.wave2-countdown-container {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
-  padding: 16px 24px;
-  border-radius: 12px;
-}
-.wave2-unit {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 68px;
-}
-.wave2-digit {
-  font-family: var(--font-mono);
-  font-size: clamp(2rem, 4.5vw, 2.8rem);
-  font-weight: 800;
-  color: #fff;
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-.wave2-label {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.4);
-  letter-spacing: 0.12em;
-  margin-top: 6px;
-}
-.wave2-colon {
-  font-family: var(--font-mono);
-  font-size: 2rem;
-  font-weight: 800;
-  color: rgba(255,255,255,0.3);
-  margin-top: -14px;
-}
 
 .scoreboard-section {
   margin-top: 48px;
@@ -955,31 +917,22 @@ html, body {
       <h1 class="title" id="prompt-title">Clue-Less</h1>
     </header>
     <div class="prompt-body" id="prompt-body">
-      <!-- Wave 2 Announcement & Countdown Component -->
+      <!-- Wave 2 Live Banner -->
       <section class="wave2-banner" id="wave2-banner">
         <div class="wave2-badge-row">
-          <span class="wave2-status-pill"><span class="wave2-pulse-dot"></span> WAVE 1 CONCLUDED</span>
+          <span class="wave2-status-pill"><span class="wave2-pulse-dot"></span> WAVE 2 LIVE</span>
           <span class="wave2-time-pill"><i class="fa-regular fa-clock"></i> 6:00 PM IST · 27 SEP 2026</span>
         </div>
-        <h2 class="wave2-heading">Wave 2 Commences In</h2>
-        <p class="wave2-sub">All Wave 1 levels are now sealed. Official verified scores are recorded on the leaderboard below. Stand by for the Wave 2 transmission at 6:00 PM IST.</p>
-        
-        <div class="wave2-countdown-container">
-          <div class="wave2-unit">
-            <span class="wave2-digit" id="w2-hours">00</span>
-            <span class="wave2-label">HOURS</span>
-          </div>
-          <span class="wave2-colon">:</span>
-          <div class="wave2-unit">
-            <span class="wave2-digit" id="w2-mins">00</span>
-            <span class="wave2-label">MINUTES</span>
-          </div>
-          <span class="wave2-colon">:</span>
-          <div class="wave2-unit">
-            <span class="wave2-digit" id="w2-secs">00</span>
-            <span class="wave2-label">SECONDS</span>
-          </div>
-        </div>
+        <h2 class="wave2-heading">Wave 2 Is Now Live</h2>
+        <p class="wave2-sub">Wave 2 levels are now unlocked. Authenticate with your school code to begin. Scores reset — every solve counts.</p>
+      </section>
+
+      <!-- Wave 2 Level List -->
+      <section style="margin-top: 32px;">
+        <p style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Wave 2 · Levels</p>
+        <ul class="file-list" id="level-list">
+          <!-- populated by renderLevels() -->
+        </ul>
       </section>
 
       <!-- Live Scoreboard Section -->
@@ -1107,14 +1060,8 @@ import { subscribeToMySchoolSolves, syncMySchoolSolves } from '/clue-less/scorin
 const PROMPT_BASE = '/prompts/clue-less-prompt'
 
 const LEVELS = [
-  { id: 'whistle-podu', name: 'Whistle Podu', href: `${PROMPT_BASE}/whistle-podu` },
-  { id: 'only-ww', name: 'Only WW', href: `${PROMPT_BASE}/only-ww` },
-  { id: 'the-image-that-isnt-an-image', name: "THE IMAGE THAT ISN'T AN IMAGE", href: `${PROMPT_BASE}/the-image-that-isnt-an-image` },
-  { id: 'the-bearer', name: 'THE BEARER', href: `${PROMPT_BASE}/the-bearer` },
-  { id: 'a-comedy-of-accuracy', name: 'A comedy of accuracy', href: `${PROMPT_BASE}/a-comedy-of-accuracy` },
-  { id: 'the-third-tung', name: 'THE THIRD TUNG', href: `${PROMPT_BASE}/the-third-tung` },
-  { id: 'redline-echo', name: 'REDLINE ECHO', href: `${PROMPT_BASE}/redline-echo` },
-  { id: 'the-hollow-chime', name: 'THE HOLLOW CHIME', href: `${PROMPT_BASE}/the-hollow-chime` },
+  { id: 'am-i-retarded',      name: 'Am I Retar*ed?',       href: `${PROMPT_BASE}/am-i-retarded` },
+  { id: 'this-too-shall-pass', name: 'This Too Shall Pass',  href: `${PROMPT_BASE}/this-too-shall-pass` },
 ]
 
 const FILE_ICON = `
@@ -1504,28 +1451,6 @@ function renderTeamsList(teams) {
   }
 }
 
-// Wave 2 Timer
-function initWave2Timer() {
-  const target = new Date('2026-09-27T18:00:00+05:30').getTime()
-  const hEl = document.getElementById('w2-hours')
-  const mEl = document.getElementById('w2-mins')
-  const sEl = document.getElementById('w2-secs')
-
-  function update() {
-    const now = Date.now()
-    const diff = Math.max(0, target - now)
-    const hrs = Math.floor(diff / (1000 * 60 * 60))
-    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
-    const secs = Math.floor((diff % (1000 * 60)) / 1000)
-
-    if (hEl) hEl.textContent = String(hrs).padStart(2, '0')
-    if (mEl) mEl.textContent = String(mins).padStart(2, '0')
-    if (sEl) sEl.textContent = String(secs).padStart(2, '0')
-  }
-  update()
-  setInterval(update, 1000)
-}
-
 // Preloader Dismissal
 function dismissPreloader() {
   const p = document.getElementById('preloader')
@@ -1541,7 +1466,7 @@ else setTimeout(dismissPreloader, 1000)
 
 // Initialize
 updateAuthNav()
-initWave2Timer()
+renderLevels()
 subscribeToCluelessTeams(renderTeamsList)
 
 

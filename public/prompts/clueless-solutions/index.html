@@ -522,6 +522,8 @@ code {
       <a class="nav-item" href="#third-tung"><span class="nav-num">06</span> The Third Tung</a>
       <a class="nav-item" href="#redline-echo"><span class="nav-num">07</span> Redline Echo</a>
       <a class="nav-item" href="#hollow-chime"><span class="nav-num">08</span> The Hollow Chime</a>
+      <a class="nav-item" href="#this-too-shall-pass"><span class="nav-num">09</span> This Too Shall Pass</a>
+      <a class="nav-item" href="#sell-your-items"><span class="nav-num">10</span> Sell Your Items</a>
     </nav>
   </aside>
 
@@ -531,7 +533,7 @@ code {
     <div class="page-hero">
       <div class="page-tag">Cyfernode 5.0 · Clue-Less</div>
       <h1 class="page-title">Solutions Walkthrough</h1>
-      <p class="page-desc">Step-by-step solutions for all 8 levels. Each entry shows the original clues, the solve path, and the final answer.</p>
+      <p class="page-desc">Step-by-step solutions for all 10 levels. Each entry shows the original clues, the solve path, and the final answer.</p>
     </div>
 
     <!-- ─────────────── LEVEL 1: WHISTLE PODU ─────────────── -->
@@ -980,6 +982,93 @@ code {
       <div class="answer-row">
         <span class="answer-label">Final Answer</span>
         <span class="answer-pill green">bobross</span>
+      </div>
+    </section>
+
+    <div class="level-sep"></div>
+
+    <section class="level-section" id="this-too-shall-pass">
+      <div class="level-header">
+        <span class="level-num">09</span>
+        <h2 class="level-title">This Too Shall Pass</h2>
+      </div>
+
+      <div class="clue-block">
+        <div class="clue-label">Premise</div>
+        <div class="clue-text">A three-stage trail through a script integrity hash, Morse code, and hidden page data. Each solved answer unlocks the next stage.</div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-label">Stage 1 — Script Integrity</div>
+        <div class="step-list">
+          <div class="step"><div class="step-icon">1</div><div>The clue points to Samay Raina's official site and supplies the exact <code>sha512-…</code> integrity assertion for one script.</div></div>
+          <div class="step"><div class="step-icon">2</div><div>Inspect the matching script tag. Its <code>data-cf-beacon</code> attribute contains a version value.</div></div>
+          <div class="step"><div class="step-icon">3</div><div>Submit that beacon version to unlock the Morse transmission.</div></div>
+        </div>
+        <div class="answer-row"><span class="answer-label">Answer</span><span class="answer-pill green">2024.11.0</span></div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-label">Stage 2 — Still Alive</div>
+        <div class="cipher-display"><span class="cipher-key">... - .. .-.. .-.. / .- .-.. .. ...- .</span><br>International Morse decodes to <span class="cipher-key">STILL ALIVE</span>.</div>
+        <div class="step-list">
+          <div class="step"><div class="step-icon">1</div><div>The decoded phrase leads to the <em>Still Alive</em> video.</div></div>
+          <div class="step"><div class="step-icon">2</div><div>In its comments, find @ManpreetSingh-wu2hp and the comment mentioning <em>The Monk Who Sold My Ferrari</em>.</div></div>
+          <div class="step"><div class="step-icon">3</div><div>Use the numeric part of that comment's like count to unlock the final stage.</div></div>
+        </div>
+        <div class="answer-row"><span class="answer-label">Answers</span><span class="answer-pill">STILL ALIVE</span><span class="answer-pill green">5.7</span></div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-label">Stage 3 — #hashtagsekuchnahihota S2</div>
+        <div class="step-list">
+          <div class="step"><div class="step-icon">1</div><div>Inspect the page source for the two Base64 payloads: <code>RVA0</code> and <code>MzQ6NDk=</code>.</div></div>
+          <div class="step"><div class="step-icon">2</div><div>Decode them to <strong>EP4</strong> and <strong>34:49</strong>.</div></div>
+          <div class="step"><div class="step-icon">3</div><div>Open episode 4 of the linked series and jump to 34:49. The timestamp is a waypoint; submit the drink brand Karan Aujla promotes there.</div></div>
+        </div>
+        <div class="answer-row"><span class="answer-label">Final Answer</span><span class="answer-pill green">ZYRO</span></div>
+      </div>
+    </section>
+
+    <div class="level-sep"></div>
+
+    <section class="level-section" id="sell-your-items">
+      <div class="level-header">
+        <span class="level-num">10</span>
+        <h2 class="level-title">Sell Your Items</h2>
+      </div>
+
+      <div class="clue-block">
+        <div class="clue-label">Premise</div>
+        <div class="clue-text">A plain auction-style landing page hides a short chain through page source, a mailbox, and an email footer.</div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-label">Step 1 — The Landing Page</div>
+        <div class="step-list">
+          <div class="step"><div class="step-icon">1</div><div>Notice the small <strong>Sotheby's</strong> mark on the otherwise generic “Sell Your Items” page.</div></div>
+          <div class="step"><div class="step-icon">2</div><div>Inspect the page source and find the hidden binary transmission.</div></div>
+          <div class="step"><div class="step-icon">3</div><div>Decode the binary as ASCII, then reverse the resulting text. It produces <code>Jmail.world</code>.</div></div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-label">Step 2 — The Mailbox</div>
+        <div class="step-list">
+          <div class="step"><div class="step-icon">1</div><div>At Jmail.world, search the inbox for <strong>Sotheby's</strong>.</div></div>
+          <div class="step"><div class="step-icon">2</div><div>Open the email titled <em>“Sell Your Items With Sotheby's.”</em></div></div>
+          <div class="step"><div class="step-icon">3</div><div>The blue <strong>Auction Estimates</strong> link is the answer to “What estimates?” Follow it to the final riddle.</div></div>
+        </div>
+        <div class="answer-row"><span class="answer-label">Pivot</span><span class="answer-pill">AUCTION ESTIMATES</span></div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-label">Step 3 — The Postal Cipher</div>
+        <div class="step-list">
+          <div class="step"><div class="step-icon">1</div><div>The verse asks for Sotheby's postal code, not its street address.</div></div>
+          <div class="step"><div class="step-icon">2</div><div>Return to the Sotheby's email and read its ordinary footer. The required code is embedded in the address.</div></div>
+        </div>
+        <div class="answer-row"><span class="answer-label">Final Answer</span><span class="answer-pill green">10021</span></div>
       </div>
     </section>
 

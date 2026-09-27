@@ -31,17 +31,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sell Your Items — Auction House</title>
 <meta name="description" content="Sell Your Items">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#050505">
 <link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700,800,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     HIDDEN DATA — for players who inspect the page source
-     ═══════════════════════════════════════════════════════════════════════════ -->
 <!--
-  BINARY TRANSMISSION:
   00001010 01000100 01101100 01110010 01101111 01110111 00101110 01101100 01101001 01100001 01101101 01101010
 -->
 
@@ -66,7 +62,6 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── preloader ── */
 #preloader {
   position: fixed;
   inset: 0;
@@ -87,7 +82,6 @@ html, body {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── nav ── */
 #exit-btn {
   position: fixed;
   top: 28px;
@@ -104,14 +98,12 @@ html, body {
 }
 #exit-btn:hover { color: var(--accent); }
 
-/* ── auction-house shell ── */
 .auction-site {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* top bar */
 .site-topbar {
   background: var(--accent);
   color: #fff;
@@ -124,7 +116,6 @@ html, body {
   align-items: center;
 }
 
-/* header */
 .site-header {
   border-bottom: 2px solid var(--gold);
   padding: 20px 40px;
@@ -167,7 +158,6 @@ html, body {
 }
 .site-nav a:hover { color: var(--gold); }
 
-/* ── HIDDEN SOTHEBY'S CREDIT (tiny, blends into header background) ── */
 .hidden-credit {
   position: absolute;
   bottom: 3px;
@@ -180,7 +170,6 @@ html, body {
   pointer-events: none;
 }
 
-/* ── hero ── */
 .hero {
   background: #fff;
   padding: 60px 40px 40px;
@@ -211,25 +200,25 @@ html, body {
   line-height: 1.6;
 }
 
-/* ── listing card ── */
 .listing-section {
   background: #fff;
   border-top: 1px solid rgba(0,0,0,0.08);
   padding: 48px 40px 80px;
 }
 .listing-grid {
-  max-width: 900px;
+  max-width: 1120px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 48px;
+  grid-template-columns: 1fr;
+  gap: 28px;
   align-items: start;
 }
 .listing-img-wrap {
   position: relative;
   background: #f4f4f0;
   border: 1px solid rgba(0,0,0,0.08);
-  aspect-ratio: 3/4;
+  width: 100%;
+  aspect-ratio: 16/7;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -257,7 +246,7 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding-top: 8px;
+  max-width: 680px;
 }
 .listing-cat {
   font-size: 10px;
@@ -282,7 +271,6 @@ html, body {
   border-top: 1px solid rgba(0,0,0,0.1);
 }
 
-/* ── Auction Estimates box (the blue box) ── */
 .estimate-box {
   background: #1a1a6e;
   color: #fff;
@@ -309,7 +297,6 @@ html, body {
   margin-top: 4px;
 }
 
-/* ── Answer step: stage 1 ── */
 .answer-section {
   max-width: 900px;
   margin: 0 auto;
@@ -325,7 +312,6 @@ html, body {
   margin-bottom: 16px;
 }
 
-/* ── Stage 2: Poem ── */
 #stage-2 { display: none; }
 .poem-block {
   max-width: 900px;
@@ -354,7 +340,6 @@ html, body {
   margin-bottom: 28px;
 }
 
-/* ── shared input style ── */
 .input-line {
   display: flex;
   align-items: center;
@@ -392,7 +377,6 @@ html, body {
 .status-echo.success { color: #10b981; }
 .status-echo.error   { color: #b91c1c; }
 
-/* ── footer ── */
 .site-footer {
   background: var(--accent);
   color: rgba(255,255,255,0.5);
@@ -415,11 +399,82 @@ html, body {
   .site-header { padding: 16px 20px; }
   .hero { padding: 50px 20px 32px; }
   .listing-section { padding: 32px 20px 60px; }
-  .listing-grid { grid-template-columns: 1fr; gap: 28px; }
+  .listing-grid { gap: 24px; }
+  .listing-img-wrap { aspect-ratio: 16/10; }
   .site-topbar { padding: 8px 20px; font-size: 10px; }
   .site-footer { padding: 20px; }
   .poem-block { padding: 24px 20px; }
   #exit-btn { top: 20px; left: 16px; }
+}
+
+:root { --text: #111; --muted: #666; --accent: #111; --gold: #111; }
+html, body { background: #fff; color: #111; }
+#preloader { background: #fff; }
+.preloader-spinner { border-color: #ddd; border-top-color: #111; }
+#exit-btn { position: static; width: max-content; margin: 20px auto 0; color: #111; font-size: 13px; }
+.auction-site { display: block; }
+.site-topbar, .site-header, .hero { display: none; }
+.listing-section { border: 0; padding: 24px; background: #fff; }
+.listing-grid { max-width: 1120px; gap: 20px; }
+.listing-img-wrap { aspect-ratio: 16 / 7; border: 1px solid #111; background: #fff; }
+.listing-badge { display: none; }
+.listing-info { max-width: 720px; gap: 12px; }
+.listing-cat, .listing-name, .listing-desc, .listing-divider, .estimate-box { display: none; }
+.clue-line { font-size: 14px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.answer-section { max-width: none; width: 100%; margin: 0; padding-top: 16px; border-top: 1px solid #111; }
+.answer-prompt, .poem-heading, .poem-text { font-family: var(--font-sans); color: #111; font-style: normal; }
+.answer-prompt { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+.input-line { border-bottom: 1px solid #111; margin-top: 0; }
+.input-prompt, .raw-input { color: #111; font-size: 14px; }
+.poem-block { max-width: 720px; padding: 0; border: 0; border-radius: 0; }
+.poem-heading { font-size: 12px; letter-spacing: .08em; margin-bottom: 12px; }
+.poem-text { border-left: 0; padding-left: 0; font-size: 14px; line-height: 1.7; margin-bottom: 18px; }
+.site-footer { max-width: 1120px; margin: 0 auto; padding: 0 24px 32px; background: #fff; color: #555; text-align: left; font-size: 11px; }
+.site-footer strong { color: #111; }
+.status-echo.success, .status-echo.error { color: #111; }
+@media (max-width: 700px) {
+  .listing-section { padding: 20px; }
+  .listing-img-wrap { aspect-ratio: 16 / 10; }
+  .site-footer { padding: 0 20px 28px; }
+}
+
+/* Restrained monochrome landing page. The hunt logic remains untouched. */
+:root { --text: #f4f4f2; --muted: rgba(244,244,242,.55); --accent: #f4f4f2; --gold: #f4f4f2; }
+html, body, #preloader { background: #050505; color: var(--text); }
+#preloader { background: #050505; }
+.preloader-spinner { width: 24px; height: 24px; border-color: rgba(255,255,255,.16); border-top-color: #fff; }
+#exit-btn { color: var(--muted); font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
+#exit-btn:hover { color: #fff; }
+.auction-site { position: relative; }
+.mystery-mark { position: fixed; top: 20px; right: 24px; z-index: 2; color: rgba(255,255,255,.42); font-family: var(--font-serif); font-size: 13px; letter-spacing: .03em; }
+.listing-section { padding: 28px 32px 52px; background: transparent; }
+.listing-grid { max-width: 1060px; gap: 20px; }
+.landing-title { font-size: clamp(2rem, 5vw, 3.8rem); font-weight: 600; letter-spacing: -.055em; line-height: 1; margin-bottom: 28px; }
+.listing-img-wrap { aspect-ratio: 16 / 7; border: 1px solid rgba(255,255,255,.23); background: #111; }
+.listing-img-wrap img { filter: grayscale(1) contrast(1.08) brightness(.78); }
+.listing-info { max-width: 640px; }
+.clue-line { display: none; }
+.answer-section { padding-top: 18px; border-top-color: rgba(255,255,255,.2); }
+.answer-prompt, .poem-heading, .poem-text { color: #f4f4f2; }
+.answer-prompt { font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
+.input-line { border-bottom-color: rgba(255,255,255,.65); }
+.input-prompt, .raw-input { color: #f4f4f2; }
+.raw-input { font-family: var(--font-mono); font-size: 14px; font-weight: 500; }
+.raw-input::placeholder { color: rgba(255,255,255,.34); }
+.status-echo.success, .status-echo.error { color: var(--muted); }
+#stage-2 { border-top: 1px solid rgba(255,255,255,.2); margin: 0 32px; padding: 40px 0 54px; }
+.poem-block { max-width: 640px; padding: 0; border: 0; background: transparent; }
+.poem-heading { font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em; color: var(--muted); }
+.poem-text { font-family: var(--font-serif); font-size: 1.08rem; line-height: 1.9; border-left: 1px solid rgba(255,255,255,.55); padding-left: 18px; }
+.site-footer { max-width: 1060px; padding: 0 32px 32px; margin: 0 auto; background: transparent; color: rgba(255,255,255,.38); text-align: left; }
+.site-footer strong { color: rgba(255,255,255,.58); }
+@media (max-width: 700px) {
+  #exit-btn { margin: 18px 20px; }
+  .mystery-mark { top: 19px; right: 20px; }
+  .listing-section { padding: 24px 20px 44px; }
+  .listing-img-wrap { aspect-ratio: 16 / 10; }
+  #stage-2 { margin: 0 20px; padding: 32px 0 42px; }
+  .site-footer { padding: 0 20px 28px; }
 }
 </style>
   <script type="module" src="/clue-less/team-progress.js"></script>
@@ -477,45 +532,11 @@ html, body {
 <a href="/prompts/clue-less-prompt" id="exit-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
 
 <div class="auction-site">
+  <span class="mystery-mark">Sotheby's</span>
 
-  <!-- top bar -->
-  <div class="site-topbar">
-    <span>Fine Art · Jewelry · Watches · Wine · Real Estate</span>
-    <span>Est. 1744</span>
-  </div>
-
-  <!-- header -->
-  <header class="site-header">
-    <div class="site-logo">
-      Auction House
-      <span>Premium Consignment Services</span>
-    </div>
-    <nav>
-      <ul class="site-nav">
-        <li><a href="#">Buy</a></li>
-        <li><a href="#">Sell</a></li>
-        <li><a href="#">Results</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </nav>
-    <!-- Hidden in a corner — very low contrast against the white header -->
-    <span class="hidden-credit">Sotheby's</span>
-  </header>
-
-  <!-- hero -->
-  <section class="hero">
-    <p class="hero-kicker">Consignment Services</p>
-    <h1 class="hero-title">Sell Your Items</h1>
-    <p class="hero-subtitle">
-      Our specialists evaluate your pieces with care and present them to the world's most discerning collectors.
-    </p>
-  </section>
-
-  <!-- listing -->
   <section class="listing-section" id="stage-1">
     <div class="listing-grid">
-      <!-- image -->
+      <h1 class="landing-title">Sell Your Items</h1>
       <div class="listing-img-wrap">
         <span class="listing-badge">Featured Lot</span>
         <img
@@ -525,176 +546,9 @@ html, body {
           crossorigin="anonymous"
         >
       </div>
-
-      <!-- info -->
-      <div class="listing-info">
-        <p class="listing-cat">Fine Art</p>
-        <h2 class="listing-name">Consignment Inquiry</h2>
-        <p class="listing-desc">
-          Submit your item for expert appraisal. Our team of specialists will review provenance,
-          condition, and market demand to provide you with a comprehensive valuation.
-        </p>
-        <hr class="listing-divider">
-
-        <!-- THE BLUE BOX -->
-        <div class="estimate-box">
-          <div class="estimate-box-label">Auction Estimates</div>
-          <div class="estimate-box-value">Request a Valuation</div>
-          <div class="estimate-box-sub">Available to qualified consignors</div>
-        </div>
-
-        <hr class="listing-divider">
-
-        <!-- Stage 1 answer -->
-        <div class="answer-section">
-          <p class="answer-prompt">What estimates?</p>
-          <form id="form-stage1">
-            <div class="input-line">
-              <span class="input-prompt">&gt;</span>
-              <input
-                type="text"
-                class="raw-input"
-                id="input-stage1"
-                placeholder="your answer..."
-                autocomplete="off"
-                spellcheck="false"
-                autofocus
-              >
-            </div>
-            <div class="status-echo" id="echo-stage1"></div>
-          </form>
-        </div>
-      </div>
     </div>
   </section>
 
-  <!-- Stage 2: Postal Cipher poem -->
-  <section class="listing-section" id="stage-2">
-    <div class="poem-block">
-      <p class="poem-heading">The Postal Cipher</p>
-      <p class="poem-text">
-        O Sotheby's, whose halls do treasures sleep<br>
-        Beneath the gavel's solemn, gilded keep?<br>
-        What postal cipher marks the ground<br>
-        Where thy venerable house is found?<br>
-        Speak not the street, nor borough, nor the door—<br>
-        But only five or six digits, and no more.
-      </p>
-
-      <form id="form-stage2">
-        <div class="input-line">
-          <span class="input-prompt">&gt;</span>
-          <input
-            type="text"
-            class="raw-input"
-            id="input-stage2"
-            placeholder="postal code..."
-            autocomplete="off"
-            spellcheck="false"
-            inputmode="numeric"
-          >
-        </div>
-        <div class="status-echo" id="echo-stage2"></div>
-      </form>
-    </div>
-  </section>
-
-  <!-- footer — ZIP code is visible here as a subtle hint in the address -->
-  <footer class="site-footer">
-    <strong>Auction House — Premium Consignment</strong>
-    1334 York Ave, New York, NY 10021 &nbsp;·&nbsp; +1 (212) 606-7000 &nbsp;·&nbsp; inquiries@auctionhouse.com
-    <br><br>
-    &copy; 2026 Auction House. All rights reserved.
-  </footer>
-
-</div><!-- /auction-site -->
-
-<script type="module">
-import { markLevelCompleted, buildSolveBanner } from '/clue-less/scoring.js';
-
-// ── Preloader ────────────────────────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', () => {
-  const pl = document.getElementById('preloader');
-  if (pl) { pl.style.opacity = '0'; pl.style.visibility = 'hidden'; setTimeout(() => pl.remove(), 300); }
-});
-
-// ── SHA-256 ──────────────────────────────────────────────────────────────────
-async function sha256(msg) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
-}
-function clean(s) { return String(s||'').trim().toLowerCase().replace(/[^a-z0-9]/g,''); }
-
-// ─────────────────────────────────────────────────────────────────────────────
-// STAGE 1 — "What estimates?" → AUCTION ESTIMATES
-// hash of 'auctionestimates'
-// ─────────────────────────────────────────────────────────────────────────────
-const HASH_STAGE1 = '4b292409cc08cf90d2df93779ea6b7f7785479b0c55e7b4beece2f1b4e7f0ffb';
-
-const form1  = document.getElementById('form-stage1');
-const input1 = document.getElementById('input-stage1');
-const echo1  = document.getElementById('echo-stage1');
-
-form1?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const val = clean(input1.value);
-  if (!val) return;
-
-  const hashed = await sha256(val);
-  if (hashed === HASH_STAGE1) {
-    input1.disabled = true;
-    echo1.textContent = 'Correct. Proceed to the next step…';
-    echo1.className = 'status-echo success';
-
-    // Reveal stage 2 with a short delay
-    setTimeout(() => {
-      document.getElementById('stage-2').style.display = 'block';
-      document.getElementById('input-stage2').focus();
-      document.getElementById('stage-2').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 800);
-  } else {
-    echo1.textContent = 'not quite';
-    echo1.className = 'status-echo error';
-    input1.select();
-  }
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-// STAGE 2 — Postal code → 10021
-// hash of '10021'
-// ─────────────────────────────────────────────────────────────────────────────
-const HASH_STAGE2 = '17eb8859aab835857555cd9450004f4896a6958ced1d34615bbb295a75e22ed8';
-
-const form2  = document.getElementById('form-stage2');
-const input2 = document.getElementById('input-stage2');
-const echo2  = document.getElementById('echo-stage2');
-
-form2?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const val = clean(input2.value);
-  if (!val) return;
-
-  const hashed = await sha256(val);
-  if (hashed === HASH_STAGE2) {
-    input2.disabled = true;
-    echo2.textContent = 'Correct. Recording score…';
-    echo2.className = 'status-echo success';
-
-    const result = await markLevelCompleted('am-i-retarded');
-    echo2.innerHTML = buildSolveBanner(result, 'am-i-retarded');
-    echo2.className = 'status-echo success';
-
-    setTimeout(() => {
-      document.body.style.transition = 'opacity 0.8s ease';
-      document.body.style.opacity = '0';
-      setTimeout(() => { window.location.href = '/prompts/clue-less-prompt'; }, 800);
-    }, 3500);
-  } else {
-    echo2.textContent = 'not quite';
-    echo2.className = 'status-echo error';
-    input2.select();
-  }
-});
-</script>
+</div>
 </body>
 </html>

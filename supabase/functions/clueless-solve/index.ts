@@ -5,7 +5,8 @@ const ALLOW_HEADERS = 'authorization, x-client-info, apikey, content-type, x-clu
 
 // ─── Difficulty-based points ───────────────────────────────────────────────────
 const LEVEL_CONFIG: Record<string, { order: number; basePoints: number; difficulty: string }> = {
-  'am-i-retarded': { order: 1, basePoints: 500, difficulty: 'Hard' },
+  'am-i-retarded':      { order: 1, basePoints: 500, difficulty: 'Hard' },
+  'this-too-shall-pass': { order: 2, basePoints: 600, difficulty: 'Hard' },
 }
 
 

@@ -1,129 +1,1167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- CLUELESS_AUTH:START -->
+<script>
+(function() {
+  function hasValidAuth() {
+    try {
+      var raw = sessionStorage.getItem('cyfernode-clueless-auth') || localStorage.getItem('cyfernode-clueless-auth');
+      if (raw) {
+        var sess = JSON.parse(raw);
+        if (sess && (sess.token || sess.profile) && (sess.profile && sess.profile.schoolCode)) {
+          return true;
+        }
+      }
+    } catch(e) {}
+    return false;
+  }
+
+  if (!hasValidAuth()) {
+    try {
+      sessionStorage.setItem('cyfernode_clueless_auth_required', '1');
+    } catch(e) {}
+    window.location.replace('/prompts/clue-less-prompt?auth=required');
+  }
+})();
+</script>
+<!-- CLUELESS_AUTH:END -->
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>This too shall pass - Clue-Less - Cyfernode 5.0</title>
-<meta name="description" content="Clue-Less Level 06: This too shall pass">
-<meta name="theme-color" content="#ffffff">
+<title>This Too Shall Pass — Clue-Less · Cyfernode 5.0</title>
+<meta name="description" content="Clue-Less: This Too Shall Pass — a 3-stage cryptic hunt.">
+<meta name="theme-color" content="#08080b">
 <link rel="icon" type="image/png" href="/0e1a62f8-fec9-4cae-bc86-2298aa63e516.png">
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
-<link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700,800&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700,800,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!--
+  ┌──────────────────────────────────────────────────────────────────────────┐
+  │  HUNT DATA · STAGE 3                                                     │
+  │  data-seek="MzQ6NDk=" · data-ep-token="RVA0"                            │
+  └──────────────────────────────────────────────────────────────────────────┘
+-->
+<meta name="hunt-data" content="MzQ6NDk=">
+
 <style>
+/* ── Reset & Tokens ─────────────────────────────────────────────────────── */
 :root {
-  --text: #111114;
-  --muted: rgba(17, 17, 20, 0.56);
-  --orange: #d24500;
+  --bg:        #08080b;
+  --surface:   #111116;
+  --surface2:  #18181e;
+  --border:    rgba(255,255,255,0.07);
+  --text:      #e8e8f0;
+  --muted:     rgba(232,232,240,0.42);
+  --dim:       rgba(232,232,240,0.22);
+  --green:     #22c55e;
+  --red:       #f87171;
+  --amber:     #fbbf24;
+  --orange:    #d24500;
+  --accent:    #7c3aed;
+  --accent2:   #a78bfa;
   --font-sans: 'Satoshi', system-ui, sans-serif;
-  --font-px: 'Satoshi', system-ui, sans-serif;
+  --font-mono: 'Consolas', 'Courier New', monospace;
 }
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
   min-height: 100%;
-  background: #fff;
+  background: var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
 
+/* ── Preloader ──────────────────────────────────────────────────────────── */
+#preloader {
+  position: fixed; inset: 0;
+  background: var(--bg);
+  z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column;
+  gap: 14px;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+.preloader-ring {
+  width: 36px; height: 36px;
+  border: 2px solid rgba(124,58,237,0.15);
+  border-top-color: var(--accent2);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+.preloader-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--dim);
+  text-transform: uppercase;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Auth gate ──────────────────────────────────────────────────────────── */
+#clueless-auth-gate {
+  display: none;
+  position: fixed; inset: 0;
+  background: var(--bg);
+  z-index: 99998;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px;
+  text-align: center;
+}
+
+/* ── Back button ────────────────────────────────────────────────────────── */
 #exit-btn {
   position: fixed;
-  top: 28px;
-  left: 28px;
+  top: 28px; left: 28px;
   z-index: 800;
-  font-family: var(--font-px);
-  font-size: 17px;
-  font-weight: 800;
-  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  transition: color 0.2s;
+  gap: 8px;
+  transition: color 0.15s ease;
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+#exit-btn:hover { color: var(--text); }
+
+/* ── Progress tracker ───────────────────────────────────────────────────── */
+#progress-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: rgba(124,58,237,0.12);
+  z-index: 700;
+}
+#progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 0%;
+}
+#stage-tracker {
+  position: fixed;
+  top: 26px; right: 28px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--dim);
+  letter-spacing: 0.12em;
+  z-index: 700;
 }
 
-#exit-btn:hover {
-  color: var(--orange);
-}
-
-#exit-btn i {
-  font-size: 15px;
-}
-
+/* ── Page shell ─────────────────────────────────────────────────────────── */
 .page {
   min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 100px 24px 56px;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 96px 28px 80px;
 }
 
-.panel {
-  width: min(100%, 720px);
+/* ── Section header ─────────────────────────────────────────────────────── */
+.hunt-header {
+  margin-bottom: 52px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 28px;
 }
-
-.head {
-  margin-bottom: 28px;
-}
-
-.eyebrow {
-  font-size: 12px;
+.hunt-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--accent2);
   margin-bottom: 10px;
 }
-
-.title {
-  font-size: clamp(2rem, 5vw, 2.75rem);
-  font-weight: 700;
+.hunt-title {
+  font-size: clamp(1.9rem, 5vw, 2.8rem);
+  font-weight: 900;
   letter-spacing: -0.04em;
   line-height: 1.05;
+  color: var(--text);
+}
+.hunt-title em {
+  color: var(--accent2);
+  font-style: normal;
+}
+.hunt-subtitle {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.55;
 }
 
-.prompt-body {
+/* ── Stage card ─────────────────────────────────────────────────────────── */
+.stage {
+  margin-bottom: 40px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+.stage.is-locked {
+  opacity: 0.4;
+  pointer-events: none;
+  filter: blur(0.5px);
+}
+.stage.is-solved {
+  border-color: rgba(34,197,94,0.3);
+}
+.stage-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+}
+.stage-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.stage-name {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.stage-status {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 5px;
+  border: 1px solid;
+  flex-shrink: 0;
+}
+.stage-status.pending  { color: var(--dim);   border-color: rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); }
+.stage-status.active   { color: var(--amber);  border-color: rgba(251,191,36,0.3);  background: rgba(251,191,36,0.06); }
+.stage-status.solved   { color: var(--green);  border-color: rgba(34,197,94,0.3);   background: rgba(34,197,94,0.06); }
+.stage-status.locked   { color: var(--dim);    border-color: rgba(255,255,255,0.06); background: transparent; }
+
+.stage-body {
+  padding: 24px 22px;
+}
+
+/* ── Clue prose ─────────────────────────────────────────────────────────── */
+.clue-text {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: rgba(232,232,240,0.8);
+  margin-bottom: 18px;
+}
+.clue-text strong {
+  color: var(--text);
+  font-weight: 700;
+}
+.clue-text em {
+  color: var(--accent2);
+  font-style: normal;
+}
+.clue-text + .clue-text { margin-top: 12px; }
+
+/* ── Code block ─────────────────────────────────────────────────────────── */
+.code-block {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: 16px 0;
+  color: var(--accent2);
+  overflow-x: auto;
+  word-break: break-all;
+}
+.code-block.morse {
   font-size: 16px;
-  line-height: 1.65;
-  color: rgba(17, 17, 20, 0.82);
+  letter-spacing: 0.08em;
+  color: var(--amber);
+}
+.code-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 6px;
 }
 
-.prompt-body p + p {
+/* ── Hashtag link ───────────────────────────────────────────────────────── */
+.hashtag-link {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--accent2);
+  text-decoration: none;
+  background: var(--surface2);
+  border: 1px solid rgba(167,139,250,0.2);
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin: 12px 0;
+  transition: border-color 0.15s, color 0.15s;
+}
+.hashtag-link:hover {
+  border-color: rgba(167,139,250,0.5);
+  color: #fff;
+}
+
+/* ── Poem block ─────────────────────────────────────────────────────────── */
+.poem-block {
+  background: var(--surface2);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 18px 20px;
+  margin: 16px 0;
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: rgba(232,232,240,0.75);
+  font-style: italic;
+}
+.poem-block cite {
+  display: block;
+  margin-top: 10px;
+  font-style: normal;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--dim);
+  letter-spacing: 0.08em;
+}
+
+/* ── Answer input ───────────────────────────────────────────────────────── */
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1.5px solid rgba(255,255,255,0.1);
+  border-radius: 9px;
+  background: var(--surface2);
+  margin-top: 20px;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+.input-row:focus-within {
+  border-color: rgba(124,58,237,0.5);
+}
+.input-prompt-char {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent2);
+  padding: 0 14px;
+  user-select: none;
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+.answer-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 13px 0;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  outline: none;
+  caret-color: var(--accent2);
+}
+.answer-input::placeholder {
+  color: var(--dim);
+  font-weight: 500;
+}
+.submit-btn {
+  background: none;
+  border: none;
+  border-left: 1px solid rgba(255,255,255,0.07);
+  padding: 0 16px;
+  height: 100%;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 14px;
+  transition: color 0.15s, background 0.15s;
+  flex-shrink: 0;
+  align-self: stretch;
+  display: flex; align-items: center;
+}
+.submit-btn:hover {
+  color: var(--accent2);
+  background: rgba(124,58,237,0.08);
+}
+
+/* ── Status echo ────────────────────────────────────────────────────────── */
+.status-echo {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  min-height: 18px;
+  margin-top: 10px;
+  line-height: 1.45;
+  transition: opacity 0.2s ease;
+}
+.status-echo.success { color: var(--green); }
+.status-echo.error   { color: var(--red); }
+.status-echo.hint    { color: var(--amber); }
+.status-echo.info    { color: var(--dim); }
+
+/* ── Reveal / secondary clue ────────────────────────────────────────────── */
+.secondary-clue {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  display: none;
+}
+.secondary-clue.visible {
+  display: block;
+  animation: fadeSlide 0.5s ease both;
+}
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.divider-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 14px;
+}
+
+/* ── Flavor transition ──────────────────────────────────────────────────── */
+.stage-transition {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--green);
   margin-top: 14px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.stage-transition.visible { opacity: 1; }
+
+/* ── Final screen ───────────────────────────────────────────────────────── */
+#final-screen {
+  display: none;
+  text-align: center;
+  padding: 52px 0 40px;
+  animation: fadeSlide 0.6s ease both;
+}
+#final-screen.visible { display: block; }
+.final-glyph {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  line-height: 1;
+}
+.final-title {
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.final-sub {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 520px;
+  margin: 0 auto 36px;
+}
+.recap-table {
+  text-align: left;
+  max-width: 560px;
+  margin: 0 auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.recap-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.recap-row:last-child { border-bottom: none; }
+.recap-stage {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--accent2);
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+.recap-desc {
+  color: rgba(232,232,240,0.75);
+  line-height: 1.55;
+}
+.recap-answer {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--green);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-@media (max-width: 768px) {
-  #exit-btn {
-    position: absolute;
-    top: 24px;
-    left: 24px;
-  }
+/* ── Solved badge ───────────────────────────────────────────────────────── */
+.solved-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: 0.08em;
+}
 
-  .page {
-    padding: 100px 16px 40px;
-  }
+/* ── Solve banner ───────────────────────────────────────────────────────── */
+.solve-banner {
+  display: block;
+  margin-top: 20px;
+  background: rgba(34,197,94,0.07);
+  border: 1px solid rgba(34,197,94,0.2);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--green);
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .page { padding: 80px 16px 60px; }
+  #exit-btn { top: 20px; left: 16px; }
+  #stage-tracker { top: 20px; right: 16px; }
+  .stage-header { flex-wrap: wrap; }
+}
+
+/* Minimal monochrome presentation layer. Puzzle structure and behavior stay unchanged. */
+:root {
+  --bg: #050505;
+  --surface: #050505;
+  --surface2: #0a0a0a;
+  --border: rgba(255,255,255,.2);
+  --text: #f5f5f5;
+  --muted: rgba(255,255,255,.58);
+  --dim: rgba(255,255,255,.32);
+  --green: #f5f5f5;
+  --red: #f5f5f5;
+  --amber: #f5f5f5;
+  --orange: #f5f5f5;
+  --accent: #f5f5f5;
+  --accent2: #f5f5f5;
+}
+html, body { background: var(--bg); }
+#preloader { background: var(--bg); }
+.preloader-ring { width: 24px; height: 24px; border-color: rgba(255,255,255,.15); border-top-color: #fff; }
+#exit-btn { color: var(--muted); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+#exit-btn:hover { color: #fff; }
+#progress-bar { height: 1px; background: rgba(255,255,255,.15); }
+#progress-fill { background: #fff; }
+#stage-tracker { font-size: 10px; color: var(--muted); }
+.page { max-width: 720px; padding-top: 112px; }
+.hunt-header { margin-bottom: 48px; padding-bottom: 24px; border-color: var(--border); }
+.hunt-eyebrow { color: var(--muted); font-size: 9px; }
+.hunt-title { font-weight: 700; letter-spacing: -.035em; }
+.hunt-title em { color: inherit; font-style: italic; font-weight: 500; }
+.hunt-subtitle { max-width: 440px; font-size: 13px; color: var(--muted); }
+.stage { margin-bottom: 28px; border-color: var(--border); border-radius: 0; background: transparent; }
+.stage.is-locked { opacity: .22; filter: none; }
+.stage.is-solved { border-color: rgba(255,255,255,.48); }
+.stage-header { padding: 14px 0; border-color: var(--border); }
+.stage-body { padding: 22px 0 2px; }
+.stage-label { color: var(--muted); font-size: 9px; }
+.stage-name { font-size: 14px; font-weight: 700; }
+.stage-status { border: 0; border-radius: 0; padding: 0; background: transparent !important; color: var(--muted) !important; font-size: 9px; }
+.clue-text { color: rgba(255,255,255,.78); font-size: 14px; line-height: 1.75; }
+.clue-text em, .clue-text strong { color: #fff; }
+.code-label, .divider-label { color: var(--muted); }
+.code-block { background: transparent; border-color: var(--border); border-radius: 0; color: #fff; padding: 14px; }
+.code-block.morse { color: #fff; }
+.hashtag-link { background: transparent; border: 0; border-bottom: 1px solid #fff; border-radius: 0; color: #fff; padding: 4px 0; }
+.hashtag-link:hover { color: var(--muted); border-color: var(--muted); }
+.poem-block { background: transparent; border-left: 1px solid #fff; border-radius: 0; padding: 4px 0 4px 16px; color: rgba(255,255,255,.72); }
+.poem-block cite { color: var(--muted); }
+.input-row { border: 0; border-bottom: 1px solid var(--border); border-radius: 0; background: transparent; margin-top: 22px; }
+.input-row:focus-within { border-color: #fff; }
+.input-prompt-char { color: #fff; padding: 0 10px 0 0; }
+.answer-input { color: #fff; caret-color: #fff; padding: 12px 0; }
+.submit-btn { border-left: 0; color: #fff; padding: 0 2px 0 16px; }
+.submit-btn:hover { background: transparent; color: var(--muted); }
+.status-echo.success, .status-echo.error, .status-echo.hint, .status-echo.info { color: var(--muted); }
+.secondary-clue { border-color: var(--border); }
+.stage-transition { color: var(--muted); }
+.solve-banner { background: transparent; border-color: var(--border); border-radius: 0; color: #fff; }
+#final-screen { text-align: left; }
+.final-glyph { display: none; }
+.final-title { font-weight: 700; }
+.final-sub { margin-left: 0; }
+.recap-table { max-width: 100%; border-color: var(--border); border-radius: 0; }
+.recap-row { border-color: var(--border); }
+.recap-stage, .recap-answer { color: #fff; }
+.recap-desc { color: var(--muted); }
+@media (max-width: 640px) {
+  .page { padding-top: 86px; }
+  .stage-header { align-items: flex-start; }
 }
 </style>
+  <script type="module" src="/clue-less/team-progress.js"></script>
 </head>
 <body>
-<a href="/prompts/clue-less-prompt" id="exit-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
+
+<!-- CLUELESS_AUTH:START -->
+<div id="clueless-auth-gate" style="display:none;position:fixed;inset:0;background:#08080b;z-index:99998;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;">
+  <div style="font-family:'Consolas',monospace;font-size:10px;letter-spacing:0.18em;color:rgba(255,255,255,0.3);text-transform:uppercase;">Cyfernode 5.0 · Clue-Less</div>
+  <div style="font-family:'Satoshi',system-ui,sans-serif;font-size:clamp(1.8rem,5vw,2.4rem);font-weight:900;color:#fff;letter-spacing:-0.03em;line-height:1.1;">AUTHENTICATION REQUIRED</div>
+  <div style="font-family:'Satoshi',system-ui,sans-serif;font-size:14px;color:rgba(255,255,255,0.65);max-width:440px;line-height:1.6;margin-top:4px;">
+    You must authenticate with your registered school code (CYN00–CYN100) to participate in Clue-Less.
+  </div>
+  <a href="/prompts/clue-less-prompt?auth=1" id="auth-gate-btn" style="display:inline-flex;align-items:center;gap:8px;background:#d24500;color:#fff;font-family:'Satoshi',sans-serif;font-weight:700;font-size:14px;padding:12px 24px;border-radius:8px;text-decoration:none;margin-top:10px;">
+    <span>Authenticate with School Code</span>
+    <i class="fa-solid fa-arrow-right"></i>
+  </a>
+</div>
+<script>
+(function(){
+  try {
+    var raw = localStorage.getItem('cyfernode-clueless-auth') || sessionStorage.getItem('cyfernode-clueless-auth');
+    var sess = raw ? JSON.parse(raw) : null;
+    var authed = Boolean(sess && sess.token && sess.profile && sess.profile.schoolCode);
+    if (!authed) {
+      var gate = document.getElementById('clueless-auth-gate');
+      if (gate) gate.style.display = 'flex';
+    }
+  } catch(e) {}
+})();
+</script>
+<!-- CLUELESS_AUTH:END -->
+
+<!-- Preloader -->
+<div id="preloader">
+  <div class="preloader-ring"></div>
+  <div class="preloader-label">Initialising hunt…</div>
+</div>
+
+<!-- Progress -->
+<div id="progress-bar"><div id="progress-fill"></div></div>
+<div id="stage-tracker">STAGE <span id="current-stage-num">1</span> OF 3</div>
+
+<a href="/prompts/clue-less-prompt" id="exit-btn">
+  <i class="fa-solid fa-arrow-left"></i> Back
+</a>
 
 <main class="page">
-  <article class="panel">
-    <header class="head">
-      <p class="eyebrow">CLUE-LESS / LEVEL 06</p>
-      <h1 class="title">This too shall pass</h1>
-    </header>
-    <div class="prompt-body">
-      <!-- Level prompt / challenge content -->
+
+  <!-- Hunt Header -->
+  <header class="hunt-header">
+    <p class="hunt-eyebrow">Clue-Less · Wave 2</p>
+    <h1 class="hunt-title">This Too Shall <em>Pass</em></h1>
+    <p class="hunt-subtitle">A 3-stage cryptic hunt. Each stage unlocks the next. Inspect everything.</p>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       STAGE 1 — Script Integrity
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <section class="stage" id="stage-1">
+    <div class="stage-header">
+      <div>
+        <div class="stage-label">Stage 01</div>
+        <div class="stage-name">Script Integrity</div>
+      </div>
+      <span class="stage-status active" id="status-1">ACTIVE</span>
     </div>
-  </article>
+
+    <div class="stage-body">
+      <p class="clue-text">
+        Identify the cryptographic integrity assertion belonging to
+        the <strong>principal web presence of the aforementioned Raina</strong>.
+      </p>
+      <p class="clue-text">
+        This hash was found protecting a script on that very page:
+      </p>
+      <div class="code-label">SHA-512 INTEGRITY HASH</div>
+      <div class="code-block">sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==</div>
+      <p class="clue-text">
+        The integrity proves the script — but the path onward lies in
+        <em>not its seal</em>, but the version by which the beacon declares itself.
+      </p>
+
+      <form id="form-1" autocomplete="off">
+        <div class="input-row">
+          <span class="input-prompt-char">&gt;</span>
+          <input
+            type="text"
+            class="answer-input"
+            id="input-1"
+            placeholder="enter version…"
+            spellcheck="false"
+            autofocus
+          >
+          <button type="submit" class="submit-btn" aria-label="Submit">
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+        <div class="status-echo" id="echo-1"></div>
+      </form>
+
+      <div class="stage-transition" id="trans-1">
+        <i class="fa-solid fa-check-circle"></i>
+        <span>Beacon version confirmed — proceeding to Stage 2…</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       STAGE 2 — Still Alive
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <section class="stage is-locked" id="stage-2">
+    <div class="stage-header">
+      <div>
+        <div class="stage-label">Stage 02</div>
+        <div class="stage-name">Still Alive</div>
+      </div>
+      <span class="stage-status locked" id="status-2">LOCKED</span>
+    </div>
+
+    <div class="stage-body">
+      <p class="clue-text">A transmission from somewhere. Decode it.</p>
+
+      <div class="code-label">INCOMING SIGNAL</div>
+      <div class="code-block morse">... - .. .-.. .-.. / .- .-.. .. ...- .</div>
+
+      <form id="form-2" autocomplete="off">
+        <div class="input-row">
+          <span class="input-prompt-char">&gt;</span>
+          <input
+            type="text"
+            class="answer-input"
+            id="input-2"
+            placeholder="decoded message…"
+            spellcheck="false"
+          >
+          <button type="submit" class="submit-btn" aria-label="Submit">
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+        <div class="status-echo" id="echo-2"></div>
+      </form>
+
+      <!-- Secondary clue revealed after Morse is solved -->
+      <div class="secondary-clue" id="secondary-2">
+        <div class="divider-label">// signal decoded · further instructions follow</div>
+        <p class="clue-text">
+          Now find the <em>Still Alive</em> video. Open its comments. Within those scrolls:
+        </p>
+        <div class="poem-block">
+          Within the scroll where Manpreet's words are writ,<br>
+          And "The Monk Who Sold My Ferrari" stands writ beneath the vid—<br>
+          Pray, by what numerical favour hath the crowd<br>
+          Marked that utterance with approval proud?<br><br>
+          Seek not the comment's age, nor author's name;<br>
+          Nor heed the words that kindle its fame.<br>
+          Tell only this, ere the digital bells expire:<br>
+          How many likes doth that comment acquire?
+          <cite>— seek @ManpreetSingh-wu2hp</cite>
+        </div>
+
+        <form id="form-2b" autocomplete="off">
+          <div class="input-row">
+            <span class="input-prompt-char">&gt;</span>
+            <input
+              type="text"
+              class="answer-input"
+              id="input-2b"
+              placeholder="like count (e.g. 5.7)…"
+              spellcheck="false"
+            >
+            <button type="submit" class="submit-btn" aria-label="Submit">
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+          <div class="status-echo" id="echo-2b"></div>
+        </form>
+      </div>
+
+      <div class="stage-transition" id="trans-2">
+        <i class="fa-solid fa-check-circle"></i>
+        <span>Crowd-approved. Unlocking Stage 3…</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       STAGE 3 — #hashtagsekuchnahihota S2
+       ═══════════════════════════════════════════════════════════════════════
+       Hidden payload 1: data-ep-token="RVA0" (Base64 → EP4)
+       Hidden payload 2: <meta name="hunt-data" content="MzQ6NDk="> in <head>
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <section class="stage is-locked" id="stage-3"
+    data-ep-token="RVA0"
+    <!-- ep·segment: data-e="E" data-p="P" data-n="4" — concatenate for episode -->
+    data-e="E" data-p="P" data-n="4">
+    <div class="stage-header">
+      <div>
+        <div class="stage-label">Stage 03 · Final</div>
+        <div class="stage-name">#hashtagsekuchnahihota S2</div>
+      </div>
+      <span class="stage-status locked" id="status-3">LOCKED</span>
+    </div>
+
+    <div class="stage-body">
+      <p class="clue-text">The trail leads here:</p>
+
+      <a
+        href="https://www.youtube.com/hashtag/hashtagsekuchnahihota"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hashtag-link"
+      >#hashtagsekuchnahihota</a>
+
+      <p class="clue-text" style="margin-top:14px;">
+        The scroll and the seal both point one way — to a single moment,
+        a single frame. Seek not the clock the two clues agree on.
+        Seek instead <em>the name it names</em>.
+        What brand does he speak of there?
+      </p>
+      <p class="clue-text" style="font-size:13px;color:var(--dim);">
+        (Inspect this page carefully. Everything you need to find the right moment is already here.)
+      </p>
+
+      <form id="form-3" autocomplete="off">
+        <div class="input-row">
+          <span class="input-prompt-char">&gt;</span>
+          <input
+            type="text"
+            class="answer-input"
+            id="input-3"
+            placeholder="brand name…"
+            spellcheck="false"
+          >
+          <button type="submit" class="submit-btn" aria-label="Submit">
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+        <div class="status-echo" id="echo-3"></div>
+      </form>
+
+      <div class="solve-banner" id="solve-result" style="display:none;"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       FINAL CONGRATULATIONS SCREEN
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <div id="final-screen">
+    <div class="final-glyph">🏆</div>
+    <h2 class="final-title">Hunt Complete</h2>
+    <p class="final-sub">
+      You solved all three stages of <strong>This Too Shall Pass</strong>.<br>
+      Here's how the trail read from start to finish.
+    </p>
+
+    <div class="recap-table">
+      <div class="recap-row">
+        <div class="recap-stage">S01</div>
+        <div class="recap-desc">
+          Found Samay Raina's site · inspected the script tag's
+          <code style="font-size:11px;color:var(--accent2);">data-cf-beacon</code> version attribute.
+        </div>
+        <div class="recap-answer">2024.11.0</div>
+      </div>
+      <div class="recap-row">
+        <div class="recap-stage">S02a</div>
+        <div class="recap-desc">
+          Decoded Morse code:
+          <code style="font-size:11px;color:var(--amber);">... - .. .-.. .-.. / .- .-.. .. ...- .</code>
+        </div>
+        <div class="recap-answer">STILL ALIVE</div>
+      </div>
+      <div class="recap-row">
+        <div class="recap-stage">S02b</div>
+        <div class="recap-desc">
+          Found @ManpreetSingh-wu2hp's comment on the Still Alive video · read its like count.
+        </div>
+        <div class="recap-answer">5.7K</div>
+      </div>
+      <div class="recap-row">
+        <div class="recap-stage">S03</div>
+        <div class="recap-desc">
+          Decoded <code style="font-size:11px;color:var(--accent2);">RVA0</code> (Base64 → EP4) +
+          <code style="font-size:11px;color:var(--accent2);">MzQ6NDk=</code> (Base64 → 34:49) →
+          jumped to EP4 @ 34:49 of #hashtagsekuchnahihota S2 · read Karan Aujla's brand name.
+        </div>
+        <div class="recap-answer">ZYRO ✓</div>
+      </div>
+    </div>
+  </div>
+
 </main>
+
+<script type="module">
+import { markLevelCompleted, buildSolveBanner } from '/clue-less/scoring.js';
+
+// ── Preloader ─────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  const pl = document.getElementById('preloader');
+  if (pl) {
+    pl.style.opacity = '0';
+    pl.style.visibility = 'hidden';
+    setTimeout(() => pl.remove(), 380);
+  }
+});
+
+// ── SHA-256 util ──────────────────────────────────────────────────────────
+async function sha256(msg) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+/**
+ * clean() — strips whitespace, lowercases, removes all non-alphanumeric chars.
+ * Mirrors the server-side normalisation used in clueless-solve.
+ */
+function clean(s) {
+  return String(s || '').trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+// ── Precomputed hashes ────────────────────────────────────────────────────
+// Stage 1  : clean("2024.11.0")  → "2024110"
+const HASH_S1   = 'cf31a58783c3f58f7168b2989c8565f99a88459dca47fbdecc75b592f1d16bb2';
+// Stage 2a : clean("STILL ALIVE") → "stillalive"
+const HASH_S2A  = '9a0edc471405871d50a0c92a7f4a02087cf391300fa6a36fa99d3522f71ee1ae';
+// Stage 2b : clean("5.7") / clean("5.7k") → "57"
+const HASH_S2B  = 'c837649cce43f2729138e72cc315207057ac82599a59be72765a477f22d14a54';
+// Stage 3  : clean("ZYRO")       → "zyro"
+const HASH_S3   = 'c96a1a39d9f63318a2e5c91ad16cd39687e83a5bf48f7c0baa6d5db729444ce4';
+
+// ── State ─────────────────────────────────────────────────────────────────
+// stages: 0 = locked, 1 = active/pending, 2 = solved
+const state = { s1: 1, s2: 0, s2a: 0, s2b: 0, s3: 0 };
+// s2a = morse decoded; s2b = comment likes; s2 = both done
+
+// ── Progress UI ───────────────────────────────────────────────────────────
+function setProgress(solvedCount) {
+  // 0→~8%, 1→33%, 2→66%, 3→100%
+  const pct = solvedCount === 0 ? 8 : solvedCount === 1 ? 33 : solvedCount === 2 ? 66 : 100;
+  const fill = document.getElementById('progress-fill');
+  if (fill) fill.style.width = pct + '%';
+  const num = document.getElementById('current-stage-num');
+  if (num) num.textContent = String(Math.min(solvedCount + 1, 3));
+}
+
+function unlockStage(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.remove('is-locked');
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function markSolved(id, statusId) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add('is-solved');
+  const st = document.getElementById(statusId);
+  if (st) {
+    st.textContent = 'SOLVED';
+    st.className = 'stage-status solved';
+  }
+}
+
+function setActive(statusId) {
+  const st = document.getElementById(statusId);
+  if (st) {
+    st.textContent = 'ACTIVE';
+    st.className = 'stage-status active';
+  }
+}
+
+function showTransition(id, cb) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.classList.add('visible');
+    setTimeout(cb, 900);
+  } else {
+    cb();
+  }
+}
+
+// ── Stage 1 ───────────────────────────────────────────────────────────────
+const form1  = document.getElementById('form-1');
+const input1 = document.getElementById('input-1');
+const echo1  = document.getElementById('echo-1');
+
+form1?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const val = clean(input1.value);
+  if (!val) return;
+
+  const h = await sha256(val);
+  if (h === HASH_S1) {
+    input1.disabled = true;
+    echo1.textContent = '✓ Beacon version matched.';
+    echo1.className = 'status-echo success';
+    state.s1 = 2;
+    markSolved('stage-1', 'status-1');
+    setProgress(1);
+
+    showTransition('trans-1', () => {
+      unlockStage('stage-2');
+      setActive('status-2');
+      state.s2 = 1;
+      document.getElementById('input-2')?.focus();
+    });
+  } else {
+    echo1.textContent = '✗ Not quite. The version is embedded in the beacon tag.';
+    echo1.className = 'status-echo error';
+    input1.select();
+  }
+});
+
+// ── Stage 2a — Morse ──────────────────────────────────────────────────────
+const form2  = document.getElementById('form-2');
+const input2 = document.getElementById('input-2');
+const echo2  = document.getElementById('echo-2');
+
+form2?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const val = clean(input2.value);
+  if (!val) return;
+
+  const h = await sha256(val);
+  if (h === HASH_S2A) {
+    input2.disabled = true;
+    echo2.textContent = '✓ Signal decoded. Find the video — and look deeper.';
+    echo2.className = 'status-echo success';
+    state.s2a = 2;
+
+    // Reveal secondary clue with a short delay
+    setTimeout(() => {
+      const sec = document.getElementById('secondary-2');
+      if (sec) sec.classList.add('visible');
+      document.getElementById('input-2b')?.focus();
+    }, 600);
+  } else {
+    echo2.textContent = '✗ Re-read the dots and dashes. Standard Morse code.';
+    echo2.className = 'status-echo error';
+    input2.select();
+  }
+});
+
+// ── Stage 2b — Comment likes ──────────────────────────────────────────────
+const form2b  = document.getElementById('form-2b');
+const input2b = document.getElementById('input-2b');
+const echo2b  = document.getElementById('echo-2b');
+
+form2b?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  // Strip a trailing k/K before cleaning, so "5.7k" and "5.7K" normalise to "57"
+  const raw = String(input2b.value || '').trim().replace(/k$/i, '');
+  const val = clean(raw);
+  if (!val) return;
+
+  const h = await sha256(val);
+  if (h === HASH_S2B) {
+    input2b.disabled = true;
+    echo2b.textContent = '✓ Crowd-approved. Stage 3 is yours.';
+    echo2b.className = 'status-echo success';
+    state.s2b = 2; state.s2 = 2;
+    markSolved('stage-2', 'status-2');
+    setProgress(2);
+
+    showTransition('trans-2', () => {
+      unlockStage('stage-3');
+      setActive('status-3');
+      state.s3 = 1;
+      document.getElementById('input-3')?.focus();
+    });
+  } else {
+    echo2b.textContent = '✗ Not quite. Count the likes on that specific comment.';
+    echo2b.className = 'status-echo error';
+    input2b.select();
+  }
+});
+
+// ── Stage 3 — Final ───────────────────────────────────────────────────────
+const form3  = document.getElementById('form-3');
+const input3 = document.getElementById('input-3');
+const echo3  = document.getElementById('echo-3');
+
+form3?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const val = clean(input3.value);
+  if (!val) return;
+
+  // Near-miss: player submitted the timestamp instead of the brand name
+  if (val === '3449' || val === clean('34:49') || input3.value.trim() === '34:49') {
+    echo3.textContent = "✦ You've found the right moment — now name what's being promoted there.";
+    echo3.className = 'status-echo hint';
+    return;
+  }
+
+  const h = await sha256(val);
+  if (h === HASH_S3) {
+    input3.disabled = true;
+    echo3.textContent = '✓ Brand confirmed. Hunt complete.';
+    echo3.className = 'status-echo success';
+    state.s3 = 2;
+    markSolved('stage-3', 'status-3');
+    setProgress(3);
+
+    // Record solve on Supabase
+    const result = await markLevelCompleted('this-too-shall-pass');
+    const banner = document.getElementById('solve-result');
+    if (banner) {
+      banner.innerHTML = buildSolveBanner(result, 'this-too-shall-pass');
+      banner.style.display = 'block';
+    }
+
+    // Show final screen after a delay
+    setTimeout(() => {
+      const fs = document.getElementById('final-screen');
+      if (fs) {
+        fs.classList.add('visible');
+        fs.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      // Fade body out to clue-less hub after longer delay
+      setTimeout(() => {
+        document.body.style.transition = 'opacity 0.8s ease';
+        document.body.style.opacity = '0';
+        setTimeout(() => { window.location.href = '/prompts/clue-less-prompt'; }, 800);
+      }, 6000);
+    }, 3000);
+  } else {
+    echo3.textContent = '✗ Not quite. The name appears on screen at that exact moment.';
+    echo3.className = 'status-echo error';
+    input3.select();
+  }
+});
+
+// ── Init ──────────────────────────────────────────────────────────────────
+setProgress(0);
+</script>
 </body>
 </html>
