@@ -818,8 +818,7 @@ html, body {
             <thead>
               <tr>
                 <th style="width: 44px;">#</th>
-                <th>School Code</th>
-                <th>Institution</th>
+                <th>Team</th>
                 <th style="text-align: right;">Points</th>
               </tr>
             </thead>
@@ -1214,25 +1213,26 @@ function renderTeamsList(teams) {
   if (countSub) countSub.textContent = `${sortedTeams.length} logged in`
   if (mainBadge) mainBadge.textContent = `${sortedTeams.length} Team${sortedTeams.length === 1 ? '' : 's'}`
 
-  // 1. Render in Main Page Scoreboard Table
+  // 1. Render in Main Page Scoreboard Table (team name primary, hover = school code)
   if (mainTbody) {
     if (sortedTeams.length === 0) {
-      mainTbody.innerHTML = `<tr><td colspan="4" class="scoreboard-empty">No teams have authenticated yet. Log in with your school code to appear on the leaderboard.</td></tr>`
+      mainTbody.innerHTML = `<tr><td colspan="3" class="scoreboard-empty">No teams have authenticated yet. Log in with your school code to appear on the leaderboard.</td></tr>`
     } else {
       mainTbody.innerHTML = sortedTeams.map((team, idx) => {
         const isMe = mySchoolCode && team.school_code === mySchoolCode
         const rank = idx + 1
         const rankClass = rank === 1 ? 'top-1' : (rank === 2 ? 'top-2' : (rank === 3 ? 'top-3' : ''))
+        const displayName = team.teamname || team.school_name || team.school_code
         return `
           <tr class="${isMe ? 'is-you' : ''}">
             <td><span class="rank-badge ${rankClass}">#${rank}</span></td>
             <td>
-              <span class="team-code-badge">${team.school_code}</span>
+              <span
+                class="team-code-badge"
+                title="School Code: ${team.school_code}"
+                style="cursor:help;"
+              >${displayName}</span>
               ${isMe ? '<span class="you-pill">YOU</span>' : ''}
-            </td>
-            <td>
-              <div class="school-name-cell">${team.school_name || 'School ' + team.school_code}</div>
-              ${team.user_name ? `<div class="school-sub-user">${team.user_name}</div>` : ''}
             </td>
             <td class="points-cell">
               <span>${team.score ?? 0}</span><span class="pts-unit">pts</span>
@@ -1243,22 +1243,27 @@ function renderTeamsList(teams) {
     }
   }
 
-  // 2. Render in Sidebar Drawer
+  // 2. Render in Sidebar Drawer (team name bold, school code as subtitle)
   if (list) {
     if (sortedTeams.length === 0) {
       list.innerHTML = `<div class="no-schools">No schools authenticated yet.</div>`
     } else {
       list.innerHTML = sortedTeams.map(team => {
         const isMe = mySchoolCode && team.school_code === mySchoolCode
+        const displayName = team.teamname || team.school_name || team.school_code
         return `
           <div class="school-row ${isMe ? 'is-current-school' : ''}" style="${isMe ? 'background:rgba(210,69,0,0.06);border-radius:8px;' : ''}">
             <div class="school-info">
               <div class="school-code-wrap">
                 <span class="school-live-dot"></span>
-                <span class="school-code">${team.school_code}</span>
+                <span
+                  class="school-code"
+                  title="School Code: ${team.school_code}"
+                  style="cursor:help;"
+                >${displayName}</span>
                 ${isMe ? '<span class="you-pill" style="font-size:9px;padding:0 4px;">YOU</span>' : ''}
               </div>
-              <span class="school-name">${team.school_name || 'School ' + team.school_code}</span>
+              <span class="school-name">${team.school_code}</span>
             </div>
             <div class="school-score">${team.score ?? 0}</div>
           </div>

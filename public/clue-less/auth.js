@@ -120,6 +120,7 @@ export async function validateCluelessSession(session = getCluelessSession()) {
     const result = await callCluelessAccess('heartbeat', {
       token: session.token,
       schoolCode: session.profile.schoolCode,
+      deviceId: getCluelessDeviceId(),
     })
     return Boolean(result.ok)
   } catch {
@@ -133,6 +134,7 @@ export async function heartbeatCluelessSession(session = getCluelessSession()) {
     await callCluelessAccess('heartbeat', {
       token: session.token,
       schoolCode: session.profile.schoolCode,
+      deviceId: getCluelessDeviceId(),
     })
     return true
   } catch {
