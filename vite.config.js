@@ -1,3 +1,4 @@
+import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import react from '@vitejs/plugin-react'
@@ -142,12 +143,37 @@ function serveSecurityHeaders() {
   }
 }
 
+function generateSpaFallbacks() {
+  return {
+    name: 'generate-spa-fallbacks',
+    closeBundle() {
+      const outDir = path.resolve(rootDir, 'dist')
+      const indexHtml = path.resolve(outDir, 'index.html')
+      const submissionDir = path.resolve(outDir, 'submission')
+      const submissionHtml = path.resolve(submissionDir, 'index.html')
+
+      if (fs.existsSync(indexHtml)) {
+        if (!fs.existsSync(submissionDir)) {
+          fs.mkdirSync(submissionDir, { recursive: true })
+        }
+        fs.copyFileSync(indexHtml, submissionHtml)
+      }
+    },
+  }
+}
+
 export default defineConfig({
   // The landing document is a single-page host: unmatched React routes leave the
   // embedded Framer page visible. `/register` is excluded from that fallback by
   // serveRegisterDocument().
   appType: 'spa',
-  plugins: [react(), injectReactEntry(), serveStandaloneDocuments(), serveSecurityHeaders()],
+  plugins: [
+    react(),
+    injectReactEntry(),
+    serveStandaloneDocuments(),
+    serveSecurityHeaders(),
+    generateSpaFallbacks(),
+  ],
   resolve: {
     alias: {
       '@': path.resolve(rootDir, 'src'),
