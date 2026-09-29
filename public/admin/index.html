@@ -4372,10 +4372,11 @@ function filteredSubmissions() {
 function updateSubmissionStats() {
   const rows = filteredSubmissions();
   const submitted = allSubmissions.filter(row => row.status === 'submitted').length;
+  const drafts = allSubmissions.filter(row => row.status === 'draft').length;
   document.getElementById('stat-lbl-total').textContent = 'Submitted';
-  document.getElementById('stat-lbl-secondary').textContent = 'Showing';
+  document.getElementById('stat-lbl-secondary').textContent = 'In Progress';
   document.getElementById('stat-total').textContent = String(submitted);
-  document.getElementById('stat-events').textContent = String(rows.length);
+  document.getElementById('stat-events').textContent = String(drafts);
   document.getElementById('stat-showing').textContent = String(rows.length);
 }
 
@@ -4401,7 +4402,11 @@ function renderSubmissions() {
   empty.classList.add('hidden');
   list.innerHTML = rows.map(row => {
     const teamNo = row.team_number ? `Team ${String(row.team_number).padStart(2, '0')} · ` : '';
-    const when = row.submitted_at ? fmtDate(row.submitted_at) : 'Not submitted';
+    const isSubmitted = row.status === 'submitted';
+    const isDraft = row.status === 'draft';
+    const statusLabel = isSubmitted ? 'Submitted' : isDraft ? 'Draft – In Progress' : String(row.status || '').replaceAll('_', ' ');
+    const when = row.submitted_at ? fmtDate(row.submitted_at) : (isDraft ? 'Not yet submitted' : '—');
+    const byLabel = isSubmitted ? 'Submitted by' : isDraft ? 'Opened by' : 'By';
     const items = (row.deliverables || []).map(item => {
       const detail = item.file_url
         ? `<a href="${esc(item.file_url)}" target="_blank" rel="noopener noreferrer">${esc(item.file_name || 'Open file')}</a>`
@@ -4415,10 +4420,10 @@ function renderSubmissions() {
             <div class="sub-code">${esc(row.school_code || '—')} · ${esc(row.school_name || '')}</div>
             <div class="sub-meta">${esc(row.event_name || '')} · ${esc(teamNo + (row.team_name || 'Team'))}</div>
           </div>
-          <span class="sub-status ${esc(row.status)}">${esc(String(row.status || '').replaceAll('_', ' '))}</span>
+          <span class="sub-status ${esc(row.status)}">${esc(statusLabel)}</span>
         </div>
-        <div class="sub-who">Submitted by ${esc(row.submitted_by_name || '—')} · ${esc(row.submitted_by_email || '')}</div>
-        <div class="sub-who">${esc(when)}${row.reference_code ? ` · ${esc(row.reference_code)}` : ''}</div>
+        ${row.submitted_by_name ? `<div class="sub-who">${esc(byLabel)} ${esc(row.submitted_by_name)}${row.submitted_by_email ? ` · ${esc(row.submitted_by_email)}` : ''}</div>` : ''}
+        <div class="sub-who">${esc(when)}${row.reference_code ? ` · Ref: ${esc(row.reference_code)}` : ''}</div>
         ${items ? `<ul class="sub-items">${items}</ul>` : ''}
       </article>
     `;

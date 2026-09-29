@@ -581,9 +581,9 @@ export function Submission() {
                     ))
                   )}
                   {nonSubmission ? (
-                    <p className={styles.helper}>Non submission based event</p>
+                    <p className={styles.helper}>Results are judged on-site — no file submission required.</p>
                   ) : !group.open ? (
-                    <p className={styles.helper}>This event does not take a file submission here.</p>
+                    <p className={styles.helper}>Submission portal not yet open for this event.</p>
                   ) : null}
                   {nonSubmission ? null : profile.role === 'teacher_in_charge' ? (
                     <button className={styles.button} type="button" disabled={busy || !group.open} onClick={() => setSearchParams({ event: group.slug })}>
