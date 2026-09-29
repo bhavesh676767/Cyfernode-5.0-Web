@@ -711,10 +711,10 @@
   }
 
   var SCHOOL_LOGO_SRC = 'https://framerusercontent.com/images/xjDxMWEiZB9bsPheXoyR4jMPRyE.png'
-  var SUBMISSION_OPENS_AT = Date.parse('2026-10-01T00:00:00+05:30')
+  var SUBMISSION_OPENS_AT = Date.parse('2026-09-01T00:00:00+05:30')
 
   function submissionIsOpen() {
-    return Date.now() >= SUBMISSION_OPENS_AT
+    return true
   }
 
   function formatSubmissionCountdown(now) {

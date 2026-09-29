@@ -1,8 +1,8 @@
-/** Midnight, 1 October 2026, India Standard Time. Keep in sync with public/framer-cta.js. */
-export const SUBMISSION_OPENS_AT = Date.parse('2026-10-01T00:00:00+05:30')
+/** Submission is open. Keep in sync with public/framer-cta.js. */
+export const SUBMISSION_OPENS_AT = Date.parse('2026-09-01T00:00:00+05:30')
 
 export function isSubmissionOpen(now = Date.now()) {
-  return now >= SUBMISSION_OPENS_AT
+  return true
 }
 
 export function formatSubmissionCountdown(now = Date.now()) {

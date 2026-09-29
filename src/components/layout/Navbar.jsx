@@ -17,6 +17,7 @@ export function Navbar() {
           <a className={styles.link} href="/#events">Events</a>
           <a className={styles.link} href="/team">Team</a>
           <a className={styles.link} href="/#timeline">Timeline</a>
+          <Link to="/submission" className={styles.link}>Submission</Link>
         </nav>
         <Link
           to="/register"

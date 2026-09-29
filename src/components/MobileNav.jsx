@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { id: 'prompts', num: '02', label: 'Prompts' },
   { id: 'socials', num: '03', label: 'Socials' },
   { id: 'team', num: '04', label: 'Team' },
+  { id: 'submission', num: '05', label: 'Submission' },
 ]
 
 export function MobileNav() {
@@ -77,6 +78,11 @@ export function MobileNav() {
 
     if (id === 'team') {
       window.location.assign('/team')
+      return
+    }
+
+    if (id === 'submission') {
+      window.location.assign('/submission')
       return
     }
 
